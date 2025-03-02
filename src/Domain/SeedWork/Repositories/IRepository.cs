@@ -1,0 +1,77 @@
+/*
+ * Framework namespaces
+ */
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+namespace Domain.SeedWork
+{
+    /// <summary>
+    /// Generic repository that describe CRUD methods.
+    /// </summary>
+    /// <typeparam name="T">Domain model type</typeparam>
+    public interface IRepository<T> where T : Entity, IAggregateRoot
+    {
+        #region Create methods
+        /// <summary>
+        /// Create a new domain model.
+        /// </summary>
+        /// <param name="entity">Domain model to create</param>
+        void Create(T entity);
+        /// <summary>
+        /// Create a list of new domain models.
+        /// </summary>
+        /// <param name="entities">List of domain models to create</param>
+        void CreateRange(IEnumerable<T> entities);
+        #endregion
+
+        #region Read methods
+        /// <summary>
+        /// Get a domain model, according to a condition.
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns>Domain model corresponding to the condition</returns>
+        Task<T> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
+        /// <summary>
+        /// Get a list of domain models, according to a condition.
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns>List of domain models corresponding to the condition</returns>
+        Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
+        /// <summary>
+        /// Get all the domain models.
+        /// </summary>
+        /// <returns>All the domain models</returns>
+        Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null);
+        #endregion
+
+        #region Update methods
+        /// <summary>
+        /// Update a domain model.
+        /// </summary>
+        /// <param name="entity">Domain model to update</param>
+        /// <returns>Domain model updated</returns>
+        void Update(T entity);
+        /// <summary>
+        /// Update a list of domain models.
+        /// </summary>
+        /// <param name="entities">List of domain models to update</param>
+        /// <returns>List of domain models updated</returns>
+        void UpdateRange(IEnumerable<T> entities);
+        #endregion
+
+        #region Delete methods
+        /// <summary>
+        /// Delete a domain model.
+        /// </summary>
+        /// <param name="entity">Domain model to delete</param>
+        void Delete(T entity);
+        /// <summary>
+        /// Delete a list of domain models.
+        /// </summary>
+        /// <param name="entities">List of domain models to delete</param>
+        void DeleteRange(IEnumerable<T> entities);
+        #endregion
+    }
+}
