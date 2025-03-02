@@ -1,0 +1,21 @@
+# .NET Core
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+.vs
+
+# React
+client/node_modules/
+client/build/
+client/.env
+
+# Secrets & Logs
+.env
+logs/
+secrets.json
+
+# AWS
+aws-exports.json
+terraform.tfstate
