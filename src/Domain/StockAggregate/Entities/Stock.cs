@@ -17,10 +17,12 @@ namespace Domain.StockAggregate
         public decimal Quantity { get { return _stockTransactions.Sum(st => st.Quantity * (int)st.TransactionType); } }
         private readonly List<StockTransaction> _stockTransactions = [];
         public IReadOnlyCollection<StockTransaction> StockTransactions { get { return _stockTransactions.AsReadOnly(); } }
+        public string Unit { get; }
 
-        internal Stock(Ingredient ingredient)
+        internal Stock(Ingredient ingredient, string unit)
         {
             Ingredient = ingredient;
+            Unit = unit;
         }
 
         public void AddTransaction(decimal quantity, string description, StockTransactionType transactionType)

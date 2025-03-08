@@ -37,7 +37,7 @@ namespace Domain.StockAggregate
             }
 
             // I'm not sure about that here
-            _unitOfWork.SaveChanges();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
