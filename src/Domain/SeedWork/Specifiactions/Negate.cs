@@ -1,13 +1,12 @@
 /*
  * Framework namespaces
  */
-using System;
 using System.Linq.Expressions;
 
 namespace Domain.SeedWork
 {
     /// <summary>
-    /// Represents a composite specification that negates the result of another <see cref="SpecificationBase{T}"/>.<br/>
+    /// Represents a composite specification that negates the result of another <see cref="Specification{T}"/>.<br/>
     /// 
     /// This class implements the specification pattern by taking an existing <see cref="ISpecification{T}"/> 
     /// and returning an expression that inverts the result of the inner specification.<br/>
@@ -18,7 +17,7 @@ namespace Domain.SeedWork
     /// 
     /// This class is useful when you want to specify the condition that an object must not satisfy a given specification.
     /// </summary>
-    public class Negated<T>(ISpecification<T> inner) : SpecificationBase<T>
+    public class Negated<T>(ISpecification<T> inner) : Specification<T>
     {
         private readonly ISpecification<T> _inner = inner;
 

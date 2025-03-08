@@ -1,10 +1,7 @@
-/*
+﻿/*
  * Framework namespaces
  */
-using System;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Collections.Generic;
 
 namespace Domain.SeedWork
 {
@@ -19,7 +16,7 @@ namespace Domain.SeedWork
     /// This is used to specify navigation properties that should be eagerly loaded during a query.
     /// </summary>
     /// <typeparam name="TEntity">The entity type for which related entities are to be included.</typeparam>
-    public interface IIncludable<TEntity> : IIncludable where TEntity : Entity, IAggregateRoot
+    public interface IIncludable<TEntity> : IIncludable
     {
         /// <summary>
         /// The IQueryable instance representing the entity and its related entities that can be further manipulated.
@@ -54,7 +51,7 @@ namespace Domain.SeedWork
     /// </summary>
     /// <typeparam name="TEntity">The entity type for which related properties are to be included.</typeparam>
     /// <typeparam name="TProperty">The type of the related property that is included.</typeparam>
-    public interface IIncludable<TEntity, TProperty> : IIncludable<TEntity> where TEntity : Entity, IAggregateRoot
+    public interface IIncludable<TEntity, TProperty> : IIncludable<TEntity>
     {
         /// <summary>
         /// Includes a related property of type <typeparamref name="TOtherProperty"/> in the query at the next level of depth.

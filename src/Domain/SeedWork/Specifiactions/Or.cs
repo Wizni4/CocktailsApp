@@ -21,10 +21,10 @@ namespace Domain.SeedWork
     /// </summary>
     public class Or<T>(
         ISpecification<T> left,
-        ISpecification<T> right) : SpecificationBase<T>
+        ISpecification<T> right) : Specification<T>
     {
-        readonly ISpecification<T> left = left;
-        readonly ISpecification<T> right = right;
+        readonly ISpecification<T> _left = left;
+        readonly ISpecification<T> _right = right;
 
         /// <summary>
         /// Gets the expression that defines the combined specification using a logical OR between the left and right specifications.<br/>
@@ -44,8 +44,8 @@ namespace Domain.SeedWork
 
                 var newExpr = Expression.Lambda<Func<T, bool>>(
                     Expression.OrElse(
-                        Expression.Invoke(left.SpecExpression, objParam),
-                        Expression.Invoke(right.SpecExpression, objParam)
+                        Expression.Invoke(_left.SpecExpression, objParam),
+                        Expression.Invoke(_right.SpecExpression, objParam)
                     ),
                     objParam
                 );

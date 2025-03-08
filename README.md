@@ -1,6 +1,6 @@
-﻿# TaskFlow
+﻿# CocktailsApp
 
-TaskFlow is a **task management application** built using **Domain-Driven Design (DDD)** principles with a **React** frontend and **ASP.NET Core** backend. It allows users to manage their tasks, track progress, and collaborate effectively.
+CocktailsApp is a **Cocktails application** built using **Domain-Driven Design (DDD)** principles with a **React** frontend and **ASP.NET Core** backend. It allows users to manage their tasks, track progress, and collaborate effectively.
 
 This project is deployed on **AWS** and designed to be easily scalable, with modern web technologies ensuring a fast and responsive user experience.
 
