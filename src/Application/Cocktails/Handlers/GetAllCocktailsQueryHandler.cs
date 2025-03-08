@@ -14,17 +14,16 @@ using Application.SeedWork;
  */
 using AutoMapper;
 
-
 namespace Application.Cocktails
 {
-    public abstract class GetCocktailsQueryHandler<TQuery>(IUnitOfWork unitOfWork, IMapper autoMapper) : IQueryHandler<TQuery, List<CocktailDTO>> where TQuery : IQuery<Cocktail>
+    public class GetAllCocktailsQueryHandler(IUnitOfWork unitOfWork, IMapper autoMapper) : IQueryHandler<GetAllCocktailsQuery, List<CocktailDTO>>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
-        public async Task<List<CocktailDTO>> Handle(TQuery query)
+        public async Task<List<CocktailDTO>> Handle(GetAllCocktailsQuery query)
         {
-            // Get the list of cocktails matching the specification
-            var cocktails = await _unitOfWork.Set<Cocktail>().ReadRangeAsync(query.Specification, query.Include);
+            // Get the list of cocktails including sub-objects like ingredients
+            var cocktails = await _unitOfWork.Set<Cocktail>().ReadAllAsync(query.Include);
 
             // Convert the domain objects to DTO
             var cocktailsDTO = _autoMapper.Map<IEnumerable<CocktailDTO>>(cocktails);

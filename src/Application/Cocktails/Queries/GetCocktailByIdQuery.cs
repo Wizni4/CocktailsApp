@@ -1,0 +1,24 @@
+﻿/*
+ * Domain namespaces
+ */
+using Domain.CocktailAggregate;
+
+/*
+ * Application namespaces
+ */
+using Application.SeedWork;
+using Domain.SeedWork;
+/*
+ * Framework namespaces
+ */
+
+namespace Application.Cocktails
+{
+    public class GetCocktailByIdQuery(Guid cocktailId) : IQuery<Cocktail>
+    {
+        private readonly Guid _cocktailId = cocktailId;
+        public ISpecification<Cocktail> Specification { get { return new CocktailByIdSpecification(_cocktailId); } }
+
+        public Func<IIncludable<Cocktail>, IIncludable>? Include { get { return opt => opt.Include(c => c.Ingredients).ThenInclude(ci => ci.Ingredient); } }
+    }
+}

@@ -14,7 +14,7 @@ using Domain.SeedWork;
 
 namespace Application.Cocktails
 {
-    public class GetCocktailsQuery : IQuery<Cocktail>
+    public class GetAllCocktailsQuery : IQuery<Cocktail>
     {
         public ISpecification<Cocktail> Specification => throw new NotImplementedException();
 
