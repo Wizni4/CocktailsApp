@@ -19,11 +19,10 @@ namespace Infrastructure.Users
 
         public async Task<bool> AuthenticateUserAsync(User entity)
         {
-            var authRequest = new AdminInitiateAuthRequest
+            var authRequest = new InitiateAuthRequest()
             {
-                UserPoolId = _cognitoPoolId,
                 ClientId = _cognitoClientId,
-                AuthFlow = AuthFlowType.ADMIN_NO_SRP_AUTH,
+                AuthFlow = AuthFlowType.USER_PASSWORD_AUTH,
                 AuthParameters = new Dictionary<string, string>
                 {
                     { "USERNAME", entity.Name },
@@ -32,7 +31,7 @@ namespace Infrastructure.Users
             };
 
             // Authenticate the user in Cognito
-            var authResponse = await _cognitoClient.AdminInitiateAuthAsync(authRequest);
+            var authResponse = await _cognitoClient.InitiateAuthAsync(authRequest);
             return authResponse.AuthenticationResult != null;
         }
 
@@ -73,16 +72,9 @@ namespace Infrastructure.Users
             throw new NotImplementedException();
         }
 
-        public async Task<User> ReadAsync(ISpecification<User> spec, Func<IIncludable<User>, IIncludable>? includes = null)
+        public Task<User> ReadAsync(ISpecification<User> spec, Func<IIncludable<User>, IIncludable>? includes = null)
         {
-            var request = new GetUserRequest
-            {
-                AccessToken = token
-            };
-
-            // Get the user associated with the token
-            var response = await _cognitoClient.GetUserAsync(request);
-            return ;
+            throw new NotImplementedException();
         }
 
         public Task<IEnumerable<User>> ReadRangeAsync(ISpecification<User> spec, Func<IIncludable<User>, IIncludable>? includes = null)
