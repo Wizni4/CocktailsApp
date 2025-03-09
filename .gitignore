@@ -19,3 +19,6 @@ secrets.json
 # AWS
 aws-exports.json
 terraform.tfstate
+
+# Test
+**/TestResults/

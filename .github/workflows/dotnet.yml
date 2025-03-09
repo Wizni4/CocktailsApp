@@ -28,7 +28,9 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: |
+          dotnet restore
+          dotnet add package coverlet.collector
 
     - name: Lint
       run: dotnet tool install -g dotnet-format && dotnet format style --verify-no-changes --verbosity diagnostic
@@ -36,5 +38,17 @@ jobs:
     - name: Build
       run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true
 
-    - name: Test
-      run: dotnet test --no-build --verbosity minimal
+    - name: Test with Coverage
+      run: dotnet test --collect:"XPlat Code Coverage"
+
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+    - name: Generate Coverage Report
+      run: reportgenerator -reports:**/coverage.opencover.xml -targetdir:coverage -reporttypes:Html
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage
