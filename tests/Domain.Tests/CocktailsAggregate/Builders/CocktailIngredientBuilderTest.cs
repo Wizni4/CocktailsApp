@@ -10,10 +10,10 @@ namespace Domain.Tests.CocktailsAggregate
         {
 
             // Arrange
-            var name = "Mojito"; // Valid name to set
+            var Name = "Mojito"; // Valid name to set
 
             // Act
-            var builder = new CocktailBuilder().AddName(name);
+            var builder = new CocktailBuilder().AddName(Name);
 
             // Assert
             // Since the CocktailBuilder has no getter for the _name, 
@@ -21,9 +21,9 @@ namespace Domain.Tests.CocktailsAggregate
             // We can use reflection to access private fields for testing.
             var nameField = typeof(CocktailBuilder)
                 .GetField("_name", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var actualName = nameField.GetValue(builder);
+            var actualName = nameField?.GetValue(builder);
 
-            actualName.Should().Be(name);
+            actualName.Should().Be(Name);
         }
     }
 }
