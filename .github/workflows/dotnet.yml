@@ -27,6 +27,9 @@ jobs:
       with:
         dotnet-version: '8.0.x' # Ensure this matches the version used to build your analyzer
 
+    - name: Install .NET Compiler Platform SDK
+      run: dotnet workload install roslyn-sdk
+
     - name: Restore dependencies
       run: dotnet restore
 
