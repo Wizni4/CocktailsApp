@@ -8,9 +8,8 @@
 /*
  * Framework namespaces
  */
-
-
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Application.SeedWork
 {

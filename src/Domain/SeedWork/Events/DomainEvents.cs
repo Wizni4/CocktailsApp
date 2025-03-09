@@ -1,6 +1,7 @@
 ﻿/*
  * Framework namespaces
  */
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain.SeedWork
 {
@@ -41,12 +42,10 @@ namespace Domain.SeedWork
             ArgumentNullException.ThrowIfNull(args);
 
             if (s_serviceProvider != null)
-                using (var scope = s_serviceProvider.CreateScope())
-                {
-                    var eventHandle = scope.ServiceProvider.GetRequiredService<IHandler<T>>();
-
-                    eventHandle.Handle(args);
-                }
+            {
+                var eventHandle = s_serviceProvider.GetRequiredService<IHandler<T>>();
+                eventHandle.Handle(args);
+            }
 
             if (s_actions != null)
                 foreach (var action in s_actions)
