@@ -149,7 +149,7 @@ dotnet_public_api_analyzer.require_api_files = true
 
 # IDE0055: Fix formatting
 # Workaround for https://github.com/dotnet/roslyn/issues/70570
-dotnet_diagnostic.IDE0055.severity = warning
+dotnet_diagnostic.IDE0055.severity = none
 
 # https://github.com/dotnet/roslyn-analyzers/issues/7436 - False positives from valid GetDeclaredSymbol calls
 dotnet_diagnostic.RS1039.severity = none
