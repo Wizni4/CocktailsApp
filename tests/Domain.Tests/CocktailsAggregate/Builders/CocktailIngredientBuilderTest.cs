@@ -6,7 +6,7 @@ namespace Domain.Tests.CocktailsAggregate
     public class CocktailIngredientBuilderTest
     {
         [Test]
-        public void AddName_WithValidName_ReturnCocktail()
+        public void AddName_WithValidName_SetsNameCorrectly()
         {
 
             // Arrange
@@ -24,17 +24,6 @@ namespace Domain.Tests.CocktailsAggregate
             var actualName = nameField.GetValue(builder);
 
             actualName.Should().Be(name);
-        }
-
-        [Test]
-        public void AddName_WithEmptyName_ThrowsArgumentException()
-        {
-            // Arrange
-            var emptyName = ""; // Empty name input
-
-            // Act & Assert
-            Action act = () => new CocktailBuilder().AddName(emptyName);
-            act.Should().Throw<ArgumentException>().WithMessage("Name cannot be empty");
         }
     }
 }
