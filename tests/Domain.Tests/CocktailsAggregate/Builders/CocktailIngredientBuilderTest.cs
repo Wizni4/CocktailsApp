@@ -22,7 +22,7 @@ namespace Domain.Tests.CocktailsAggregate
             // We can use reflection to access private fields for testing.
             var nameField = typeof(CocktailBuilder)
                 .GetField("_name", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var actualName = nameField.GetValue(builder);
+            var actualName = nameField?.GetValue(builder);
 
             actualName.Should().Be(Name);
         }

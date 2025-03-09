@@ -1,9 +1,4 @@
 ﻿/*
- * Domain namespaces
- */
-using Domain.CocktailAggregate;
-using Domain.Shared;
-/*
  * Application namespaces
  */
 using Application.Cocktails;
@@ -12,6 +7,11 @@ using Application.Shared;
  * Framework namespaces
  */
 using AutoMapper;
+/*
+ * Domain namespaces
+ */
+using Domain.CocktailAggregate;
+using Domain.Shared;
 
 namespace Application.Mappers
 {

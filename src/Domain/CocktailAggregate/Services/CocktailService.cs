@@ -1,8 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
 using Domain.IngredientPricingAggregate;
+using Domain.SeedWork;
 
 /*
  * Framework namespaces

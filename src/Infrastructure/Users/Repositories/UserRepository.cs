@@ -1,13 +1,14 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.UserAggregate;
 /*
 * Framework namespaces
 */
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
+
+using Domain.SeedWork;
+using Domain.UserAggregate;
 
 namespace Infrastructure.Users
 {

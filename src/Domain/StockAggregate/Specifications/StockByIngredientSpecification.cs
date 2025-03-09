@@ -1,8 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.Shared;
 using Domain.SeedWork;
+using Domain.Shared;
 /*
  * Application namespaces
  */

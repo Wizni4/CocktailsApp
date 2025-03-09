@@ -1,7 +1,6 @@
-/*
+﻿/*
  * Framework namespaces
  */
-using System;
 using System.Linq.Expressions;
 
 namespace Domain.SeedWork

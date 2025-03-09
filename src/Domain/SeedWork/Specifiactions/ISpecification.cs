@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Framework namespaces
  */
 using System.Linq.Expressions;

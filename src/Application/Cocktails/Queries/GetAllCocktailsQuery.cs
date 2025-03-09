@@ -1,16 +1,18 @@
-﻿/*
- * Domain namespaces
- */
-using Domain.CocktailAggregate;
-
+﻿
 /*
  * Application namespaces
  */
 using Application.SeedWork;
-using Domain.SeedWork;
 /*
  * Framework namespaces
  */
+
+/*
+ * Domain namespaces
+ */
+using Domain.CocktailAggregate;
+using Domain.SeedWork;
+
 
 namespace Application.Cocktails
 {

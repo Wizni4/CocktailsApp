@@ -23,6 +23,8 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
+    - name: Lint
+      run: dotnet tool install dotnet-format && dotnet format --verify-no-changes
     - name: Build
       run: dotnet build --no-restore -p:TreatWarningsAsErrors=true
     - name: Test

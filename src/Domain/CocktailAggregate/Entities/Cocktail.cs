@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Domain namespaces
  */
 using Domain.SeedWork;

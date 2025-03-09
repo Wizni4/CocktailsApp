@@ -1,13 +1,12 @@
 ﻿/*
  * Domain namespaces
  */
-using System.Linq.Expressions;
-
 using Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
+using System.Linq.Expressions;
 
 namespace Domain.CocktailAggregate
 {

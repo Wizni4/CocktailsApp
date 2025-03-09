@@ -1,16 +1,15 @@
 ﻿/*
- * Domain namespaces
- */
-using Domain.SeedWork;
-
-/*
  * Application namespaces
-
  */
+
 /*
  * Framework namespaces
  */
 using AutoMapper;
+/*
+ * Domain namespaces
+ */
+using Domain.SeedWork;
 
 
 namespace Application.Cocktails
