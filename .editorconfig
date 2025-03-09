@@ -17,19 +17,23 @@ charset = utf-8-bom
 # Dotnet code style settings:
 [*.{cs,vb}]
 
+
 # Domain Drive Design custom enforcment
-dotnet_diagnostic.DDD100.severity = warning
-dotnet_diagnostic.DDD200.severity = warning
-dotnet_diagnostic.DDD300.severity = warning
-dotnet_diagnostic.DDD400.severity = warning
-dotnet_diagnostic.DDD500.severity = warning
-dotnet_diagnostic.DDD501.severity = warning
-dotnet_diagnostic.DDD502.severity = warning
-dotnet_diagnostic.DDD600.severity = warning
-dotnet_diagnostic.DDD601.severity = warning
-dotnet_diagnostic.DDD700.severity = warning
-dotnet_diagnostic.DDD800.severity = warning
-dotnet_diagnostic.DDD900.severity = warning
+dotnet_diagnostic.DDD0100.severity = warning
+dotnet_diagnostic.DDD0200.severity = warning
+dotnet_diagnostic.DDD0201.severity = warning
+dotnet_diagnostic.DDD0202.severity = warning
+dotnet_diagnostic.DDD0300.severity = warning
+dotnet_diagnostic.DDD0400.severity = warning
+dotnet_diagnostic.DDD0500.severity = warning
+dotnet_diagnostic.DDD0600.severity = none
+dotnet_diagnostic.DDD0601.severity = warning
+dotnet_diagnostic.DDD0602.severity = warning
+dotnet_diagnostic.DDD0700.severity = warning
+dotnet_diagnostic.DDD0701.severity = warning
+dotnet_diagnostic.DDD0800.severity = warning
+dotnet_diagnostic.DDD0900.severity = warning
+dotnet_diagnostic.DDD1000.severity = warning
 
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = false
