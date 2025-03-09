@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using Domain.CocktailAggregate;
+﻿using Domain.CocktailAggregate;
 
+using FluentAssertions;
 
 namespace Domain.Tests.CocktailsAggregate
 {
