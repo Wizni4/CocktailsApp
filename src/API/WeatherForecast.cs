@@ -1,4 +1,4 @@
-namespace API
+﻿namespace CocktailsApp.API
 {
     public class WeatherForecast
     {

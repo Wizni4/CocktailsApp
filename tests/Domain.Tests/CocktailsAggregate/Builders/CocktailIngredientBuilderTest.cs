@@ -1,8 +1,7 @@
-﻿using Domain.CocktailAggregate;
+﻿using CocktailsApp.Domain.CocktailAggregate;
 
-using FluentAssertions;
 
-namespace Domain.Tests.CocktailsAggregate
+namespace CocktailsApp.Domain.Tests.CocktailsAggregate
 {
     public class CocktailIngredientBuilderTest
     {
@@ -24,7 +23,7 @@ namespace Domain.Tests.CocktailsAggregate
                 .GetField("_name", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var actualName = nameField?.GetValue(builder);
 
-            actualName.Should().Be(name);
+            Assert.That(actualName, Is.EqualTo(name));
         }
     }
 }

@@ -11,7 +11,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Application.SeedWork
+namespace CocktailsApp.Application.SeedWork
 {
     public class HandlerManager(IServiceProvider serviceProvider) : IHandlerManager
     {

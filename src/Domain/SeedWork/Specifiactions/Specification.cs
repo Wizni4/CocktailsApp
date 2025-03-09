@@ -3,7 +3,7 @@
  */
 using System.Linq.Expressions;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Represents a base class for implementing the specification pattern.<br/>

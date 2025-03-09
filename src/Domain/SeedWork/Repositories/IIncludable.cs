@@ -3,7 +3,7 @@
  */
 using System.Linq.Expressions;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Represents the base interface for the inclusion mechanism in queries.

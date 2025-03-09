@@ -1,8 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.Shared;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
 
 
 /*
@@ -10,7 +10,7 @@ using Domain.Shared;
  */
 using System.Linq.Expressions;
 
-namespace Domain.CocktailAggregate
+namespace CocktailsApp.Domain.CocktailAggregate
 {
     public class CocktailByIngredientsSpecification(List<Ingredient> ingredients) : Specification<Cocktail>
     {

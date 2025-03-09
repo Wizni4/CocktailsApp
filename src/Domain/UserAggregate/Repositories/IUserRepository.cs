@@ -1,13 +1,13 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.UserAggregate
+namespace CocktailsApp.Domain.UserAggregate
 {
     public interface IUserRepository : IRepository<User>
     {

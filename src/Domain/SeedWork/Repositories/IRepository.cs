@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Generic repository that describe CRUD methods.

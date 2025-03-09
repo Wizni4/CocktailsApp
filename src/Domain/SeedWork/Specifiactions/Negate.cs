@@ -3,7 +3,7 @@
  */
 using System.Linq.Expressions;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Represents a composite specification that negates the result of another <see cref="Specification{T}"/>.<br/>

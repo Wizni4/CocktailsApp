@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Interface that represents ageneric <see cref="DomainEvent"/> handler.

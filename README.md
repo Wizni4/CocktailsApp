@@ -1,25 +1,31 @@
 ﻿# CocktailsApp
 
-CocktailsApp is a **Cocktails application** built using **Domain-Driven Design (DDD)** principles with a **React** frontend and **ASP.NET Core** backend. It allows users to manage their tasks, track progress, and collaborate effectively.
+CocktailsApp is a **Cocktails application** built using **Domain-Driven Design (DDD)** principles with a **React** frontend and **ASP.NET Core** backend. 
 
-This project is deployed on **AWS** and designed to be easily scalable, with modern web technologies ensuring a fast and responsive user experience.
+This application allows users to create custom cocktails using their available ingredients.
+
+It features stock management and billing to track inventory and expenses efficiently. 
+
+Users are organized into groups, where they can order cocktails available within their group. 
+
+Additionally, users can create their own groups to manage personal cocktails and stock.
 
 ## Features
-- **Create and manage tasks** with different statuses (e.g., "To Do", "In Progress", "Completed").
-- **Assign tasks** to specific users and track progress.
-- **REST API** built using **ASP.NET Core** for task management operations.
-- **Responsive frontend** built using **React**.
-- **Authentication** and **authorization** to restrict access to certain features.
+- **Cocktail Creation** – Create cocktails by combining ingredients available in stocks.
+- **Stock Management** – Track ingredient availability and manage inventory.
+- **Order Cocktails** – Order cocktails within related groups.
+- **Pricing Management** – Monitor cost and manage cocktail pricing.
+- **Join Group** – Connect with others to share and enjoy cocktails within communities.
 
 ---
 
 ## Technologies Used
 
-- **Frontend**: React, TypeScript, Axios (for API calls), CSS (or styled-components)
+- **Frontend**: React, TypeScript, Axios, CSS
 - **Backend**: ASP.NET Core (Web API), Entity Framework Core (for database operations)
-- **Database**: SQL Server (or any RDBMS supported by EF Core)
+- **Database**: PostgresSQL (or any RDBMS supported by EF Core)
 - **Authentication**: JWT (JSON Web Tokens)
-- **Deployment**: AWS (using services like EC2, S3, and RDS)
+- **Deployment**: AWS
 
 ---
 
@@ -28,21 +34,23 @@ This project is deployed on **AWS** and designed to be easily scalable, with mod
 The project is organized using **Domain-Driven Design (DDD)** principles, which separates the solution into different layers for better maintainability and scalability.
 
 ```yaml
-📂 TaskFlow
+📂 CocktailsApp
 │── 📂 src
-│   │── 📂 Domain            # Core business logic (Entities, Value Objects, Interfaces)
-│   │── 📂 Application       # Use cases and DTOs
-│   │── 📂 Infrastructure    # Persistence (EF Core), External services
-│   │── 📂 API               # ASP.NET Core Web API (Controllers, Middleware)
-│── 📂 tests                 # Unit & Integration Tests
-│   │── 📂 Domain.Tests      # Domain layer tests
-│   │── 📂 Application.Tests # Application layer tests
-│   │── 📂 API.Tests         # API layer tests (Integration)
-│── 📂 client                # React Frontend (TypeScript, Vite or CRA)
-│── 📂 deployment            # Deployment configs (AWS Lambda, Docker, Terraform)
-│── 📂 .github               # GitHub Actions (CI/CD)
-│── README.md                # Project documentation
-│── TaskFlow.sln             # .NET Solution file
+│   │── 📂 Domain               # Core business logic (Entities, Value Objects, Interfaces)
+│   │── 📂 Application          # Use cases and DTOs, following CQRS principle
+│   │── 📂 Infrastructure       # Persistence (EF Core), External services
+│   │── 📂 API                  # ASP.NET Core Web API (Controllers, Middleware)
+│── 📂 tests                    # Unit & Integration Tests
+│   │── 📂 Domain.Tests         # Domain layer tests
+│   │── 📂 Application.Tests    # Application layer tests
+│   │── 📂 Infrastructure.Tests # Infrastructure layer tests
+│   │── 📂 API.Tests            # API layer tests (Integration)
+│── 📂 client                   # React Frontend (TypeScript, Vite or CRA)
+│── 📂 .github                  # GitHub Actions (CI/CD)
+│── .editorconfig.txt           # Linting and formating configuration
+│── LICENSE.txt                 # Project license
+│── README.md                   # Project documentation
+│── CocktailsApp.sln            # .NET Solution file
 ```
 
 ---
@@ -58,8 +66,8 @@ The project is organized using **Domain-Driven Design (DDD)** principles, which 
 #### **Steps to run:**
 1. Clone the repository:
 ```bash
-git clone https://github.com/Wizni4/TaskFlow.git
-cd TaskFlow
+git clone https://github.com/Wizni4/CocktailsApp.git
+cd CocktailsApp
 ```
 
 2. Restore dependencies:
@@ -116,33 +124,29 @@ Refer to the [deployment/](./deployment/) folder for Terraform configuration fil
 
 ## API Documentation
 
-The TaskFlow API provides the following endpoints:
+The CocktailsApp API provides the following endpoints:
 
 ### Tasks
-- `GET /api/tasks` – Retrieve a list of tasks.
-- `POST /api/tasks` – Create a new task.
-- `GET /api/tasks/{id}` – Retrieve a single task by ID.
-- `PUT /api/tasks/{id}` – Update a task.
-- `DELETE /api/tasks/{id}` – Delete a task.
+- In Progress
 
 ### Authentication
-- `POST /api/auth/login` – Authenticate a user and obtain a JWT token.
-- `POST /api/auth/register` – Register a new user.
+- In Progress
 
 ---
 
 ## Testing
 The project includes unit and integration tests for each layer of the application.
 
-1. Run Unit Tests (Domain and Application layers):
+1. Run Unit Tests (Domain, Application and Infrastructure layers):
 ```bash
-dotnet test TaskFlow.Domain.Tests
-dotnet test TaskFlow.Application.Tests
+dotnet test CocktailsApp.Domain.Tests
+dotnet test CocktailsApp.Application.Tests
+dotnet test CocktailsApp.Infrastructure.Tests
 ```
 
 2. Run API Integration Tests:
 ```bash
-dotnet test TaskFlow.API.Tests
+dotnet test CocktailsApp.API.Tests
 ```
 
 ---

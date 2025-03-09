@@ -5,18 +5,17 @@
 /*
  * Application namespaces
  */
-using Application.SeedWork;
-using Application.Shared;
-
 /*
  * Framework namespaces
  */
 using AutoMapper;
 
-using Domain.Shared;
+using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.Shared;
+using CocktailsApp.Domain.Shared;
 
 
-namespace Application.Cocktails
+namespace CocktailsApp.Application.Cocktails
 {
     public class CocktailService(IHandlerManager handler, IMapper autoMapper) : ICocktailService
     {

@@ -1,14 +1,14 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.IngredientPricingAggregate;
-using Domain.SeedWork;
+using CocktailsApp.Domain.IngredientPricingAggregate;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.CocktailAggregate
+namespace CocktailsApp.Domain.CocktailAggregate
 {
     public class CocktailService(IUnitOfWork unitOfWork) : Service, ICocktailService
     {

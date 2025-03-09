@@ -1,13 +1,13 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.OrderAggregate
+namespace CocktailsApp.Domain.OrderAggregate
 {
     public class OrderItem : Entity
     {

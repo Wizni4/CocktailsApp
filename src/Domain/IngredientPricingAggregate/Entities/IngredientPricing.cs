@@ -1,14 +1,14 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.Shared;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.IngredientPricingAggregate
+namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
     public class IngredientPricing : Entity, IAggregateRoot
     {
@@ -37,7 +37,7 @@ namespace Domain.IngredientPricingAggregate
 
             var oldPrice = Price;
             Price = newPrice;
-            DomainEvents.Raise(new IngredientPricingUpdated(Ingredient, oldPrice, newPrice));
+            DomainEvents.Raise(new IngredientPricingUpdatedEvent(Ingredient, oldPrice, newPrice));
         }
 
         public void UpdateCost(decimal newCost)
@@ -47,7 +47,7 @@ namespace Domain.IngredientPricingAggregate
 
             var oldCost = Price;
             Cost = newCost;
-            DomainEvents.Raise(new IngredientCostingUpdated(Ingredient, oldCost, newCost));
+            DomainEvents.Raise(new IngredientCostingUpdatedEvent(Ingredient, oldCost, newCost));
         }
     }
 }

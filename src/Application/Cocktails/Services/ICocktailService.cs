@@ -5,13 +5,13 @@
 /*
  * Application namespaces
  */
-using Application.SeedWork;
-using Application.Shared;
+using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.Shared;
 /*
  * Framework namespaces
  */
 
-namespace Application.Cocktails
+namespace CocktailsApp.Application.Cocktails
 {
     public interface ICocktailService : IService<CocktailDTO>
     {

@@ -1,15 +1,15 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.CocktailAggregate;
-using Domain.OrderAggregate;
-using Domain.SeedWork;
+using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.OrderAggregate;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.StockAggregate
+namespace CocktailsApp.Domain.StockAggregate
 {
     public class StockService(IUnitOfWork unitOfWork) : IStockService
     {

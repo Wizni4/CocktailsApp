@@ -3,7 +3,7 @@
  */
 using System.Linq.Expressions;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Represents a composite specification that combines two other specifications using a logical OR.<br/>

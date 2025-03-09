@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// <see langword="abstract"/> class that handle <see cref="DomainEvent"/>

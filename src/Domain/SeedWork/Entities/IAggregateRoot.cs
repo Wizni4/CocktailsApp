@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Marker interface that identifies an entity as an aggregate root in the domain model.

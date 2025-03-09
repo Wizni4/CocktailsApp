@@ -3,7 +3,7 @@
  */
 using System.Linq.Expressions;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Represents a composite specification that combines two other <see cref="Specification{T}"/> using a logical AND.<br/>

@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Defines a builder pattern for constructing an object of type <typeparamref name="T"/>.

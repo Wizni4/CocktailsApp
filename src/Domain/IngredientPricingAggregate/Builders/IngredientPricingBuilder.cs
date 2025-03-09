@@ -1,14 +1,14 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.Shared;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.IngredientPricingAggregate
+namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
     public class IngredientPricingBuilder : IBuilder<IngredientPricing>
     {

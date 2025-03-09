@@ -1,18 +1,19 @@
 ﻿/*
  * Application namespaces
  */
-using Application.SeedWork;
 /*
  * Framework namespaces
  */
 using AutoMapper;
+
+using CocktailsApp.Application.SeedWork;
 /*
  * Domain namespaces
  */
-using Domain.CocktailAggregate;
-using Domain.SeedWork;
+using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.SeedWork;
 
-namespace Application.Cocktails
+namespace CocktailsApp.Application.Cocktails
 {
     public class GetCocktailByIdQueryHandler(IUnitOfWork unitOfWork, IMapper autoMapper) : IQueryHandler<GetCocktailByIdQuery, CocktailDTO>
     {

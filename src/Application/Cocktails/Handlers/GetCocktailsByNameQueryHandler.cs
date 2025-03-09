@@ -9,10 +9,10 @@ using AutoMapper;
 /*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 
-namespace Application.Cocktails
+namespace CocktailsApp.Application.Cocktails
 {
     public class GetCocktailsByNameQueryHandler(IUnitOfWork unitOfWork, IMapper autoMapper) : GetCocktailsQueryHandler<GetCocktailsByNameQuery>(unitOfWork, autoMapper)
     {

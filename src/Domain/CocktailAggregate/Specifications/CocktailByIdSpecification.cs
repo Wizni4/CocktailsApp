@@ -1,13 +1,13 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.CocktailAggregate
+namespace CocktailsApp.Domain.CocktailAggregate
 {
     public class CocktailByIdSpecification(Guid id) : ByIdSpecification<Cocktail>(id)
     {

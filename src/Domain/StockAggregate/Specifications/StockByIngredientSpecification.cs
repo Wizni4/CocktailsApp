@@ -1,8 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.Shared;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
 /*
  * Application namespaces
  */
@@ -12,7 +12,7 @@ using Domain.Shared;
  */
 using System.Linq.Expressions;
 
-namespace Domain.StockAggregate
+namespace CocktailsApp.Domain.StockAggregate
 {
     class StockByIngredientSpecification(Ingredient ingredient) : Specification<Stock>
     {

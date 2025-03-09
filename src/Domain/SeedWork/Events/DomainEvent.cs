@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// <see langword="abstract"/> class that represents a domain event in the system, which is an event that signifies a change in the domain model.<br/>

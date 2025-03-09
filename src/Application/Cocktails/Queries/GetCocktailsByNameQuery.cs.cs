@@ -2,7 +2,7 @@
 /*
  * Application namespaces
  */
-using Application.SeedWork;
+using CocktailsApp.Application.SeedWork;
 /*
  * Framework namespaces
  */
@@ -10,11 +10,11 @@ using Application.SeedWork;
 /*
  * Domain namespaces
  */
-using Domain.CocktailAggregate;
-using Domain.SeedWork;
+using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.SeedWork;
 
 
-namespace Application.Cocktails
+namespace CocktailsApp.Application.Cocktails
 {
     public class GetCocktailsByNameQuery(string cocktailName) : IQuery<Cocktail>
     {

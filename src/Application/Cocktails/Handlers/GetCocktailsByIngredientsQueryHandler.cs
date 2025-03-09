@@ -9,9 +9,9 @@ using AutoMapper;
 /*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
-namespace Application.Cocktails
+namespace CocktailsApp.Application.Cocktails
 {
     public class GetCocktailsByIngredientsQueryHandler(IUnitOfWork unitOfWork, IMapper autoMapper) : GetCocktailsQueryHandler<GetCocktailsByIngredientsQuery>(unitOfWork, autoMapper)
     {

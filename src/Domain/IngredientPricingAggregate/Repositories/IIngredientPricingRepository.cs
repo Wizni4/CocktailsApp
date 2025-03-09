@@ -1,13 +1,13 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.IngredientPricingAggregate
+namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
     public interface IIngredientPricingRepository : IRepository<IngredientPricing>
     {

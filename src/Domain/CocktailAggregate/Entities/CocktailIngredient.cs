@@ -1,31 +1,25 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.Shared;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.CocktailAggregate
+namespace CocktailsApp.Domain.CocktailAggregate
 {
     public class CocktailIngredient : ValueObject
     {
-        public Ingredient Ingredient { get; private set; }
-        public decimal Quantity { get; private set; }
+        public Ingredient Ingredient { get; }
+        public decimal Quantity { get; }
 
         internal CocktailIngredient(Ingredient? ingredient, decimal quantity)
         {
             ArgumentNullException.ThrowIfNull(ingredient);
             Ingredient = ingredient;
             Quantity = quantity;
-        }
-
-        private protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Ingredient;
-            yield return Quantity;
         }
     }
 }

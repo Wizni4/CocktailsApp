@@ -7,10 +7,10 @@
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 
-using Domain.SeedWork;
-using Domain.UserAggregate;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.UserAggregate;
 
-namespace Infrastructure.Users
+namespace CocktailsApp.Infrastructure.Users
 {
     public class UserRepository(string cognitoPoolId, string cognitoClientId) : IUserRepository
     {

@@ -5,13 +5,13 @@
 /*
  * Application namespaces
  */
-using Application.SeedWork;
+using CocktailsApp.Application.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Application.Cocktails
+namespace CocktailsApp.Application.Cocktails
 {
     public class CreateCocktailCommand(string name, List<CocktailIngredientDTO> ingredients) : ICommand
     {

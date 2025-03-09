@@ -1,14 +1,14 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.Shared;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.StockAggregate
+namespace CocktailsApp.Domain.StockAggregate
 {
     public class IngredientOutOfStock : DomainEvent
     {

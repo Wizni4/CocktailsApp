@@ -10,7 +10,7 @@
  */
 
 
-namespace Application.SeedWork
+namespace CocktailsApp.Application.SeedWork
 {
     public interface IHandlerManager
     {

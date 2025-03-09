@@ -1,21 +1,21 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.Shared;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.IngredientPricingAggregate
+namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
-    public class IngredientPricingUpdated : DomainEvent
+    public class IngredientPricingUpdatedEvent : DomainEvent
     {
         public Ingredient Ingredient { get; }
         public decimal OldPrice { get; }
         public decimal NewPrice { get; }
-        internal IngredientPricingUpdated(Ingredient ingredient, decimal oldPrice, decimal newPrice)
+        internal IngredientPricingUpdatedEvent(Ingredient ingredient, decimal oldPrice, decimal newPrice)
         {
             Ingredient = ingredient;
             OldPrice = oldPrice;

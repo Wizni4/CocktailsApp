@@ -1,16 +1,16 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
-using Domain.StockAggregate;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.StockAggregate;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.OrderAggregate
+namespace CocktailsApp.Domain.OrderAggregate
 {
-    public class ProcessedOrderEventHandle(IStockService stockService) : DomainEventHandler<ProcessedOrderEvent>
+    public class ProcessedOrderEventHandler(IStockService stockService) : DomainEventHandler<ProcessedOrderEvent>
     {
         private readonly IStockService _stockService = stockService;
 

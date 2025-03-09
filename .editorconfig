@@ -6,38 +6,30 @@ root = true
 # Don't use tabs for indentation.
 [*]
 indent_style = space
-# (Please don't specify an indent_size here; that has too many unintended consequences.)
+indent_size = 4
 spelling_exclusion_path = SpellingExclusions.dic
 
 # Code files
 [*.{cs,csx,vb,vbx}]
-indent_size = 4
 insert_final_newline = true
 charset = utf-8-bom
 
-# XML project files
-[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
-indent_size = 4
-
-# XML config files
-[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
-indent_size = 2
-
-# JSON files
-[*.json]
-indent_size = 2
-
-# Powershell files
-[*.ps1]
-indent_size = 2
-
-# Shell script files
-[*.sh]
-end_of_line = lf
-indent_size = 2
-
 # Dotnet code style settings:
 [*.{cs,vb}]
+
+# Domain Drive Design custom enforcment
+dotnet_diagnostic.DDD100.severity = warning
+dotnet_diagnostic.DDD200.severity = warning
+dotnet_diagnostic.DDD300.severity = warning
+dotnet_diagnostic.DDD400.severity = warning
+dotnet_diagnostic.DDD500.severity = warning
+dotnet_diagnostic.DDD501.severity = warning
+dotnet_diagnostic.DDD502.severity = warning
+dotnet_diagnostic.DDD600.severity = warning
+dotnet_diagnostic.DDD601.severity = warning
+dotnet_diagnostic.DDD700.severity = warning
+dotnet_diagnostic.DDD800.severity = warning
+dotnet_diagnostic.DDD900.severity = warning
 
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = false
@@ -271,6 +263,8 @@ csharp_preserve_single_line_statements = true
 dotnet_diagnostic.IDE0060.severity = warning
 dotnet_diagnostic.IDE0130.severity = none
 dotnet_diagnostic.IDE0051.severity = warning
+dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.IDE0303.severity = warning
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:silent
 csharp_style_prefer_switch_expression = true:suggestion

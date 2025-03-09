@@ -9,9 +9,9 @@
  * Framework namespaces
  */
 
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
-namespace Application.SeedWork
+namespace CocktailsApp.Application.SeedWork
 {
     public interface IQuery
     {

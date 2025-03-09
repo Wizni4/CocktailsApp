@@ -1,14 +1,14 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 using System.Linq.Expressions;
 
-namespace Domain.CocktailAggregate
+namespace CocktailsApp.Domain.CocktailAggregate
 {
     public class CocktailByNameSpecification(string name) : Specification<Cocktail>
     {

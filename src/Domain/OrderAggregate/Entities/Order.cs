@@ -1,23 +1,27 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.OrderAggregate
+namespace CocktailsApp.Domain.OrderAggregate
 {
     public class Order : Entity, IAggregateRoot
     {
+        public Guid CustomerId { get; }
+        public Guid ClubId { get; }
         private readonly List<OrderItem> _items = [];
         public IReadOnlyCollection<OrderItem> Items { get { return _items.AsReadOnly(); } }
         public DateTime OrderDate { get; }
 
-        internal Order()
+        internal Order(Guid customerId, Guid clubId)
         {
             OrderDate = DateTime.UtcNow;
+            CustomerId = customerId;
+            ClubId = clubId;
         }
 
         public void AddItem(Guid cocktailId, decimal quantity)

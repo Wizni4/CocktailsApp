@@ -1,19 +1,20 @@
 ﻿/*
  * Application namespaces
  */
-using Application.Cocktails;
-using Application.Shared;
 /*
  * Framework namespaces
  */
 using AutoMapper;
+
+using CocktailsApp.Application.Cocktails;
+using CocktailsApp.Application.Shared;
 /*
  * Domain namespaces
  */
-using Domain.CocktailAggregate;
-using Domain.Shared;
+using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.Shared;
 
-namespace Application.Mappers
+namespace CocktailsApp.Application.Mappers
 {
     public class AutoMapperProfile : Profile
     {

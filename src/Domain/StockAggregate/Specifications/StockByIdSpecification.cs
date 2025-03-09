@@ -1,13 +1,13 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.StockAggregate
+namespace CocktailsApp.Domain.StockAggregate
 {
     public class StockByIdSpecification(Guid id) : ByIdSpecification<Stock>(id)
     {

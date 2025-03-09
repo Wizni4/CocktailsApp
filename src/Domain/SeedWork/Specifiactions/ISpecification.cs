@@ -3,7 +3,7 @@
  */
 using System.Linq.Expressions;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Represents a specification pattern that defines a condition or set of conditions that an object of type <typeparamref name="T"/> must satisfy.

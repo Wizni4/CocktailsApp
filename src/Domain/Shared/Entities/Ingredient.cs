@@ -1,25 +1,20 @@
 ﻿/*
  * Domain namespaces
  */
-using Domain.SeedWork;
+using CocktailsApp.Domain.SeedWork;
 
 /*
  * Framework namespaces
  */
 
-namespace Domain.Shared
+namespace CocktailsApp.Domain.Shared
 {
     public class Ingredient : ValueObject
     {
-        public string Name { get; private set; }
+        public string Name { get; }
         internal Ingredient(string name)
         {
             Name = name;
-        }
-
-        private protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Name;
         }
     }
 }

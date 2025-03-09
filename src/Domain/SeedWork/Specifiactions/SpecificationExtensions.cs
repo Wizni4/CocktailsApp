@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// Provides extension methods for the <see cref="ISpecification{T}"/> interface to allow easy composition of specifications using logical operations such as AND, OR, and NOT.

@@ -10,7 +10,7 @@
  * Framework namespaces
  */
 
-namespace Application.Shared
+namespace CocktailsApp.Application.Shared
 {
     public class IngredientDTO
     {

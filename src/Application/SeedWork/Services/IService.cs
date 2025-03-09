@@ -9,7 +9,7 @@
  * Framework namespaces
  */
 
-namespace Application.SeedWork
+namespace CocktailsApp.Application.SeedWork
 {
     public interface IService<TDTO>
     {

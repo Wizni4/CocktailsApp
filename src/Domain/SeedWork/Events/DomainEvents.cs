@@ -3,7 +3,7 @@
  */
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// http://www.udidahan.com/2009/06/14/domain-events-salvation/

@@ -2,7 +2,7 @@
  * Framework namespaces
  */
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// <see langword="abstract"/> class that represent an object without identity, 
@@ -55,8 +55,15 @@ namespace Domain.SeedWork
         /// <remarks>
         /// Should be implemented in <see cref="ValueObject"/> children classes.
         /// </remarks>
-        /// <returns><see cref="IEnumerable{object}"/> containing all the properties values of a <see cref="ValueObject"/> based type.</returns>
-        private protected abstract IEnumerable<object> GetEqualityComponents();
+        /// <returns><see cref="IEnumerable{object?}"/> containing all the properties values of a <see cref="ValueObject"/> based type.</returns>
+        private protected IEnumerable<object?> GetEqualityComponents()
+        {
+            // Get all public properties of the object
+            return this.GetType()
+                .GetProperties()
+                .Where(p => p.CanRead)
+                .Select(p => p.GetValue(this, null));
+        }
 
         /// <summary>
         /// Compares this <see cref="ValueObject"/> to another object to determine if they are equal.

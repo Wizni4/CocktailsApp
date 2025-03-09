@@ -5,10 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	<AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
+	<Analyzer Include="..\Analyzers\bin\Debug\netstandard2.0\Analyzers.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClubAggregate\Builders\" />
+    <Folder Include="ClubAggregate\Repositories\" />
+  </ItemGroup>
 </Project>

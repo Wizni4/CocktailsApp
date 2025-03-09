@@ -3,7 +3,7 @@
  */
 using System.Linq.Expressions;
 
-namespace Domain.SeedWork
+namespace CocktailsApp.Domain.SeedWork
 {
     public abstract class ByIdSpecification<T>(Guid id) : Specification<T> where T : Entity
     {
