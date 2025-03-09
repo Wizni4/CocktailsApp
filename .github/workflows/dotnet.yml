@@ -45,6 +45,17 @@ jobs:
     - name: Generate Coverage Report
       run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
 
+    - name: Check Coverage Threshold
+      run: |
+        coverage=$(grep -Po '(?<=line-rate=")[^"]*' coverage/Cobertura.xml | head -1)
+        threshold=80.0
+        if (( $(echo "$coverage < $threshold" | bc -l) )); then
+          echo "Coverage $coverage% is below the threshold of $threshold%"
+          exit 1
+        else
+          echo "Coverage $coverage% meets the threshold of $threshold%"
+        fi
+
     - name: Upload Coverage Report
       uses: actions/upload-artifact@v4
       with:
