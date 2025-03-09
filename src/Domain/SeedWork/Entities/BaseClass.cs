@@ -1,7 +1,6 @@
-/*
+﻿/*
  * Framework namespaces
  */
-using System;
 
 namespace Domain.SeedWork
 {

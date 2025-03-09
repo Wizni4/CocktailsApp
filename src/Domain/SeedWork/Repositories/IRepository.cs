@@ -27,19 +27,22 @@ namespace Domain.SeedWork
         /// <summary>
         /// Get a domain model, according to a condition.
         /// </summary>
-        /// <param name="predicate">Condition</param>
-        /// <returns>Domain model corresponding to the condition</returns>
+        /// <param name="spec">Condition</param>
+        /// <param name="includes">Properties that should be eagerly loaded</param>
+        /// <returns>Domain model corresponding to the condition, including specified sub-properties</returns>
         Task<T> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
         /// <summary>
         /// Get a list of domain models, according to a condition.
         /// </summary>
-        /// <param name="predicate">Condition</param>
-        /// <returns>List of domain models corresponding to the condition</returns>
+        /// <param name="spec">Condition</param>
+        /// <param name="includes">Properties that should be eagerly loaded</param>
+        /// <returns>List of domain models corresponding to the condition, including specified sub-properties</returns>
         Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
         /// <summary>
         /// Get all the domain models.
         /// </summary>
-        /// <returns>All the domain models</returns>
+        /// <param name="includes">Properties that should be eagerly loaded</param>
+        /// <returns>All the domain models, including specified sub-properties</returns>
         Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null);
         #endregion
 

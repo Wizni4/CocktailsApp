@@ -1,9 +1,6 @@
-/*
+﻿/*
  * Framework namespaces
  */
-using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Domain.SeedWork
 {
@@ -45,7 +42,7 @@ namespace Domain.SeedWork
         /// </remarks>
         /// <param name="left"><see cref="ValueObject"/> to the left of <see langword="operator"/> !=</param>
         /// <param name="right"><see cref="ValueObject"/> to the right of <see langword="operator"/> !=</param>
-        /// <returns><see langword="true"/> if at least one of the <paramref name="left"/> properties <i>or properties values</i>, is different to the <paramref name="right"/> properties <i>or properties values</i>, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if at least one of the <paramref name="left"/> properties <i>or properties values</i> is different to the <paramref name="right"/> properties <i>or properties values</i>, otherwise <see langword="false"/>.</returns>
         public static bool operator !=(ValueObject left, ValueObject right)
         {
             return !(left == right);
@@ -66,11 +63,10 @@ namespace Domain.SeedWork
         /// </summary>
         /// <param name="obj">The object to compare with the current <see cref="ValueObject"/>.</param>
         /// <returns>
-        /// <c>true</c> if the current object and the <paramref name="obj"/> are of the same type and their equality components are the same;
-        /// otherwise, <c>false</c>.
+        /// <see langword="true"/> if the current object and the <paramref name="obj"/> are of the same type and their equality components are the same; otherwise <see langword="false"/>.
         /// </returns>
         /// <remarks>
-        /// This method overrides the default <see cref="Object.Equals"/> method to provide a value-based equality comparison for value objects.
+        /// This method overrides the default <see cref="Equals"/> method to provide a value-based equality comparison for value objects.<br/>
         /// The comparison is based on the equality of the components defined by the <see cref="GetEqualityComponents"/> method.
         /// </remarks>
         public override bool Equals(object? obj)
@@ -88,11 +84,9 @@ namespace Domain.SeedWork
         /// <summary>
         /// Calculates the hash code for this <see cref="ValueObject"/> based on its equality components.
         /// </summary>
-        /// <returns>The calculated hash code.</returns>
+        /// <returns>The computed hash code.</returns>
         /// <remarks>
-        /// This method overrides the default <see cref="Object.GetHashCode"/> method to generate a hash code that is based on the 
-        /// equality components of the value object, ensuring that objects with the same equality components will have the same hash code.
-        /// It uses the XOR (^) operator to combine the hash codes of each equality component.
+        /// This method overrides the default <see cref="GetHashCode"/> method to generate a hash code that is based on the equality components of the value object.
         /// </remarks>
         public override int GetHashCode()
         {

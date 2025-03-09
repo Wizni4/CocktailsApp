@@ -12,9 +12,9 @@ namespace Domain.SeedWork
         [ThreadStatic] //so that each thread has its own callbacks
         private static List<Delegate>? s_actions;
 
-        private static IServiceProviderExtended? s_serviceProvider;
+        private static IServiceProvider? s_serviceProvider;
 
-        public static void Init(IServiceProviderExtended serviceProvider)
+        public static void Init(IServiceProvider serviceProvider)
         {
             s_serviceProvider = serviceProvider;
         }
@@ -43,7 +43,7 @@ namespace Domain.SeedWork
             if (s_serviceProvider != null)
                 using (var scope = s_serviceProvider.CreateScope())
                 {
-                    var eventHandle = scope.ServiceProvider.GetRequiredService<IHandles<T>>();
+                    var eventHandle = scope.ServiceProvider.GetRequiredService<IHandler<T>>();
 
                     eventHandle.Handle(args);
                 }

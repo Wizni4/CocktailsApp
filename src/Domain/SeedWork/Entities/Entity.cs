@@ -1,8 +1,6 @@
-/*
+﻿/*
  * Framework namespaces
  */
-using System;
-using System.Collections.Generic;
 
 namespace Domain.SeedWork
 {
@@ -22,7 +20,7 @@ namespace Domain.SeedWork
         public virtual Guid Id { get; }
 
         /// <summary>
-        /// <see cref="Entity"/> constructor that initialised the <see cref="Id"/> as a <see cref="Guid.NewGuid"/>.
+        /// Constructor to create a new instance of <see cref="Entity"/>.
         /// </summary>
         private protected Entity()
         {

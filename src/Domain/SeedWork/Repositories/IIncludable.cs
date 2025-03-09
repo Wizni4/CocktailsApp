@@ -13,9 +13,9 @@ namespace Domain.SeedWork
     }
     /// <summary>
     /// Interface that allows for including related entities in a query for an entity of type <typeparamref name="TEntity"/>.<br/>
-    /// This is used to specify navigation properties that should be eagerly loaded during a query.
+    /// This is used to specify properties that should be eagerly loaded during a query.
     /// </summary>
-    /// <typeparam name="TEntity">The entity type for which related entities are to be included.</typeparam>
+    /// <typeparam name="TEntity">The entity type for which related properties have to be included.</typeparam>
     public interface IIncludable<TEntity> : IIncludable
     {
         /// <summary>
@@ -46,8 +46,8 @@ namespace Domain.SeedWork
     }
 
     /// <summary>
-    /// Interface that allows for including related properties (with multiple levels of depth) in a query for an entity of type <typeparamref name="TEntity"/>
-    /// with a related property of type <typeparamref name="TProperty"/>. It supports including additional levels of related entities.
+    /// Interface that allows for including multiple levels of depth in a query for an entity of type <typeparamref name="TEntity"/>.<br/>
+    /// Allows to include additional levels of related <typeparamref name="TEntity"/>.<br/>
     /// </summary>
     /// <typeparam name="TEntity">The entity type for which related properties are to be included.</typeparam>
     /// <typeparam name="TProperty">The type of the related property that is included.</typeparam>
