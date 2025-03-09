@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Force Windows-style line endings (CRLF)
+      run: |
+        git config --global core.autocrlf true
+        git config --global core.eol crlf
     - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
