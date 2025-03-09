@@ -47,7 +47,7 @@ jobs:
 
     - name: Check Coverage Threshold
       run: |
-        coverage=$(grep -Po '(?<=line-rate=")[^"]*' coverage/Cobertura.xml | head -1)
+        coverage=$(grep -Po '(?<=line-rate=")[^"]*' **/coverage/Cobertura.xml | head -1)
         threshold=80.0
         if (( $(echo "$coverage < $threshold" | bc -l) )); then
           echo "Coverage $coverage% is below the threshold of $threshold%"
