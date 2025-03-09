@@ -24,7 +24,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Lint
-      run: dotnet tool install dotnet-format && dotnet format --verify-no-changes
+      run: dotnet tool install -g dotnet-format && dotnet format --verify-no-changes
     - name: Build
       run: dotnet build --no-restore -p:TreatWarningsAsErrors=true
     - name: Test
