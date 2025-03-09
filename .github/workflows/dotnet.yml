@@ -25,10 +25,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x' # Ensure this matches the version used to build your analyzer
-
-    - name: Install .NET Compiler Platform SDK
-      run: dotnet workload install roslyn-sdk
+        dotnet-version: '8.0.x'
 
     - name: Restore dependencies
       run: dotnet restore
