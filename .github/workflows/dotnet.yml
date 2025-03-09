@@ -28,8 +28,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Lint
-      run: dotnet tool install -g dotnet-format && dotnet format --verify-no-changes --severity warn
+      run: dotnet tool install -g dotnet-format && dotnet format style --verify-no-changes -v diag
     - name: Build
-      run: dotnet build --no-restore -p:TreatWarningsAsErrors=true
+      run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true
     - name: Test
       run: dotnet test --no-build --verbosity normal
