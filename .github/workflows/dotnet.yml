@@ -30,12 +30,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: List SDK
-      run: dotnet --list-sdks
-
-    - name: List dotnet versions
-      run: dotnet --version
-
     - name: Lint
       run: dotnet tool install -g dotnet-format && dotnet format style --verify-no-changes --verbosity diagnostic
 

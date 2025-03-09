@@ -20,7 +20,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             UserId = userId;
         }
 
-        internal void AddPermission(ClubAction action)
+        public void AddPermission(ClubAction action)
         {
             // Ensure the member doesn't already have this permission.
             if (_permissions.Any(p => p.Action == action))
