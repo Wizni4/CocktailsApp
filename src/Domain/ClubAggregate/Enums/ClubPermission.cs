@@ -8,7 +8,7 @@
 
 namespace CocktailsApp.Domain.ClubAggregate
 {
-    public enum ClubAction
+    public enum ClubPermission
     {
         AddCocktail,
         AddMember,
@@ -16,10 +16,16 @@ namespace CocktailsApp.Domain.ClubAggregate
         AddRolePermission,
         AddRoleToMember,
         CreateRole,
+        DeleteRole,
         ChangeAddress,
         ChangeDescription,
         ChangeName,
+        ChangeRoleName,
+        ChangeVisibility,
         RemoveCocktail,
         RemoveMember,
+        RemovePermissionToMember,
+        RemoveRolePermission,
+        RemoveRoleToMember,
     }
 }

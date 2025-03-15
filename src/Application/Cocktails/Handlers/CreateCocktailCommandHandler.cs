@@ -23,7 +23,7 @@ namespace CocktailsApp.Application.Cocktails
         {
             var ingredients = command.Ingredients.Select(ingredient => _autoMapper.Map<CocktailIngredient>(ingredient)).ToList();
             var cocktail = new CocktailBuilder()
-                .AddName(command.Name)
+                .WithName(command.Name)
                 .AddIngredients(ingredients)
                 .Build();
             _unitOfWork.Set<Cocktail>().Create(cocktail);

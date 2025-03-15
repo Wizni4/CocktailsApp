@@ -20,10 +20,17 @@ namespace CocktailsApp.Domain.SeedWork
         public virtual Guid Id { get; }
 
         /// <summary>
+        /// <see cref="Entity"/> date of creation.
+        /// </summary>
+        public virtual DateTime CreationDate { get; }
+
+        /// <summary>
         /// Constructor to create a new instance of <see cref="Entity"/>.
         /// </summary>
         private protected Entity()
         {
+            CreationDate = DateTime.UtcNow;
         }
+
     }
 }

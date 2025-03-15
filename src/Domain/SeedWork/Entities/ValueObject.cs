@@ -1,6 +1,8 @@
 ﻿/*
  * Framework namespaces
  */
+using System.Runtime.CompilerServices;
+
 
 namespace CocktailsApp.Domain.SeedWork
 {

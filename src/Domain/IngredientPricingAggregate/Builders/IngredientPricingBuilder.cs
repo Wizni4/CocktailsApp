@@ -16,19 +16,19 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
         private Ingredient? _ingredient;
         private decimal _price;
 
-        public IngredientPricingBuilder AddIngredient(Ingredient ingredient)
+        public IngredientPricingBuilder WithIngredient(Ingredient ingredient)
         {
             _ingredient = ingredient;
             return this;
         }
 
-        public IngredientPricingBuilder AddCost(decimal cost)
+        public IngredientPricingBuilder WithCost(decimal cost)
         {
             _cost = cost;
             return this;
         }
 
-        public IngredientPricingBuilder AddPrice(decimal price)
+        public IngredientPricingBuilder WithPrice(decimal price)
         {
             _price = price;
             return this;

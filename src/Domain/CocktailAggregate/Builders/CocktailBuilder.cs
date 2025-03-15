@@ -15,7 +15,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
         private readonly List<CocktailIngredient> _ingredients = [];
         private string _name = "";
 
-        public CocktailBuilder AddName(string name)
+        public CocktailBuilder WithName(string name)
         {
             this._name = name;
             return this;
@@ -34,8 +34,8 @@ namespace CocktailsApp.Domain.CocktailAggregate
                 throw new ArgumentException("Ingredient already exists in the cocktail.", nameof(ingredient));
 
             var cocktailIngredient = new CocktailIngredientBuilder()
-                .AddIngredient(ingredient)
-                .AddQuantity(quantity)
+                .WithIngredient(ingredient)
+                .WithQuantity(quantity)
                 .Build();
 
             _ingredients.Add(cocktailIngredient);

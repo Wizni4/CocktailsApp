@@ -7,13 +7,8 @@ namespace CocktailsApp.Domain.SeedWork
     /// <summary>
     /// <see langword="abstract"/> class that represents a domain event in the system, which is an event that signifies a change in the domain model.<br/>
     /// </summary>
-    public abstract class DomainEvent
+    public abstract class DomainEvent : BaseClass
     {
-        /// <summary>
-        /// Gets the type of the <see cref="DomainEvent"/>
-        /// </summary>
-        public virtual string Type { get { return this.GetType().Name; } }
-
         /// <summary>
         /// Gets the <see cref="DateTime"/> of when the event was created.
         /// </summary>
@@ -55,7 +50,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// <exception cref="ArgumentException">Thrown if the property already exists in the <see cref="Args"/> collection.</exception>
         public DomainEvent Add(string propertyName, object? propertyValue)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(propertyName);
+            ArgumentException.ThrowIfNullOrEmpty(propertyName);
             ArgumentNullException.ThrowIfNull(propertyValue);
 
             if (Args.ContainsKey(propertyName))

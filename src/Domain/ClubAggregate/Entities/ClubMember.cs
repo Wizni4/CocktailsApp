@@ -10,31 +10,28 @@ namespace CocktailsApp.Domain.ClubAggregate
 {
     public class ClubMember : Entity
     {
-        private readonly List<Permission> _permissions = [];
-        public IReadOnlyCollection<Permission> Permissions { get { return _permissions.AsReadOnly(); } }
+        private readonly List<ClubPermission> _permissions = [];
+        public IReadOnlyCollection<ClubPermission> Permissions { get { return _permissions.AsReadOnly(); } }
         private readonly List<ClubRole> _roles = [];
         public IReadOnlyCollection<ClubRole> Roles { get { return _roles.AsReadOnly(); } }
         public Guid UserId { get; }
         internal ClubMember(Guid userId)
         {
+            if (userId == Guid.Empty)
+                throw new ArgumentNullException(nameof(userId), "UserId cannot be null.");
+
             UserId = userId;
         }
 
-        internal void AddPermission(ClubAction action)
+        internal void AddPermission(ClubPermission permission)
         {
             // Ensure the member doesn't already have this permission.
-            if (_permissions.Any(p => p.Action == action))
-                throw new ArgumentException("This member already have specified permission", nameof(action));
+            if (_permissions.Any(p => p == permission))
+                throw new ArgumentException("This member already have specified permission", nameof(permission));
 
             // Give the permission to the member.
             // FYI: As Permission is a ValueObject, instanciating a new Permission will not create new entry in the database.
-            _permissions.Add(new Permission(action));
-        }
-
-        internal void AddPermissions(IEnumerable<ClubAction> actions)
-        {
-            foreach (var action in actions)
-                AddPermission(action);
+            _permissions.Add(permission);
         }
 
         internal void AddRole(ClubRole role)
@@ -47,23 +44,9 @@ namespace CocktailsApp.Domain.ClubAggregate
             _roles.Add(role);
         }
 
-        internal void AddRoles(IEnumerable<ClubRole> roles)
+        internal void RemovePermission(ClubPermission permission)
         {
-            foreach (var role in roles)
-                AddRole(role);
-        }
-
-        internal void RemovePermission(ClubAction action)
-        {
-            // Throw an error if the role doesn't have the permission.
-            var permission = _permissions.FirstOrDefault(p => p.Action == action) ?? throw new ArgumentException("This member doesn't have the specifiec permission", nameof(action));
             _permissions.Remove(permission);
-        }
-
-        internal void RemovePermissions(IEnumerable<ClubAction> actions)
-        {
-            foreach (var action in actions)
-                RemovePermission(action);
         }
 
         internal void RemoveRole(Guid roleId)
@@ -74,15 +57,9 @@ namespace CocktailsApp.Domain.ClubAggregate
             _roles.Remove(role);
         }
 
-        internal void RemoveRoles(IEnumerable<Guid> roleIds)
+        internal bool HasPermission(ClubPermission permission)
         {
-            foreach (var roleId in roleIds)
-                RemoveRole(roleId);
-        }
-
-        internal bool HasPermission(ClubAction action)
-        {
-            return Permissions.Any(p => p.Action == action);
+            return Permissions.Any(p => p == permission);
         }
     }
 }

@@ -15,13 +15,13 @@ namespace CocktailsApp.Domain.CocktailAggregate
         private Ingredient? _ingredient;
         private decimal _quantity = 0;
 
-        public CocktailIngredientBuilder AddIngredient(Ingredient ingredient)
+        public CocktailIngredientBuilder WithIngredient(Ingredient ingredient)
         {
             _ingredient = ingredient;
             return this;
         }
 
-        public CocktailIngredientBuilder AddQuantity(decimal quantity)
+        public CocktailIngredientBuilder WithQuantity(decimal quantity)
         {
             _quantity = quantity;
             return this;

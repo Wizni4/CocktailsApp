@@ -17,9 +17,4 @@
     <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
 	<Analyzer Include="..\Analyzers\bin\Debug\netstandard2.0\Analyzers.dll" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClubAggregate\Builders\" />
-    <Folder Include="ClubAggregate\Repositories\" />
-  </ItemGroup>
 </Project>

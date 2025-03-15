@@ -15,6 +15,6 @@ namespace CocktailsApp.Domain.SeedWork
         /// <remarks>
         /// Property is not persisted.
         /// </remarks>
-        private protected string Type { get { return this.GetType().Name; } }
+        private protected string Type { get { return GetType().Name; } }
     }
 }
