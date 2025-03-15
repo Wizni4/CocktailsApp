@@ -371,6 +371,6 @@ dotnet_diagnostic.RS0061.severity = error
 
 
 # Configuration for the Tests
-[**/tests/**]
+[tests/**]
 dotnet_diagnostic.CS8600.severity = none
 dotnet_diagnostic.CS8625.severity = none
