@@ -15,6 +15,7 @@ permissions:
   pages: write
   id-token: write
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
