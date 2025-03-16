@@ -40,7 +40,6 @@ jobs:
           path: ./lint-report.json
 
   build:
-    needs: lint
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +58,6 @@ jobs:
         run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true
 
   tests:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -89,7 +87,6 @@ jobs:
           path: coverage
 
   documentation:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
