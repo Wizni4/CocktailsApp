@@ -659,7 +659,14 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var role = club.Roles.First(r => r.Name == roleName);
 
             // Act
-            club.AddRoleToMember(member.Id, )
+            club.AddRoleToMember(member.Id, role.Id, _ownerUserId);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(member.Roles, Has.Count.EqualTo(1));
+                Assert.That(member.Roles.Any(r => r.Name == roleName), Is.True);
+            });
         }
 
         #endregion
