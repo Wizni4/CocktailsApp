@@ -65,7 +65,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // Verify that the specified user is not already ine the club. If yes throw an argument exception.
             if (_members.Any(m => m.UserId == memberId))
-                throw new ArgumentException("The specified member is already in the club.", nameof(memberId));
+                throw new ArgumentException("This member is already in the club.", nameof(memberId));
 
             // Create and add a new member to the club.
             _members.Add(new ClubMember(memberId));

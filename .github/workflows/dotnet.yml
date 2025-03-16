@@ -50,3 +50,17 @@ jobs:
       with:
         name: coverage-report
         path: coverage
+
+    - name: Generate Documentation
+      run: |
+          dotnet tool update -g docfx
+          docfx ./src/docfx.json
+
+    - name: Upload Documentation
+      uses: actions/upload-pages-artifact@v4
+      with:
+        path: ./docs/_site
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
