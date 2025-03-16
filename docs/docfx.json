@@ -2,27 +2,39 @@
   "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
   "metadata": [
     {
-      "src": [
-        {
-          "src": "../src",
-          "files": [
-            "**/*.csproj"
-          ]
-        }
-      ],
-      "dest": "api"
+        "src": [
+            {
+                "src": "../src",
+                "files": [
+                    "**/*.csproj"
+                ]
+            }
+        ],
+        "dest": "api",
+        "namespaceLayout": "nested",
+        "memberLayout": "separatePages"
     }
   ],
   "build": {
     "content": [
-      {
-        "files": [
-          "**/*.{md,yml}"
-        ],
-        "exclude": [
-          "_site/**"
-        ]
-      }
+        {
+            "files": "**/README.md",
+            "src": "..",
+            "dest": "introduction"
+        },
+        {
+            "files": "**/LICENSE.md",
+            "src": "..",
+            "dest": "license"
+        },
+        {
+            "files": [
+                "**/*.{md,yml}"
+            ],
+            "exclude": [
+                "_site/**"
+            ]
+        }
     ],
     "resource": [
       {

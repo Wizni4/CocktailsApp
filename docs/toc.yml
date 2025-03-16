@@ -1,6 +1,6 @@
 - name: Introduction
-  href: introduction.md
-- name: Getting Started
-  href: getting-started.md
+  href: ../README.md
 - name: Documentation
   href: api/
+- name: License
+  href: ../LICENSE.md
