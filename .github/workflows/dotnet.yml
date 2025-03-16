@@ -51,7 +51,7 @@ jobs:
       run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
 
     - name: Upload Coverage Report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-pages-artifact@v3
       with:
         name: coverage-report
         path: coverage
@@ -64,6 +64,7 @@ jobs:
     - name: Upload Documentation
       uses: actions/upload-pages-artifact@v3
       with:
+        name: code-documentation
         path: docs/_site
 
     - name: Deploy to GitHub Pages

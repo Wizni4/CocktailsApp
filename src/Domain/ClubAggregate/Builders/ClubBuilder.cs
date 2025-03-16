@@ -80,6 +80,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Constructs and returns a new instance of the <see cref="Club"/>
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Required properties:
         /// <list type="bullet">
         /// <item>Address</item>
@@ -87,15 +88,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <item>Name</item>
         /// <item>Owner</item>
         /// </list>
+        /// </para>
+        /// <para>
+        /// Optional properties:
+        /// <list type="bullet">
+        /// <item>
+        /// Visibility - Default: <see cref="ClubVisibility.Private"/>
+        /// </item>
+        /// </list>
+        /// </para>
         /// </remarks>
         /// <returns>
         /// A new instance of <see cref="Club"/> with specified properties:
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when any of the provided arguments are invalid (<see langword="null"/> or <see langword="empty"/>.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when the builder is in an invalid state, such as missing required properties.
+        /// Thrown when any of the provided arguments are invalid (<see langword="null"/> or <see langword="empty"/>).
         /// </exception>
         public Club Build()
         {
