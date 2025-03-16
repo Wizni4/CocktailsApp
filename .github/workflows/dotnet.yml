@@ -41,12 +41,21 @@ jobs:
           dotnet tool install -g docfx
 
   lint:
-    needs: setup
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup dependencies
+        run: |
+            dotnet restore
+            dotnet tool install -g dotnet-format
 
       - name: Lint
         run: dotnet format style --verify-no-changes --verbosity diagnostic --report './lint-report.json'
@@ -58,21 +67,40 @@ jobs:
           path: ./lint-report.json
 
   build:
-    needs: setup
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup dependencies
+        run: dotnet restore
+
       - name: Build
         run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true
 
   tests:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup dependencies
+        run: |
+          dotnet restore
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+
       - name: Test with Coverage
         run: dotnet test --collect:"XPlat Code Coverage"
 
@@ -86,18 +114,30 @@ jobs:
           path: coverage
 
   documentation:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - name: Generate Documentation
-      run: docfx docs/docfx.json
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Upload Documentation
-      uses: actions/upload-pages-artifact@v3
-      with:
-        name: documentation
-        path: docs/_site
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup dependencies
+        run: |
+          dotnet restore
+          dotnet tool install -g docfx
+
+      - name: Generate Documentation
+        run: docfx docs/docfx.json
+
+      - name: Upload Documentation
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: documentation
+          path: docs/_site
 
   deploy:
     needs: [tests, documentation]
