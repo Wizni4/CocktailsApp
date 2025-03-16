@@ -54,7 +54,7 @@ jobs:
     - name: Generate Documentation
       run: |
           dotnet tool update -g docfx
-          docfx src/docs/docfx.json
+          docfx docs/docfx.json
 
     - name: Upload Documentation
       uses: actions/upload-pages-artifact@v3
