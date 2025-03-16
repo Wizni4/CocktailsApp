@@ -10,6 +10,10 @@ on:
   pull_request:
     branches: [ "dev" ]
 
+permissions:
+  contents: read
+  pages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
