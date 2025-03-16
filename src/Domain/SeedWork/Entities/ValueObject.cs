@@ -15,7 +15,7 @@ namespace CocktailsApp.Domain.SeedWork
     /// <see langword="operator"/> == and <see langword="operator"/> != are overrided to compare fields values instead of reference.<br/>
     /// Comparison is done using <see langword="abstract"/> method <see cref="GetEqualityComponents"/>, that should be implemented in <see cref="ValueObject"/> children classes.
     /// </remarks>
-    public abstract class ValueObject : BaseClass
+    public abstract class ValueObject
     {
         /// <summary>
         /// Determines whether two specified <see cref="ValueObject"/> are equals.

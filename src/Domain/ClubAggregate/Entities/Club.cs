@@ -52,7 +52,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // To avoid duplicates, make sure the cocktail is not already in the club
             if (_cocktails.Any(cc => cc.CocktailId == cocktailId))
-                throw new ArgumentException("This role name already exists", nameof(cocktailId));
+                throw new ArgumentException("This cocktail is already in the club.", nameof(cocktailId));
 
             _cocktails.Add(new ClubCocktail(cocktailId));
         }

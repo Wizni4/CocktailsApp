@@ -12,25 +12,25 @@ namespace CocktailsApp.Domain.SeedWork
     /// <remarks>
     /// <see cref="Id"/> can be <see langword="override"/>.
     /// </remarks>
-    public abstract class Entity : BaseClass
+    public abstract class Entity
     {
         /// <summary>
         /// Unmutable <see cref="Entity"/> identity.
         /// </summary>
-        public virtual Guid Id { get; }
+        public Guid Id { get; }
 
         /// <summary>
         /// <see cref="Entity"/> date of creation.
         /// </summary>
-        public virtual DateTime CreationDate { get; }
+        public DateTime CreationDate { get; }
 
         /// <summary>
         /// Constructor to create a new instance of <see cref="Entity"/>.
         /// </summary>
         private protected Entity()
         {
+            Id = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
         }
-
     }
 }

@@ -42,7 +42,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             return this;
         }
 
-        public ClubBuilder WithVisibilityr(ClubVisibility visibility)
+        public ClubBuilder WithVisibility(ClubVisibility visibility)
         {
             _visibility = visibility;
             return this;

@@ -2,14 +2,7 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
 using CocktailsApp.Domain.Shared;
-
-using Moq;
-
-using Newtonsoft.Json.Linq;
-
-using System.Reflection.Metadata;
 
 /*
  * Framework namespaces
@@ -34,15 +27,21 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 .WithDescription(_description)
                 .WithName(_name)
                 .WithOwner(_ownerId)
+                .WithVisibility(ClubVisibility.Public)
                 .Build();
 
             Assert.Multiple(() =>
             {
-                // Assert
+                Assert.That(club.Id, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(club.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
+                Assert.That(club.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
                 Assert.That(club.Address, Is.EqualTo(_address));
                 Assert.That(club.Description, Is.EqualTo(_description));
                 Assert.That(club.Name, Is.EqualTo(_name));
                 Assert.That(club.Owner.UserId, Is.EqualTo(_ownerId));
+                Assert.That(club.Members, Has.Count.EqualTo(1));
+                Assert.That(club.Members.Any(m => m.UserId == _ownerId), Is.True);
+                Assert.That(club.Visibility, Is.EqualTo(ClubVisibility.Public));
             });
         }
 
@@ -101,6 +100,30 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                     .Build());
 
             Assert.That(exception.Message, Does.Contain("UserId cannot be null. (Parameter 'userId')"));
+        }
+
+        [Test]
+        public void Build_WithoutVisibility_ReturnsPrivateClub()
+        {
+            // Act
+            var club = new ClubBuilder()
+                .WithAddress(_address)
+                .WithDescription(_description)
+                .WithName(_name)
+                .WithOwner(_ownerId)
+                .Build();
+
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(club.Address, Is.EqualTo(_address));
+                Assert.That(club.Description, Is.EqualTo(_description));
+                Assert.That(club.Name, Is.EqualTo(_name));
+                Assert.That(club.Owner.UserId, Is.EqualTo(_ownerId));
+                Assert.That(club.Members, Has.Count.EqualTo(1));
+                Assert.That(club.Members.Any(m => m.UserId == _ownerId), Is.True);
+                Assert.That(club.Visibility, Is.EqualTo(ClubVisibility.Private));
+            });
         }
     }
 }
