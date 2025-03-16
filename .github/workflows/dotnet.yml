@@ -16,57 +16,104 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Force Windows-style line endings (CRLF)
-      run: |
-        git config --global core.autocrlf true
-        git config --global core.eol crlf
+      - name: Force Windows-style line endings (CRLF)
+        run: |
+          git config --global core.autocrlf true
+          git config --global core.eol crlf
 
-    - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Setup dependencies
+        run: |
+          dotnet restore
+          dotnet tool install -g dotnet-format
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          dotnet tool install -g docfx
 
-    - name: Lint
-      run: dotnet tool install -g dotnet-format && dotnet format style --verify-no-changes --verbosity diagnostic
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
 
-    - name: Build
-      run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Test with Coverage
-      run: dotnet test --collect:"XPlat Code Coverage"
+      - name: Lint
+        run: dotnet format style --verify-no-changes --verbosity diagnostic --report './lint-report.json'
 
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      - name: Upload Lint Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: ./lint-report.json
 
-    - name: Generate Coverage Report
-      run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
 
-    - name: Upload Coverage Report
-      uses: actions/upload-pages-artifact@v3
-      with:
-        name: coverage-report
-        path: coverage
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Build
+        run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true
+
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test with Coverage
+        run: dotnet test --collect:"XPlat Code Coverage"
+
+      - name: Generate Coverage Report
+        run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
+
+      - name: Upload Coverage Report
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage
+
+  documentation:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Generate Documentation
-      run: |
-          dotnet tool update -g docfx
-          docfx docs/docfx.json
+      run: docfx docs/docfx.json
 
     - name: Upload Documentation
       uses: actions/upload-pages-artifact@v3
       with:
-        name: code-documentation
+        name: documentation
         path: docs/_site
 
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+  deploy:
+    needs: [tests, documentation]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy coverage to GitHub Pages
+        id: deploy-coverage
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: coverage
+          target_branch: ${{ github.ref == 'refs/heads/main' && 'gh-pages-prod' || 'gh-pages-dev' }}
+
+      - name: Deploy documentation to GitHub Pages
+        id: deploy-documentation
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: documentation
+          target_branch: ${{ github.ref == 'refs/heads/main' && 'gh-pages-prod' || 'gh-pages-dev' }}
