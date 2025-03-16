@@ -82,6 +82,12 @@ jobs:
       - name: Generate Coverage Report
         run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
 
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
   documentation:
     needs: build
     runs-on: ubuntu-latest
@@ -103,6 +109,12 @@ jobs:
       - name: Generate Documentation
         run: docfx docs/docfx.json
 
+      - name: Upload Documentation Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: docs/_site
+
   deploy:
     needs: [tests, documentation]
     runs-on: ubuntu-latest
@@ -112,11 +124,17 @@ jobs:
       id-token: write
 
     steps:
-      - name: Copy DocFX site to deployment directory
-        run: cp -r docs/_site/* deployment/
+      - name: Download Documentation
+        uses: actions/download-artifact@v4
+        with:
+          name: documentation
+          path: deployment
 
-      - name: Copy Coverage report to deployment directory
-        run: cp -r coverage deployment/coverage
+      - name: Download Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: deployment/coverage      
 
       - name: Upload Documentation & Coverage
         uses: actions/upload-pages-artifact@v3
