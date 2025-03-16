@@ -640,5 +640,28 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         #endregion
+
+        #region AddRoleToMember
+
+        [Test]
+        public void AddRoleToMember_Owner_RoleAdded()
+        {
+            // Arrange
+            var club = ReturnClub();
+
+            // Create & add member
+            club.AddMember(_memberUserId, _ownerUserId);
+            var member = club.Members.First(m => m.UserId == _memberUserId);
+
+            // Create role
+            var roleName = "Test role";
+            club.CreateRole(roleName, _ownerUserId);
+            var role = club.Roles.First(r => r.Name == roleName);
+
+            // Act
+            club.AddRoleToMember(member.Id, )
+        }
+
+        #endregion
     }
 }

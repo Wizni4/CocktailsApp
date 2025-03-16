@@ -255,7 +255,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.AddPermissionToMember"/> permission can perform this action.
         /// </remarks>
-        /// <param name="memberId">The <see cref="ClubMember.UserId"/> of the member.</param>
+        /// <param name="memberId">The <see cref="Entity.Id"/> of the member.</param>
         /// <param name="permission">The <see cref="ClubPermission"/> to add to the member.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
@@ -284,7 +284,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.AddRolePermission"/> permission can perform this action.
         /// </remarks>
-        /// <param name="roleId">The <see cref="ClubRole.Id"/> of the role.</param>
+        /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
         /// <param name="permission">The <see cref="ClubPermission"/> to add to the role.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
@@ -312,8 +312,8 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.AddRoleToMember"/> permission can perform this action.
         /// </remarks>
-        /// <param name="memberId">The <see cref="ClubMember.UserId"/> of the member.</param>
-        /// <param name="roleId">The <see cref="ClubRole.Id"/> to add to the member.</param>
+        /// <param name="memberId">The <see cref="Entity.Id"/> of the member.</param>
+        /// <param name="roleId">The <see cref="Entity.Id"/> to add to the member.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
         /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
@@ -383,7 +383,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// The <see cref="ClubRole"/> is also removed from all <see cref="ClubMember"/> instances within the <see cref="Club"/>.
         /// </para>
         /// </remarks>
-        /// <param name="roleId">The <see cref="ClubRole.Id"/> of the role.</param>
+        /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
         /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
@@ -415,7 +415,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.RemoveCocktail"/> permission can perform this action.
         /// </remarks>
-        /// <param name="cocktailId">The <see cref="ClubCocktail.Id"/> of the cocktail to remove.</param>
+        /// <param name="cocktailId">The <see cref="Entity.Id"/> of the cocktail to remove.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
         /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
@@ -440,7 +440,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.RemoveMember"/> permission can perform this action.
         /// </remarks>
-        /// <param name="memberId">The <see cref="ClubMember.Id"/> of the member to remove.</param>
+        /// <param name="memberId">The <see cref="Entity.Id"/> of the member to remove.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
         /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
@@ -465,7 +465,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.RemovePermissionToMember"/> permission can perform this action.
         /// </remarks>
-        /// <param name="memberId">The <see cref="ClubMember.Id"/> of the member.</param>
+        /// <param name="memberId">The <see cref="Entity.Id"/> of the member.</param>
         /// <param name="permision">The <see cref="ClubPermission"/> to remove.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
@@ -493,7 +493,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.RemoveRolePermission"/> permission can perform this action.
         /// </remarks>
-        /// <param name="roleId">The <see cref="ClubRole.Id"/> of the role.</param>
+        /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
         /// <param name="permision">The <see cref="ClubPermission"/> to remove.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
@@ -519,8 +519,8 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.RemoveRoleToMember"/> permission can perform this action.
         /// </remarks>
-        /// <param name="memberId">The <see cref="ClubMember"/> of the member.</param>
-        /// <param name="roleId">The <see cref="ClubRole.Id"/> of the role.</param>
+        /// <param name="memberId">The <see cref="Entity.Id"/> of the member.</param>
+        /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
         /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
@@ -589,7 +589,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         }
 
         /// <summary>
-        /// Updates the <see cref="Name"> of the <see cref="Club"/>.
+        /// Updates the <see cref="Name"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.ChangeName"/> permission can perform this action.
@@ -617,7 +617,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only the <paramref name="userId"/> who is the <see cref="Owner"/> of the <see cref="Club"/> can perform this action.
         /// </remarks>
-        /// <param name="newOwnerId">The <see cref="ClubMember.Id"/> of the new owner.</param>
+        /// <param name="newOwnerId">The <see cref="Entity.Id"/> of the new <see cref="ClubMember"/> owner.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
         /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
@@ -644,7 +644,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Only <paramref name="userId"/> with the <see cref="ClubPermission.ChangeRoleName"/> permission can perform this action.
         /// </remarks>
         /// <param name="newName">The new name of the role.</param>
-        /// <param name="roleId">The <see cref="ClubRole.Id"/> of the role.</param>
+        /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the user performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
         /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.

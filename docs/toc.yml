@@ -2,5 +2,7 @@
   href: ../README.md
 - name: Documentation
   href: api/
+- name: Coverage
+  href: coverage
 - name: License
   href: ../LICENSE.md
