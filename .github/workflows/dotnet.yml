@@ -10,10 +10,7 @@ on:
   pull_request:
     branches: [ "dev" ]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+
 
 jobs:
   lint:
@@ -43,6 +40,7 @@ jobs:
           path: ./lint-report.json
 
   build:
+    needs: lint
     runs-on: ubuntu-latest
 
     steps:
@@ -61,6 +59,7 @@ jobs:
         run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true
 
   tests:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -83,13 +82,8 @@ jobs:
       - name: Generate Coverage Report
         run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
 
-      - name: Upload Coverage Report
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: coverage-report
-          path: coverage
-
   documentation:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -109,27 +103,26 @@ jobs:
       - name: Generate Documentation
         run: docfx docs/docfx.json
 
-      - name: Upload Documentation
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: documentation
-          path: docs/_site
-
   deploy:
     needs: [tests, documentation]
     runs-on: ubuntu-latest
 
+    permissions:
+      pages: write
+      id-token: write
+
     steps:
-      - name: Deploy coverage to GitHub Pages
-        id: deploy-coverage
-        uses: actions/deploy-pages@v4
+      - name: Copy DocFX site to deployment directory
+        run: cp -r docs/_site/* deployment/
+
+      - name: Copy Coverage report to deployment directory
+        run: cp -r coverage deployment/coverage
+
+      - name: Upload Documentation & Coverage
+        uses: actions/upload-pages-artifact@v3
         with:
-          artifact_name: coverage-report
-          target_branch: ${{ github.ref == 'refs/heads/main' && 'gh-pages-prod' || 'gh-pages-dev' }}
+          path: deployment
 
       - name: Deploy documentation to GitHub Pages
         id: deploy-documentation
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: documentation
-          target_branch: ${{ github.ref == 'refs/heads/main' && 'gh-pages-prod' || 'gh-pages-dev' }}
