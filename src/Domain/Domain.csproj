@@ -15,5 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
 	<Analyzer Include="..\Analyzers\bin\Debug\netstandard2.0\Analyzers.dll" />
+      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+          <_Parameter1>Domain.Tests</_Parameter1>
+      </AssemblyAttribute>
   </ItemGroup>
 </Project>

@@ -336,7 +336,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             var member = _members.FirstOrDefault(m => m.Id == memberId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(memberId));
 
             // Throw an exception if the role does not exist in the club
-            var role = _roles.FirstOrDefault(r => r.Id == roleId) ?? throw new ArgumentException("The role doesn't exists in the club.", nameof(memberId));
+            var role = _roles.FirstOrDefault(r => r.Id == roleId) ?? throw new ArgumentException("The role could not be found in the club.", nameof(roleId));
 
             // Add role to member
             member.AddRole(role);
@@ -367,7 +367,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // Ensure the role name is unique within the club to avoid duplicates.
             if (_roles.Any(g => g.Name == roleName))
-                throw new ArgumentException("This role name already exists", nameof(roleName));
+                throw new ArgumentException("This role name already exists.", nameof(roleName));
 
             _roles.Add(new ClubRole(roleName));
         }

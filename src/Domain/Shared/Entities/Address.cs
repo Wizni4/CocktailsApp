@@ -5,10 +5,7 @@ using CocktailsApp.Domain.SeedWork;
 /*
  * Framework namespaces
  */
-using System.Runtime.CompilerServices;
 
-
-[assembly: InternalsVisibleTo("Domain.Tests")]
 namespace CocktailsApp.Domain.Shared
 {
     public class Address : ValueObject

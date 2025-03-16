@@ -88,7 +88,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         {
             // Ensure the member does not already have this role.
             if (_roles.Any(r => r.Id == role.Id))
-                throw new ArgumentException("The member already has this role", nameof(role));
+                throw new ArgumentException("The member already has this role.", nameof(role));
 
             // Add role to the member
             _roles.Add(role);
