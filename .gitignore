@@ -1,3 +1,6 @@
+# VSCode
+.vscode/
+
 # .NET Core
 bin/
 obj/
@@ -6,7 +9,7 @@ obj/
 *.db-wal
 .vs
 
-# React
+# Angular
 client/node_modules/
 client/build/
 client/.env
