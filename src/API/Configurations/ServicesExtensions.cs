@@ -16,6 +16,7 @@ using CocktailsApp.Infrastructure.UserAggregate;
  */
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 namespace CocktailsApp.API
@@ -65,13 +66,6 @@ namespace CocktailsApp.API
                 options.SupportedCultures = cultures;
                 options.SupportedUICultures = cultures;
             });
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services)
-        {
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/Home/Index");
 
             return services;
         }

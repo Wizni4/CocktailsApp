@@ -29,32 +29,6 @@ Additionally, users can create their own groups to manage personal cocktails and
 
 ---
 
-## Project Structure
-
-The project is organized using **Domain-Driven Design (DDD)** principles, which separates the solution into different layers for better maintainability and scalability.
-
-```yaml
-📂 CocktailsApp
-│── 📂 src
-│   │── 📂 Domain               # Core business logic (Entities, Value Objects, Interfaces)
-│   │── 📂 Application          # Use cases and DTOs, following CQRS principle
-│   │── 📂 Infrastructure       # Persistence (EF Core), External services
-│   │── 📂 API                  # ASP.NET Core Web API (Controllers, Middleware)
-│── 📂 tests                    # Unit & Integration Tests
-│   │── 📂 Domain.Tests         # Domain layer tests
-│   │── 📂 Application.Tests    # Application layer tests
-│   │── 📂 Infrastructure.Tests # Infrastructure layer tests
-│   │── 📂 API.Tests            # API layer tests (Integration)
-│── 📂 client                   # React Frontend (TypeScript, Vite or CRA)
-│── 📂 .github                  # GitHub Actions (CI/CD)
-│── .editorconfig.txt           # Linting and formating configuration
-│── LICENSE.txt                 # Project license
-│── README.md                   # Project documentation
-│── CocktailsApp.sln            # .NET Solution file
-```
-
----
-
 ## Setup Instructions
 
 ### **1. Backend Setup (ASP.NET Core)**
