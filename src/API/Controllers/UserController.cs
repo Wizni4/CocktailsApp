@@ -8,14 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailsApp.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("user")]
     [ApiController]
     public class UserController : ControllerBase
     {
         [HttpGet(Name = "GetUSerId")]
-        public string Get()
+        [Tags("User")]
+        public IActionResult Get()
         {
-            return "Hello World";
+            return Ok("Hello World");
         }
     }
 }

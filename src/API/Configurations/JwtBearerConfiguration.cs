@@ -7,16 +7,17 @@ using Microsoft.Extensions.Options;
 
 namespace API.Configurations
 {
-    public class JwtBearerConfigureOption(IConfiguration configuration) : IConfigureNamedOptions<JwtBearerOptions>
+    public class JwtBearerConfigureOptions(IConfiguration configuration)
+    : IConfigureNamedOptions<JwtBearerOptions>
     {
         private const string ConfigurationSectionName = "JwtBearer";
 
-        public void Configure(string? name, JwtBearerOptions options)
+        public void Configure(JwtBearerOptions options)
         {
             configuration.GetSection(ConfigurationSectionName).Bind(options);
         }
 
-        public void Configure(JwtBearerOptions options)
+        public void Configure(string? name, JwtBearerOptions options)
         {
             Configure(options);
         }

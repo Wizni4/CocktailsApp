@@ -1,20 +1,29 @@
 ﻿using API.Configurations;
+
+using CocktailsApp.API;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200") // Replace with your front-end URL
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddCustomSwagger();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
 
-builder.Services.ConfigureOptions<JwtBearerConfigureOption>();
+builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();
 
 var app = builder.Build();
 
@@ -27,11 +36,13 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
+// Ensure UseCors is called before UseAuthorization
+app.UseCors("AllowSpecificOrigin");
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers()
-    .RequireAuthorization();
+app.MapControllers();
 
 app.Run();

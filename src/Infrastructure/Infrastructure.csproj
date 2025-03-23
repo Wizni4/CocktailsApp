@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UserAggregate\Repositories\" />
+    <Folder Include="UserAggregate\Services\" />
+  </ItemGroup>
+
 </Project>

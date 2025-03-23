@@ -3,11 +3,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>LaunchJsonDebugger</DebuggerFlavor>
     <LaunchJsonTarget>{
-  "name": "localhost (Chrome)",
+  "name": "localhost (Brave)",
   "type": "chrome",
   "request": "launch",
-  "url": "http://localhost:43947",
-  "webRoot": "D:\\Documents\\Code\\CocktailsApp\\client"
+  "url": "http://localhost:4200",
+  "webRoot": "D:\\Documents\\Code\\CocktailsApp\\client",
+  "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
 }</LaunchJsonTarget>
   </PropertyGroup>
 </Project>
