@@ -16,11 +16,11 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <summary>
         /// The <see cref="Club"/> is visible to all users.
         /// </summary>
-        Public,
+        Public = 1,
 
         /// <summary>
         /// The <see cref="Club"/> is visible only to its members.
         /// </summary>
-        Private,
+        Private = 0,
     }
 }

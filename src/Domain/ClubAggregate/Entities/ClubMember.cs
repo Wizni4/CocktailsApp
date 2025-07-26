@@ -127,7 +127,8 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </returns>
         internal bool HasPermission(ClubPermission permission)
         {
-            return Permissions.Any(p => p == permission);
+            return (Permissions.Any(p => p == permission) ||
+                    Roles.Any(r => r.HasPermission(permission)));
         }
     }
 }
