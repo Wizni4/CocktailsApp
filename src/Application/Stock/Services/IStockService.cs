@@ -1,11 +1,11 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.OrderAggregate;
 /*
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.OrderAggregate;
 
 /*
  * Framework namespaces

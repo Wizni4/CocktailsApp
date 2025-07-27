@@ -1,15 +1,15 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.UserAggregate;
 /*
  * Application namespaces
  */
 using CocktailsApp.Application.Club;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.User;
+using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.UserAggregate;
 /*
  * Infrastructure namespaces
  */
@@ -17,18 +17,21 @@ using CocktailsApp.Infrastructure.ClubAggregate;
 using CocktailsApp.Infrastructure.SeedWork;
 using CocktailsApp.Infrastructure.UserAggregate;
 
+using FluentValidation;
 /*
  * Framework namespaces
  */
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using System.Globalization;
-using FluentValidation;
+
 using MediatR;
+
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+
+using System.Globalization;
 
 
 namespace CocktailsApp.API

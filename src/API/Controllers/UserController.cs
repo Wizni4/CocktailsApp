@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using CocktailsApp.Application.User;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailsApp.API.Controllers

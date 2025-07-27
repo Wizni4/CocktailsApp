@@ -2,14 +2,15 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.SeedWork;
+
+using Microsoft.EntityFrameworkCore;
 /*
 * Framework namespaces
 */
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 namespace CocktailsApp.Infrastructure.SeedWork
 {

@@ -14,6 +14,7 @@ using CocktailsApp.Domain.StockAggregate;
 using CocktailsApp.Domain.UserAggregate;
 
 using Microsoft.EntityFrameworkCore;
+
 using System.Transactions;
 
 namespace CocktailsApp.Infrastructure.SeedWork

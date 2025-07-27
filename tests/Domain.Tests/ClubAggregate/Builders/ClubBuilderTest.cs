@@ -38,7 +38,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 Assert.That(club.Address, Is.EqualTo(_address));
                 Assert.That(club.Description, Is.EqualTo(_description));
                 Assert.That(club.Name, Is.EqualTo(_name));
-                Assert.That(club.Owner, Is.EqualTo(_ownerId));
+                Assert.That(club.Owner.UserId, Is.EqualTo(_ownerId));
                 Assert.That(club.Members, Has.Count.EqualTo(1));
                 Assert.That(club.Members.Any(m => m.UserId == _ownerId), Is.True);
                 Assert.That(club.Visibility, Is.EqualTo(ClubVisibility.Public));
@@ -119,7 +119,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 Assert.That(club.Address, Is.EqualTo(_address));
                 Assert.That(club.Description, Is.EqualTo(_description));
                 Assert.That(club.Name, Is.EqualTo(_name));
-                Assert.That(club.Owner, Is.EqualTo(_ownerId));
+                Assert.That(club.Owner.UserId, Is.EqualTo(_ownerId));
                 Assert.That(club.Members, Has.Count.EqualTo(1));
                 Assert.That(club.Members.Any(m => m.UserId == _ownerId), Is.True);
                 Assert.That(club.Visibility, Is.EqualTo(ClubVisibility.Private));

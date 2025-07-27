@@ -1,17 +1,17 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.CocktailAggregate;
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
-/*
- * Application namespaces
- */
-using CocktailsApp.Application.SeedWork;
 /*
  * Framework namespaces
  */
 using AutoMapper;
+/*
+ * Application namespaces
+ */
+using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Club
 {

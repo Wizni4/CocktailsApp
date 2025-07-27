@@ -192,7 +192,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // - Address
             // - Name
             // - Visibility
-            _address = address;
+            UpdateAddress(address, Owner.Id);
             UpdateDescription(description, Owner.Id);
             UpdateName(name, Owner.Id);
             UpdateVisibility(visibility, Owner.Id);

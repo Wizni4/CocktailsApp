@@ -4,13 +4,14 @@
 /*
  * Application namespaces
  */
-using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.UserAggregate;
 /*
  * Framework namespaces
  */
 using AutoMapper;
+
+using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.UserAggregate;
 
 namespace CocktailsApp.Application.User
 {

@@ -950,7 +950,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             _club.UpdateOwner(_member.Id, _owner.Id);
 
             // Assert
-            Assert.That(_club.Owner, Is.EqualTo(_member.Id));
+            Assert.That(_club.Owner, Is.EqualTo(_member));
         }
 
         [Test]

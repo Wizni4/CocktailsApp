@@ -9,6 +9,7 @@
  * Framework namespaces
  */
 using FluentValidation;
+
 using MediatR;
 
 
