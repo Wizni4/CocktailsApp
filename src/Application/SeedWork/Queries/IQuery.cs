@@ -19,15 +19,15 @@ namespace CocktailsApp.Application.SeedWork
     /// Represents a typed query against a domain entity.
     /// </summary>
     /// <typeparam name="TDomain">The type of the domain entity targeted by the query.</typeparam>
-    public interface IQuery<TResult> : IRequest<TResult>
+    public interface IQuery<TDomain, TResult> : IRequest<TResult>
     {
         // <summary>
         /// Gets the specification defining the query criteria.
         /// </summary>
-        ISpecification<TResult> Specification { get; }
+        ISpecification<TDomain> Specification { get; }
         /// <summary>
         /// Gets an optional function describing how related entities should be included in the query result.
         /// </summary>
-        Func<IIncludable<TResult>, IIncludable>? Include { get; }
+        Func<IIncludable<TDomain>, IIncludable>? Include { get; }
     }
 }

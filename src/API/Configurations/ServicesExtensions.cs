@@ -4,12 +4,15 @@
 /*
  * Application namespaces
  */
+using CocktailsApp.Application.Authentication;
 using CocktailsApp.Application.Club;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.User;
 using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.SeedWork;
 using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.Authentication;
+
 /*
  * Infrastructure namespaces
  */
@@ -28,6 +31,7 @@ using MediatR;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
@@ -42,10 +46,12 @@ namespace CocktailsApp.API
         {
 #if LOCAL
             string connectionStr = configuration.GetConnectionString("Local");
+            string secretKey = configuration["Jwt:SecretKey"];
 #elif AWS_TEST
             string connectionStr = await SecretManager.GetSecret(configuration);
 #endif
             services.AddDbContextPool<EFDbContext>(options => options.UseSqlServer(connectionStr));
+            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
             return services;
         }
 
@@ -60,17 +66,92 @@ namespace CocktailsApp.API
             return services;
         }
 
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddEventDispatcher(this IServiceCollection services)
         {
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IClubService, ClubService>();
+            services.AddScoped<DomainEventDispatcher>();
             return services;
         }
 
-        public static IServiceCollection AddApplicationHandlers(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateClubCommandHandler>());
+            services.AddScoped<IAuthService, LocalAuthService>();
+            
+            return services;
+        }
+
+        public static IServiceCollection AddMediatR(this IServiceCollection services, IConfiguration configuration)
+        {
+            var licenceKey = configuration["LuckyPenny:LicenseKey"];
+            services.AddMediatR(cfg => {
+                cfg.LicenseKey = licenceKey;
+
+                // Auth
+                // -- Command Hanlders
+                cfg.RegisterServicesFromAssemblyContaining<SignInCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<SignOutCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<SignUpCommandHandler>();
+
+                // Club
+                // -- Command Hanlders
+                cfg.RegisterServicesFromAssemblyContaining<AddCocktailCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<AddMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<AddPermissionToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<AddRolePermissionCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<AddRoleToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<CreateClubCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<CreateRoleCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<DeleteClubCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<DeleteRoleCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemoveCocktailCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemoveMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemovePermissionToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemoveRolePermissionCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemoveRoleToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UpdateAddressCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UpdateDescriptionCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UpdateNameCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UpdateOwnerCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UpdateRoleNameCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UpdateVisibilityCommandHandler>();
+                // -- Query Handler
+                cfg.RegisterServicesFromAssemblyContaining<GetClubByIdQueryHandler>();
+                
+                // -- Event Hanlders
+                cfg.RegisterServicesFromAssemblyContaining<ClubDeletedEventHandler>();
+            });
+    
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationValidators(this IServiceCollection services)
+        {
+            // Auth
+            services.AddValidatorsFromAssemblyContaining<SignInCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<SignUpCommandValidator>();
+
+            // Club
+            services.AddValidatorsFromAssemblyContaining<AddCocktailCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddPermissionToMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddRolePermissionCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddRoleToMemberCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateClubCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<CreateRoleCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<DeleteClubCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<DeleteRoleCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemoveCocktailCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemoveMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemovePermissionToMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemoveRolePermissionCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemoveRoleToMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateAddressCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateDescriptionCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateNameCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateOwnerCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateRoleNameCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateVisibilityCommandValidator>();
+
+            // Pipeline behaviour
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             return services;
         }
@@ -106,6 +187,14 @@ namespace CocktailsApp.API
                         Status = StatusCodes.Status404NotFound,
                         Detail = ex.Message
                     });
+
+                options.Map<UnauthorizedAccessException>(ex =>
+                    new ProblemDetails
+                    {
+                        Title = "Forbidden",
+                        Status = StatusCodes.Status403Forbidden,
+                        Detail = ex.Message
+                    });
             });
             return services;
         }
@@ -136,6 +225,7 @@ namespace CocktailsApp.API
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
+
                 // Define the BearerAuth scheme
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

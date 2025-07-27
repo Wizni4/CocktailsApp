@@ -9,7 +9,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.CocktailAggregate
 {
-    public class Cocktail : Entity, IAggregateRoot
+    public class Cocktail : AggregateRoot, IAggregateRoot
     {
         private readonly List<CocktailIngredient> _ingredients = [];
         public IReadOnlyCollection<CocktailIngredient> Ingredients { get { return _ingredients.AsReadOnly(); } }

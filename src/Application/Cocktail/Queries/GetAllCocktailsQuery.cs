@@ -15,10 +15,10 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public class GetAllCocktailsQuery : IQuery<CocktailDTO>
+    public class GetAllCocktailsQuery : IQuery<Domain.CocktailAggregate.Cocktail, CocktailDTO>
     {
-        public ISpecification<CocktailDTO> Specification => throw new NotImplementedException();
+        public ISpecification<Domain.CocktailAggregate.Cocktail> Specification => throw new NotImplementedException();
 
-        public Func<IIncludable<CocktailDTO>, IIncludable>? Include => throw new NotImplementedException();
+        public Func<IIncludable<Domain.CocktailAggregate.Cocktail>, IIncludable>? Include => throw new NotImplementedException();
     }
 }

@@ -10,7 +10,7 @@ using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
-    public class IngredientPricing : Entity, IAggregateRoot
+    public class IngredientPricing : AggregateRoot, IAggregateRoot
     {
         public decimal Cost { get; private set; }
         public Ingredient Ingredient { get; private set; }
@@ -39,7 +39,7 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
 
             var oldPrice = Price;
             Price = newPrice;
-            DomainEvents.Raise(new IngredientPricingUpdatedEvent(Ingredient, oldPrice, newPrice));
+            AddDomainEvent(new IngredientPricingUpdatedEvent(Ingredient, oldPrice, newPrice));
         }
 
         public void UpdateCost(decimal newCost)
@@ -49,7 +49,7 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
 
             var oldCost = Price;
             Cost = newCost;
-            DomainEvents.Raise(new IngredientCostingUpdatedEvent(Ingredient, oldCost, newCost));
+            AddDomainEvent(new IngredientCostingUpdatedEvent(Ingredient, oldCost, newCost));
         }
     }
 }

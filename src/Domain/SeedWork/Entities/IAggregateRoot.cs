@@ -9,5 +9,8 @@ namespace CocktailsApp.Domain.SeedWork
     /// </summary>
     public interface IAggregateRoot
     {
+        public IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
+        void AddDomainEvent(IDomainEvent domainEvent);
+        void ClearDomainEvents();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using API.Configurations;
 
 using CocktailsApp.API;
+using CocktailsApp.API.Mappers;
 using CocktailsApp.Application.SeedWork.Mappers;
 
 using Hellang.Middleware.ProblemDetails;
@@ -24,14 +25,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomSwagger();
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer();
-
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddDbContext(builder.Configuration);
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddMediatR(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(APIMapperProfile),typeof(ApplicationMapperProfile));
 builder.Services.AddRepositories();
+builder.Services.AddEventDispatcher();
 builder.Services.AddApplicationServices();
-builder.Services.AddApplicationHandlers();
+builder.Services.AddApplicationValidators();
 builder.Services.AddCustomErrors();
 
 builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();

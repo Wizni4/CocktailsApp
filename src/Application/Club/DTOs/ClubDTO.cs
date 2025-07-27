@@ -53,7 +53,7 @@ namespace CocktailsApp.Application.Club
         /// <summary>
         /// Gets or sets the list of roles available within the club.
         /// </summary>
-        public List<ClubRoleDTO> Role { get; set; } = [];
+        public List<ClubRoleDTO> Roles { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the visibility level of the club (e.g., Public, Private).

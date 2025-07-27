@@ -1,19 +1,16 @@
 ﻿/*
- * Domain namespaces
+ * Framework namespaces
  */
-
 /*
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.Shared;
+/*
+ * Domain namespaces
+ */
 using CocktailsApp.Domain.ClubAggregate;
 
-using MediatR;
-
-/*
- * Framework namespaces
- */
 
 namespace CocktailsApp.Application.Club
 {

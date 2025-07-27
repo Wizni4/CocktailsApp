@@ -14,13 +14,8 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Order
 {
-    public class ProcessedOrderEventHandler(IStockService stockService) : DomainEventHandler<ProcessedOrderEvent>
+    public class ProcessedOrderEventHandler
     {
-        private readonly IStockService _stockService = stockService;
-
-        public new void Handle(ProcessedOrderEvent @event)
-        {
-            _stockService.DeductStockForOrder(@event);
-        }
+ 
     }
 }

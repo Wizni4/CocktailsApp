@@ -2,12 +2,13 @@
  * Framework namespaces
  */
 
+
 namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
     /// <see langword="abstract"/> class that represents a domain event in the system, which is an event that signifies a change in the domain model.<br/>
     /// </summary>
-    public abstract class DomainEvent
+    public abstract class DomainEvent : IDomainEvent
     {
         /// <summary>
         /// Gets the <see cref="DateTime"/> of when the event was created.

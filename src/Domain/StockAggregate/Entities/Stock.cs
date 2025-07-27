@@ -9,7 +9,7 @@ using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Domain.StockAggregate
 {
-    public class Stock : Entity, IAggregateRoot
+    public class Stock : AggregateRoot, IAggregateRoot
     {
         public Ingredient Ingredient { get; }
         public decimal Quantity { get { return _stockTransactions.Sum(st => st.Quantity * (int)st.TransactionType); } }
@@ -37,7 +37,7 @@ namespace CocktailsApp.Domain.StockAggregate
 
             // Check if stock quantity is now zero and raise an event if true
             if (Quantity == 0)
-                DomainEvents.Raise(new IngredientOutOfStock(Id, Ingredient));
+                AddDomainEvent(new IngredientOutOfStock(Id, Ingredient));
         }
     }
 }

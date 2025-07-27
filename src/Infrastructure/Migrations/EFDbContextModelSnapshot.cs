@@ -37,6 +37,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("ClubMemberToClubPermission");
                 });
 
+            modelBuilder.Entity("ClubMemberToClubRole", b =>
+                {
+                    b.Property<Guid>("ClubRoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClubMemberId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ClubRoleId", "ClubMemberId");
+
+                    b.HasIndex("ClubMemberId");
+
+                    b.ToTable("ClubMemberToClubRole");
+                });
+
             modelBuilder.Entity("ClubRoleToClubPermission", b =>
                 {
                     b.Property<Guid>("ClubRoleId")
@@ -70,7 +85,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.ClubAggregate.Club", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AddressId")
@@ -97,10 +111,9 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.ClubAggregate.ClubCocktail", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClubId")
+                    b.Property<Guid>("ClubId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CocktailId")
@@ -118,10 +131,9 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.ClubAggregate.ClubMember", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClubId")
+                    b.Property<Guid>("ClubId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("OwnerId")
@@ -160,13 +172,9 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.ClubAggregate.ClubRole", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClubId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ClubMemberId")
+                    b.Property<Guid>("ClubId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -177,15 +185,12 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.HasIndex("ClubMemberId");
-
                     b.ToTable("ClubRole");
                 });
 
             modelBuilder.Entity("CocktailsApp.Domain.CocktailAggregate.Cocktail", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -210,7 +215,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 
@@ -224,17 +230,18 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.IngredientPricingAggregate.IngredientPricing", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<Guid>("IngredientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 
@@ -246,7 +253,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.OrderAggregate.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClubId")
@@ -270,7 +276,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.OrderAggregate.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CocktailId")
@@ -280,7 +285,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 
@@ -344,7 +350,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.StockAggregate.Stock", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IngredientId")
@@ -364,7 +369,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.StockAggregate.StockTransaction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
@@ -375,7 +379,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<Guid?>("StockId")
                         .HasColumnType("uniqueidentifier");
@@ -393,8 +398,15 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -413,6 +425,21 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubMemberToClubRole", b =>
+                {
+                    b.HasOne("CocktailsApp.Domain.ClubAggregate.ClubMember", null)
+                        .WithMany()
+                        .HasForeignKey("ClubMemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CocktailsApp.Domain.ClubAggregate.ClubRole", null)
+                        .WithMany()
+                        .HasForeignKey("ClubRoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -460,7 +487,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("CocktailsApp.Domain.ClubAggregate.Club", null)
                         .WithMany("Cocktails")
                         .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CocktailsApp.Domain.CocktailAggregate.Cocktail", null)
                         .WithMany()
@@ -474,7 +502,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("CocktailsApp.Domain.ClubAggregate.Club", null)
                         .WithMany("Members")
                         .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CocktailsApp.Domain.ClubAggregate.Club", null)
                         .WithOne("Owner")
@@ -493,11 +522,8 @@ namespace Infrastructure.Migrations
                     b.HasOne("CocktailsApp.Domain.ClubAggregate.Club", null)
                         .WithMany("Roles")
                         .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CocktailsApp.Domain.ClubAggregate.ClubMember", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("ClubMemberId");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CocktailsApp.Domain.CocktailAggregate.CocktailIngredient", b =>
@@ -583,11 +609,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Owner")
                         .IsRequired();
 
-                    b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("CocktailsApp.Domain.ClubAggregate.ClubMember", b =>
-                {
                     b.Navigation("Roles");
                 });
 

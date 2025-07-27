@@ -2,6 +2,8 @@
  * Framework namespaces
  */
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace CocktailsApp.Domain.SeedWork
 {
     /// <summary>
@@ -17,6 +19,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// <summary>
         /// Unmutable <see cref="Entity"/> identity.
         /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; }
 
         /// <summary>

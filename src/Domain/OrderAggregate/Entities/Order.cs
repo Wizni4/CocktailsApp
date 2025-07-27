@@ -9,7 +9,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.OrderAggregate
 {
-    public class Order : Entity, IAggregateRoot
+    public class Order : AggregateRoot, IAggregateRoot
     {
         public Guid CustomerId { get; }
         public Guid ClubId { get; }
@@ -34,7 +34,7 @@ namespace CocktailsApp.Domain.OrderAggregate
             if (_items.Count == 0)
                 throw new InvalidOperationException("Cannot process an empty order.");
 
-            DomainEvents.Raise(new ProcessedOrderEvent(Id));
+            AddDomainEvent(new ProcessedOrderEvent(Id));
         }
     }
 }

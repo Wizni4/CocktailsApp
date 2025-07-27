@@ -30,6 +30,8 @@ namespace CocktailsApp.Infrastructure.SeedWork
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(u => u.Id);
+            builder.Property(u => u.Login);
+            builder.Property(u => u.Password);
         }
     }
 
@@ -70,7 +72,8 @@ namespace CocktailsApp.Infrastructure.SeedWork
             builder.HasKey(st => st.Id);
             builder.Property(st => st.Date);
             builder.Property(st => st.Description);
-            builder.Property(st => st.Quantity);
+            builder.Property(st => st.Quantity)
+                .HasPrecision(18,4);
             builder.Property(st => st.TransactionType);
         }
     }
@@ -151,7 +154,8 @@ namespace CocktailsApp.Infrastructure.SeedWork
             builder.HasOne<Cocktail>()
                 .WithMany()
                 .HasForeignKey(oi => oi.CocktailId);
-            builder.Property(oi => oi.Quantity);
+            builder.Property(oi => oi.Quantity)
+                .HasPrecision(18, 4);
         }
     }
 
@@ -167,11 +171,13 @@ namespace CocktailsApp.Infrastructure.SeedWork
         public void Configure(EntityTypeBuilder<IngredientPricing> builder)
         {
             builder.HasKey(ip => ip.Id);
-            builder.Property(ip => ip.Cost);
+            builder.Property(ip => ip.Cost)
+                .HasPrecision(18, 4);
             builder.HasOne(ip => ip.Ingredient)
                 .WithMany()
                 .HasForeignKey("IngredientId");
-            builder.Property(ip => ip.Cost);
+            builder.Property(ip => ip.Price)
+                .HasPrecision(18, 4);
         }
     }
 
@@ -223,7 +229,9 @@ namespace CocktailsApp.Infrastructure.SeedWork
             builder.HasOne(ci => ci.Ingredient)
                 .WithMany()
                 .HasForeignKey("IngredientId");
-            builder.Property(ci => ci.Quantity).IsRequired();
+            builder.Property(ci => ci.Quantity)
+                .HasPrecision(18, 4)
+                .IsRequired();
         }
     }
 
@@ -245,21 +253,23 @@ namespace CocktailsApp.Infrastructure.SeedWork
             builder.HasMany(c => c.Cocktails)
                 .WithOne()
                 .HasForeignKey("ClubId")
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
             builder.Property(c => c.Description);
             builder.Property(c => c.Name);
             builder.HasMany(c => c.Members)
                 .WithOne()
                 .HasForeignKey("ClubId")
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(c => c.Owner)
                 .WithOne()
                 .HasForeignKey<ClubMember>("OwnerId")
-                //.HasForeignKey("OwnerId")
                 .OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(c => c.Roles)
                 .WithOne()
                 .HasForeignKey("ClubId")
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
             builder.Property(c => c.Visibility);
         }
@@ -311,7 +321,22 @@ namespace CocktailsApp.Infrastructure.SeedWork
                     {
                         j.HasKey("ClubMemberId", "PermissionId");
                     });
-            builder.HasMany(cm => cm.Roles);
+            builder.HasMany(cm => cm.Roles)
+                .WithMany()
+                .UsingEntity<Dictionary<string, object>>(
+                    "ClubMemberToClubRole",
+                    j => j
+                        .HasOne<ClubRole>()
+                        .WithMany()
+                        .HasForeignKey("ClubRoleId")
+                        .OnDelete(DeleteBehavior.Restrict),
+                    j => j.HasOne<ClubMember>()
+                        .WithMany()
+                        .HasForeignKey("ClubMemberId"),
+                    j =>
+                    {
+                        j.HasKey("ClubRoleId", "ClubMemberId");
+                    });
             builder.HasOne<User>()
                 .WithMany()
                 .HasForeignKey(cm => cm.UserId);

@@ -1,7 +1,8 @@
 @API_HostAddress = http://localhost:5170
 
 
-GET {{API_HostAddress}}/user
+
+GET {{API_HostAddress}}/api/user
 Accept: application/json
 Authorization: Bearer {{AccessToken}}
 

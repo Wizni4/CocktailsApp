@@ -50,7 +50,7 @@ namespace CocktailsApp.Domain.ClubAggregate
     /// </item>
     /// </list> 
     /// </remarks>
-    public class Club : Entity, IAggregateRoot
+    public class Club : AggregateRoot, IAggregateRoot
     {
         /// <summary>
         /// Gets the <see langword="readonly"/> address of the club.
@@ -202,21 +202,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Adds a <see cref="ClubCocktail"/> to the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="clubMemberId"/> with the <see cref="ClubPermission.AddCocktail"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.AddCocktail"/> permission can perform this action.
         /// </remarks>
         /// <param name="cocktailId">The <see cref="ClubCocktail.CocktailId"/> of the cocktail to add.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="cocktailId"/> is already available in the club.
         /// </exception>
-        public void AddCocktail(Guid cocktailId, Guid performingMemberId)
+        public void AddCocktail(Guid cocktailId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.AddCocktail);
+            ValidateMemberPermission(actorId, ClubPermission.AddCocktail);
 
             // To avoid duplicates, make sure the cocktail is not already in the club
             if (_cocktails.Any(cc => cc.CocktailId == cocktailId))
@@ -229,21 +229,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Adds a <see cref="ClubMember"/> to the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="clubMemberId"/> with the <see cref="ClubPermission.AddMember"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.AddMember"/> permission can perform this action.
         /// </remarks>
         /// <param name="userId">The <see cref="ClubMember.UserId"/> of the member to add.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="userId"/> is already in the club.
         /// </exception>
-        public void AddMember(Guid userId, Guid performingMemberId)
+        public void AddMember(Guid userId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.AddMember);
+            ValidateMemberPermission(actorId, ClubPermission.AddMember);
 
             // Verify that the specified user is not already ine the club. If yes throw an argument exception.
             if (_members.Any(m => m.UserId == userId))
@@ -257,22 +257,22 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Adds a <see cref="ClubPermission"/> to a <see cref="ClubMember"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="userId"/> with the <see cref="ClubPermission.AddPermissionToMember"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.AddPermissionToMember"/> permission can perform this action.
         /// </remarks>
         /// <param name="clubMemberId">The <see cref="Entity.Id"/> of the member.</param>
         /// <param name="permission">The <see cref="ClubPermission"/> to add to the member.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="clubMemberId"/> is not in the club, or when the <paramref name="clubMemberId"/> already has the <paramref name="permission"/>.
         /// </exception>
-        public void AddPermissionToMember(Guid clubMemberId, ClubPermission permission, Guid performingMemberId)
+        public void AddPermissionToMember(Guid clubMemberId, ClubPermission permission, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.AddPermissionToMember);
+            ValidateMemberPermission(actorId, ClubPermission.AddPermissionToMember);
 
             // Throw an exception if the member does not exist in the club
             var member = _members.FirstOrDefault(m => m.Id == clubMemberId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(clubMemberId));
@@ -286,22 +286,22 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Adds a <see cref="ClubPermission"/> to a <see cref="ClubRole"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.AddRolePermission"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.AddRolePermission"/> permission can perform this action.
         /// </remarks>
         /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
         /// <param name="permission">The <see cref="ClubPermission"/> to add to the role.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="roleId"/> is not in the club.
         /// </exception>
-        public void AddRolePermission(Guid roleId, ClubPermission permission, Guid performingMemberId)
+        public void AddRolePermission(Guid roleId, ClubPermission permission, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.AddRolePermission);
+            ValidateMemberPermission(actorId, ClubPermission.AddRolePermission);
 
             // Throw an exception if specified role does not exist in the club
             var role = _roles.FirstOrDefault(r => r.Id == roleId) ?? throw new ArgumentException("The role could not be found in the club.", nameof(roleId));
@@ -314,13 +314,13 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Adds a <see cref="ClubRole"/> to a <see cref="ClubMember"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.AddRoleToMember"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.AddRoleToMember"/> permission can perform this action.
         /// </remarks>
-        /// <param name="clubMemberId">The <see cref="ClubMember.Id"/> of the member.</param>
+        /// <param name="clubMemberId">The <see cref="Entity.Id"/> of the member.</param>
         /// <param name="roleId">The <see cref="ClubRole.Id"/> to add to the member.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when:
@@ -330,11 +330,11 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <item>The <paramref name="clubMemberId"/> already has the <paramref name="roleId"/>.</item> 
         /// </list>
         /// </exception>
-        public void AddRoleToMember(Guid clubMemberId, Guid roleId, Guid performingMemberId)
+        public void AddRoleToMember(Guid clubMemberId, Guid roleId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.AddRoleToMember);
+            ValidateMemberPermission(actorId, ClubPermission.AddRoleToMember);
 
             // Throw an exception if the member does not exist in the club
             var member = _members.FirstOrDefault(m => m.Id == clubMemberId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(clubMemberId));
@@ -350,12 +350,12 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Creates a new <see cref="ClubRole"/> within the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.CreateRole"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.CreateRole"/> permission can perform this action.
         /// </remarks>
         /// <param name="roleName">The <see cref="ClubRole.Name"/> of the role.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="roleName"/> is already in the club.
@@ -363,11 +363,11 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="roleName"/> is <see langword="null"/> or <see langword="empty"/>.
         /// </exception>
-        public void CreateRole(string roleName, Guid performingMemberId)
+        public void CreateRole(string roleName, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.CreateRole);
+            ValidateMemberPermission(actorId, ClubPermission.CreateRole);
 
             // Ensure the role name is unique within the club to avoid duplicates.
             if (_roles.Any(g => g.Name == roleName))
@@ -377,29 +377,48 @@ namespace CocktailsApp.Domain.ClubAggregate
         }
 
         /// <summary>
+        /// Delete the <see cref="Club"/>
+        /// <para>
+        /// Only the <see cref="Owner"/> of the club can perform this action.
+        /// </para>
+        /// </summary>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
+        /// <exception cref="UnauthorizedAccessException">
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
+        /// </exception>
+        public void DeleteClub(Guid actorId)
+        {
+            if (!this.IsOwner(actorId))
+                throw new UnauthorizedAccessException("Only the Owner of the club can delete the club.");
+
+            // Raise the event
+            AddDomainEvent(new ClubDeletedEvent(actorId));
+        }
+
+        /// <summary>
         /// Deletes a <see cref="ClubRole"/> from the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.DeleteRole"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.DeleteRole"/> permission can perform this action.
         /// </para>
         /// <para>
         /// The <see cref="ClubRole"/> is also removed from all <see cref="ClubMember"/> instances within the <see cref="Club"/>.
         /// </para>
         /// </remarks>
         /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="roleId"/> is not in the club.
         /// </exception>
-        public void DeleteRole(Guid roleId, Guid performingMemberId)
+        public void DeleteRole(Guid roleId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.DeleteRole);
+            ValidateMemberPermission(actorId, ClubPermission.DeleteRole);
 
             // Ensure the role name is unique within the club to avoid duplicates.
             var role = _roles.FirstOrDefault(r => r.Id == roleId) ?? throw new ArgumentException("The role could not be found in the club.", nameof(roleId));
@@ -417,24 +436,24 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Removes a <see cref="ClubCocktail"/> from the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.RemoveCocktail"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.RemoveCocktail"/> permission can perform this action.
         /// </remarks>
-        /// <param name="cocktailId">The <see cref="Entity.Id"/> of the cocktail to remove.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="cocktailId">The <see cref="Entity.Id"/> or the <see cref="ClubCocktail.CocktailId"/> of the cocktail to remove.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="cocktailId"/> is not in the club.
         /// </exception>
-        public void RemoveCocktail(Guid cocktailId, Guid performingMemberId)
+        public void RemoveCocktail(Guid cocktailId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.RemoveCocktail);
+            ValidateMemberPermission(actorId, ClubPermission.RemoveCocktail);
 
             // Throw an error if the club doesn have the cocktail.
-            var cocktail = _cocktails.FirstOrDefault(c => c.Id == cocktailId) ?? throw new ArgumentException("The cocktail could not be found in the club.", nameof(cocktailId));
+            var cocktail = _cocktails.FirstOrDefault(c => c.Id == cocktailId || c.CocktailId == cocktailId) ?? throw new ArgumentException("The cocktail could not be found in the club.", nameof(cocktailId));
             _cocktails.Remove(cocktail);
         }
 
@@ -442,21 +461,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Removes a <see cref="ClubMember"/> from the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.RemoveMember"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.RemoveMember"/> permission can perform this action.
         /// </remarks>
         /// <param name="clubMemberId">The <see cref="Entity.Id"/> of the member to remove.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="clubMemberId"/> is not in the club.
         /// </exception>
-        public void RemoveMember(Guid clubMemberId, Guid performingMemberId)
+        public void RemoveMember(Guid clubMemberId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.RemoveMember);
+            ValidateMemberPermission(actorId, ClubPermission.RemoveMember);
 
             // Throw an error if the member is not in the club.
             var member = _members.FirstOrDefault(m => m.Id == clubMemberId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(clubMemberId));
@@ -467,22 +486,22 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Removes a <see cref="ClubPermission"/> from a <see cref="ClubMember"/> within the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.RemovePermissionToMember"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.RemovePermissionToMember"/> permission can perform this action.
         /// </remarks>
         /// <param name="clubMemberId">The <see cref="Entity.Id"/> of the member.</param>
         /// <param name="permision">The <see cref="ClubPermission"/> to remove.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="clubMemberId"/> is not in the club.
         /// </exception>
-        public void RemovePermissionToMember(Guid clubMemberId, ClubPermission permision, Guid performingMemberId)
+        public void RemovePermissionToMember(Guid clubMemberId, ClubPermission permision, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.RemovePermissionToMember);
+            ValidateMemberPermission(actorId, ClubPermission.RemovePermissionToMember);
 
             // Throw an exception if the member does not exist in the club
             var member = _members.FirstOrDefault(m => m.Id == clubMemberId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(clubMemberId));
@@ -495,22 +514,22 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Removes a <see cref="ClubPermission"/> from a <see cref="ClubRole"/> within the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.RemoveRolePermission"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.RemoveRolePermission"/> permission can perform this action.
         /// </remarks>
         /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
         /// <param name="permision">The <see cref="ClubPermission"/> to remove.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="roleId"/> is not in the club.
         /// </exception>
-        public void RemoveRolePermission(Guid roleId, ClubPermission permision, Guid performingMemberId)
+        public void RemoveRolePermission(Guid roleId, ClubPermission permision, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.RemoveRolePermission);
+            ValidateMemberPermission(actorId, ClubPermission.RemoveRolePermission);
 
             // Throw an error if the role is not in the club.
             var role = _roles.FirstOrDefault(r => r.Id == roleId) ?? throw new ArgumentException("The role could not be found in the club.", nameof(roleId));
@@ -521,22 +540,22 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Removes a <see cref="ClubRole"/> from a <see cref="ClubMember"/> within the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.RemoveRoleToMember"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.RemoveRoleToMember"/> permission can perform this action.
         /// </remarks>
         /// <param name="clubMemberId">The <see cref="Entity.Id"/> of the member.</param>
         /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="clubMemberId"/> is not in the club, or when the <paramref name="clubMemberId"/> doesn't have the <paramref name="roleId"/>.
         /// </exception>
-        public void RemoveRoleToMember(Guid clubMemberId, Guid roleId, Guid performingMemberId)
+        public void RemoveRoleToMember(Guid clubMemberId, Guid roleId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.RemoveRoleToMember);
+            ValidateMemberPermission(actorId, ClubPermission.RemoveRoleToMember);
 
             // Throw an exception if the member does not exist in the club
             var member = _members.FirstOrDefault(m => m.Id == clubMemberId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(clubMemberId));
@@ -549,21 +568,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Updates the <see cref="Address"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.ChangeAddress"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.ChangeAddress"/> permission can perform this action.
         /// </remarks>
         /// <param name="newAddress">The new <see cref="Address"/> of the club.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="newAddress"/> is <see langword="null"/> or <see langword="empty"/>.
         /// </exception>
-        public void UpdateAddress(Address? newAddress, Guid performingMemberId)
+        public void UpdateAddress(Address? newAddress, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.ChangeAddress);
+            ValidateMemberPermission(actorId, ClubPermission.ChangeAddress);
             ArgumentNullException.ThrowIfNull(newAddress, nameof(newAddress));
             _address = newAddress;
 
@@ -573,21 +592,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Updates the <see cref="Description"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.ChangeDescription"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.ChangeDescription"/> permission can perform this action.
         /// </remarks>
         /// <param name="newDescription">The new <see cref="Description"/> of the club.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="newDescription"/> is <see langword="null"/> or <see langword="empty"/>.
         /// </exception>
-        public void UpdateDescription(string? newDescription, Guid performingMemberId)
+        public void UpdateDescription(string? newDescription, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.ChangeDescription);
+            ValidateMemberPermission(actorId, ClubPermission.ChangeDescription);
             ArgumentException.ThrowIfNullOrWhiteSpace(newDescription, nameof(newDescription));
             _description = newDescription;
         }
@@ -596,21 +615,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Updates the <see cref="Name"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.ChangeName"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.ChangeName"/> permission can perform this action.
         /// </remarks>
         /// <param name="newName">The new <see cref="Name"/> of the club.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="newName"/> is <see langword="null"/> or <see langword="empty"/>.
         /// </exception>
-        public void UpdateName(string? newName, Guid performingMemberId)
+        public void UpdateName(string? newName, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.ChangeName);
+            ValidateMemberPermission(actorId, ClubPermission.ChangeName);
             ArgumentException.ThrowIfNullOrWhiteSpace(newName, nameof(newName));
             _name = newName;
         }
@@ -621,21 +640,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Only the <paramref name="userId"/> who is the <see cref="Owner"/> of the <see cref="Club"/> can perform this action.
         /// </remarks>
-        /// <param name="newOwnerId">The <see cref="ClubMember.Id"/> of the new <see cref="ClubMember"/> owner.</param>
-        /// <param name="ownerId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="newOwnerId">The <see cref="Entity.Id"/> of the new <see cref="ClubMember"/> owner.</param>
+        /// <param name="ownerId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="ownerId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="newOwnerId"/> is not in the club.
         /// </exception>
         public void UpdateOwner(Guid newOwnerId, Guid ownerId)
         {
-            if (Owner.Id != ownerId)
+            if (!this.IsOwner(ownerId))
                 throw new UnauthorizedAccessException("Only the Owner of the club can change the ownership.");
 
             // Get the member of the club that will be the new owner
-            var member = _members.FirstOrDefault(m => m.Id == newOwnerId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(newOwnerId));
+            var member = _members.FirstOrDefault(m => m.Id == newOwnerId || m.UserId == newOwnerId) ?? throw new ArgumentException("The member could not be found in the club.", nameof(newOwnerId));
 
             // Replace owner by the member
             Owner = member;
@@ -645,13 +664,13 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Updates the <see cref="ClubRole.Name"/> of a <see cref="ClubRole"/> within the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.ChangeRoleName"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.ChangeRoleName"/> permission can perform this action.
         /// </remarks>
         /// <param name="newName">The new name of the role.</param>
         /// <param name="roleId">The <see cref="ClubRole.Id"/> of the role.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="roleId"/> is not in the club.
@@ -659,11 +678,11 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="newName"/> is <see langword="null"/> or <see langword="empty"/>
         /// </exception>
-        public void UpdateRoleName(string newName, Guid roleId, Guid performingMemberId)
+        public void UpdateRoleName(string newName, Guid roleId, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.ChangeRoleName);
+            ValidateMemberPermission(actorId, ClubPermission.ChangeRoleName);
 
             // Throw an exception if the member does not exist in the club
             var role = _roles.FirstOrDefault(m => m.Id == roleId) ?? throw new ArgumentException("The role could not be found in the club.", nameof(roleId));
@@ -674,32 +693,32 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Updates the <see cref="Visibility"/> of the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="performingMemberId"/> with the <see cref="ClubPermission.ChangeVisibility"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermission.ChangeVisibility"/> permission can perform this action.
         /// </remarks>
         /// <param name="visibility">The new visibility of the club.</param>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="performingMemberId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
-        public void UpdateVisibility(ClubVisibility visibility, Guid performingMemberId)
+        public void UpdateVisibility(ClubVisibility visibility, Guid actorId)
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(performingMemberId, ClubPermission.ChangeVisibility);
+            ValidateMemberPermission(actorId, ClubPermission.ChangeVisibility);
             Visibility = visibility;
         }
 
         /// <summary>
         /// Validates if a user is authorized to perform an action.
         /// </summary>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <param name="permission">The required <see cref="ClubPermission"/> to perform the action</param>
         /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the <paramref name="userId"/> is not authorized to perform the action.
+        /// Thrown when the <paramref name="actorId"/> is not authorized to perform the action.
         /// </exception>
-        private void ValidateMemberPermission(Guid performingMemberId, ClubPermission permission)
+        private void ValidateMemberPermission(Guid actorId, ClubPermission permission)
         {
-            if (!IsMemberAuthorized(performingMemberId, permission))
+            if (!IsMemberAuthorized(actorId, permission))
                 throw new UnauthorizedAccessException($"Club member does not have the permission to {permission}");
 
         }
@@ -715,15 +734,15 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <item>The user is the <see cref="Owner"/> of the <see cref="Club"/>.</item>
         /// </list>
         /// </remarks>
-        /// <param name="performingMemberId">The <see cref="ClubMember.Id"/> of the club member performing the action.</param>
+        /// <param name="actorId">The <see cref="Entity.Id"/> or the <see cref="ClubMember.UserId"/> of the club member performing the action.</param>
         /// <param name="permission">The required <see cref="ClubPermission"/> to perform the action.</param>
         /// <returns>
         /// <see langword="true"/> if the user has the required permission, otherwise <see langword="false"/>.
         /// </returns>
-        private bool IsMemberAuthorized(Guid performingMemberId, ClubPermission permission)
+        private bool IsMemberAuthorized(Guid actorId, ClubPermission permission)
         {
             // Get the member based on the specified user ID
-            var member = _members.FirstOrDefault(m => m.Id == performingMemberId);
+            var member = _members.FirstOrDefault(m => m.Id == actorId || m.UserId == actorId);
 
             // Return false if the user is not part of the club
             if (member is null)
@@ -735,8 +754,18 @@ namespace CocktailsApp.Domain.ClubAggregate
             // - They have permission through a role
             // - He's the owner of club
             return (member.HasPermission(permission) ||
-                    Owner.Id == member.Id);
+                    this.IsOwner(actorId));
                 
+        }
+
+        /// <summary>
+        /// Verifies that the specified id corresponds to the <see cref="Owner"/> of the club.
+        /// </summary>
+        /// <param name="actorId">The unique identifier to verify</param>
+        /// <returns><see langword="true"/> if the <paramref name="actorId"/> is the <see cref="Owner"/>, otherwise <see langword="false"/></returns>
+        private bool IsOwner(Guid actorId)
+        {
+            return Owner.Id == actorId || Owner.UserId == actorId;
         }
     }
 }

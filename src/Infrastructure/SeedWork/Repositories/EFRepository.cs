@@ -52,7 +52,10 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="entity">The entity to delete.</param>
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _dbContext.Set<T>().Remove(entity);
         }
 
         /// <summary>
@@ -105,7 +108,10 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="entity">The entity to update.</param>
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _dbContext.Update(entity);
         }
 
         /// <summary>

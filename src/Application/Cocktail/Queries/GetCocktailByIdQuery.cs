@@ -18,11 +18,11 @@ using MediatR;
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public class GetCocktailByIdQuery(Guid cocktailId) : IQuery<CocktailDTO>
+    public class GetCocktailByIdQuery(Guid cocktailId) : IQuery<Domain.CocktailAggregate.Cocktail, CocktailDTO>
     {
         private readonly Guid _cocktailId = cocktailId;
-        public ISpecification<CocktailDTO> Specification => throw new NotImplementedException();
+        public ISpecification<Domain.CocktailAggregate.Cocktail> Specification => throw new NotImplementedException();
 
-        public Func<IIncludable<CocktailDTO>, IIncludable>? Include => throw new NotImplementedException();
+        public Func<IIncludable<Domain.CocktailAggregate.Cocktail>, IIncludable>? Include => throw new NotImplementedException();
     }
 }

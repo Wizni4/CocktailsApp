@@ -20,6 +20,8 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
     [TestFixture]
     public class ClubTest
     {
+        private Guid _ownerUserId = Guid.NewGuid();
+        private Guid _memberUserId = Guid.NewGuid();
         private Club _club;
         private ClubMember _member;
         private ClubMember _owner;
@@ -33,7 +35,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 .WithAddress(new("123 Main St", "456", "Springfield", "12345", "IL", "USA"))
                 .WithDescription("A club for testing.")
                 .WithName("Test Club")
-                .WithOwner(Guid.NewGuid())
+                .WithOwner(_ownerUserId)
                 .WithVisibility(ClubVisibility.Public)
                 .Build();
 
@@ -46,9 +48,8 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             _role = _club.Roles.First(r => r.Name == roleName);
 
             // Create Test Member
-            var userId = Guid.NewGuid();
-            _club.AddMember(userId, _owner.Id);
-            _member = _club.Members.First(m => m.UserId == userId);
+            _club.AddMember(_memberUserId, _owner.Id);
+            _member = _club.Members.First(m => m.UserId == _memberUserId);
             _member.AddRole(_role);
 
             // Create Cocktail
@@ -67,6 +68,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 [
                 //  new TestCaseData(scenario       , shouldSucceed),
                     new TestCaseData("owner"        , true         ),
+                    new TestCaseData("user"         , true         ),
                     new TestCaseData("member"       , true         ),
                     new TestCaseData("role"         , true         ),
                     new TestCaseData("not_permitted", false        ),
@@ -84,11 +86,15 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             Action assert)
         {
             // Arrange
-            var performingMemberId = _member.Id;
+            var actorId = _member.Id;
             switch (scenario)
             {
                 case "owner":
                     _club.UpdateOwner(_member.Id, _owner.Id);
+                    break;
+                case "user":
+                    _member.AddPermission(permission);
+                    actorId = _memberUserId;
                     break;
                 case "member":
                     _member.AddPermission(permission);
@@ -100,7 +106,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                     _club.RemoveMember(_member.Id, _owner.Id);
                     break;
                 case "empty_user_id":
-                    performingMemberId = Guid.Empty;
+                    actorId = Guid.Empty;
                     break;
                 default:
                     break;
@@ -110,14 +116,14 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             if (shouldSucceed)
             {
                 // Act
-                action(performingMemberId);
+                action(actorId);
 
                 // Assert
                 assert();
             }
             else
             {
-                var exception = Assert.Throws<UnauthorizedAccessException>(() => action(performingMemberId));
+                var exception = Assert.Throws<UnauthorizedAccessException>(() => action(actorId));
                 Assert.That(exception.Message, Is.EqualTo($"Club member does not have the permission to {permission}"));
             }
         }
@@ -132,7 +138,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var permission = ClubPermission.AddCocktail;
             var cocktailId = Guid.NewGuid();
-            var action = (Guid performingMemberId) => _club.AddCocktail(cocktailId, performingMemberId);
+            var action = (Guid actorId) => _club.AddCocktail(cocktailId, actorId);
             var assert = () =>
             {
                 // Assert
@@ -189,7 +195,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var permission = ClubPermission.AddMember;
             var userId = Guid.NewGuid();
-            var action = (Guid performingMemberId) => _club.AddMember(userId, performingMemberId);
+            var action = (Guid actorId) => _club.AddMember(userId, actorId);
             var assert = () =>
             {
                 // Assert
@@ -242,7 +248,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var permission = ClubPermission.AddPermissionToMember;
             var permissionAdded = ClubPermission.RemoveRoleToMember;
-            var action = (Guid performingMemberId) => _club.AddPermissionToMember(_member.Id, permissionAdded, performingMemberId);
+            var action = (Guid actorId) => _club.AddPermissionToMember(_member.Id, permissionAdded, actorId);
             var assert = () => Assert.That(_member.Permissions.Any(p => p == permissionAdded), Is.True);
 
             // Act & Assert
@@ -304,7 +310,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var permission = ClubPermission.AddRolePermission;
             var permissionAdded = ClubPermission.RemoveRoleToMember;
-            var action = (Guid performingMemberId) => _club.AddRolePermission(_role.Id, permissionAdded, performingMemberId);
+            var action = (Guid actorId) => _club.AddRolePermission(_role.Id, permissionAdded, actorId);
             var assert = () => Assert.That(_role.Permissions.Any(p => p == permissionAdded), Is.True);
 
             // Act & Assert
@@ -370,7 +376,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
             // Arrange
             var permission = ClubPermission.AddRoleToMember;
-            var action = (Guid performingMemberId) => _club.AddRoleToMember(_member.Id, role.Id, performingMemberId);
+            var action = (Guid actorId) => _club.AddRoleToMember(_member.Id, role.Id, actorId);
             var assert = () => Assert.That(_member.Roles.Any(r => r.Name == roleName), Is.True);
 
             // Act & Assert
@@ -422,7 +428,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var permission = ClubPermission.CreateRole;
             var roleName = "Test role";
-            var action = (Guid performingMemberId) => _club.CreateRole(roleName, performingMemberId);
+            var action = (Guid actorId) => _club.CreateRole(roleName, actorId);
             var assert = () =>
             {
                 var role = _club.Roles.First(r => r.Name == roleName);
@@ -500,7 +506,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
             // Arrange
             var permission = ClubPermission.DeleteRole;
-            var action = (Guid performingMemberId) => _club.DeleteRole(role.Id, performingMemberId);
+            var action = (Guid actorId) => _club.DeleteRole(role.Id, actorId);
             var assert = () =>
             {
                 Assert.Multiple(() =>
@@ -545,11 +551,35 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         #region RemoveCocktail
 
         [Test, TestCaseSource(nameof(PermissionTestCases))]
-        public void RemoveCocktail_PermissionScenarios(string scenario, bool shouldSucceed)
+        public void RemoveCocktail_ClubCocktaiId_PermissionScenarios(string scenario, bool shouldSucceed)
         {
             // Arrange
             var permission = ClubPermission.RemoveCocktail;
-            var action = (Guid performingMemberId) => _club.RemoveCocktail(_cocktail.Id, performingMemberId);
+            var action = (Guid actorId) => _club.RemoveCocktail(_cocktail.Id, actorId);
+            var assert = () =>
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(_club.Cocktails, Has.Count.EqualTo(0));
+                    Assert.That(_club.Cocktails.Any(c => c.CocktailId == _cocktail.Id), Is.False);
+                });
+            };
+
+            // Act & Assert
+            RunPermissionScenarios(
+                permission,
+                scenario,
+                shouldSucceed,
+                action,
+                assert);
+        }
+
+        [Test, TestCaseSource(nameof(PermissionTestCases))]
+        public void RemoveCocktail_ClubCocktaiCocktailId_PermissionScenarios(string scenario, bool shouldSucceed)
+        {
+            // Arrange
+            var permission = ClubPermission.RemoveCocktail;
+            var action = (Guid actorId) => _club.RemoveCocktail(_cocktail.CocktailId, actorId);
             var assert = () =>
             {
                 Assert.Multiple(() =>
@@ -597,7 +627,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         {
             // Arrange
             var permission = ClubPermission.RemoveMember;
-            var action = (Guid performingMemberId) => _club.RemoveMember(_member.Id, performingMemberId);
+            var action = (Guid actorId) => _club.RemoveMember(_member.Id, actorId);
             var assert = () =>
             {
                 Assert.Multiple(() =>
@@ -648,7 +678,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
             // Arrange
             var permission = ClubPermission.RemovePermissionToMember;
-            var action = (Guid performingMemberId) => _club.RemovePermissionToMember(_member.Id, ClubPermission.AddCocktail, performingMemberId);
+            var action = (Guid actorId) => _club.RemovePermissionToMember(_member.Id, ClubPermission.AddCocktail, actorId);
             var assert = () =>
             {
                 Assert.That(_member.Permissions.Any(p => p == ClubPermission.AddCocktail), Is.False);
@@ -705,7 +735,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
             // Arrange
             var permission = ClubPermission.RemoveRolePermission;
-            var action = (Guid performingMemberId) => _club.RemoveRolePermission(_role.Id, ClubPermission.AddCocktail, performingMemberId);
+            var action = (Guid actorId) => _club.RemoveRolePermission(_role.Id, ClubPermission.AddCocktail, actorId);
             var assert = () =>
             {
                 Assert.That(_role.Permissions.Any(p => p == ClubPermission.AddCocktail), Is.False);
@@ -765,7 +795,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
             // Arrange
             var permission = ClubPermission.RemoveRoleToMember;
-            var action = (Guid performingMemberId) => _club.RemoveRoleToMember(_member.Id, role.Id, performingMemberId);
+            var action = (Guid actorId) => _club.RemoveRoleToMember(_member.Id, role.Id, actorId);
             var assert = () =>
             {
                 Assert.Multiple(() =>
@@ -824,7 +854,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var newAdress = new Address("Test street", "123", "Somewhere", "12345", "", "FR");
             var permission = ClubPermission.ChangeAddress;
-            var action = (Guid performingMemberId) => _club.UpdateAddress(newAdress, performingMemberId);
+            var action = (Guid actorId) => _club.UpdateAddress(newAdress, actorId);
             var assert = () =>
             {
                 Assert.That(_club.Address, Is.EqualTo(newAdress));
@@ -859,7 +889,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var newDescription = "A new test description";
             var permission = ClubPermission.ChangeDescription;
-            var action = (Guid performingMemberId) => _club.UpdateDescription(newDescription, performingMemberId);
+            var action = (Guid actorId) => _club.UpdateDescription(newDescription, actorId);
             var assert = () =>
             {
                 Assert.That(_club.Description, Is.EqualTo(newDescription));
@@ -904,7 +934,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var newName = "A new test name";
             var permission = ClubPermission.ChangeName;
-            var action = (Guid performingMemberId) => _club.UpdateName(newName, performingMemberId);
+            var action = (Guid actorId) => _club.UpdateName(newName, actorId);
             var assert = () =>
             {
                 Assert.That(_club.Name, Is.EqualTo(newName));
@@ -944,10 +974,20 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         #region UpdateOwner
 
         [Test]
-        public void UpdateOwner_PerformedByOwner_OwnerChanged()
+        public void UpdateOwner_PerformedByOwnerId_OwnerChanged()
         {
             // Act
             _club.UpdateOwner(_member.Id, _owner.Id);
+
+            // Assert
+            Assert.That(_club.Owner, Is.EqualTo(_member));
+        }
+
+        [Test]
+        public void UpdateOwner_PerformedByOwnerUserId_OwnerChanged()
+        {
+            // Act
+            _club.UpdateOwner(_memberUserId, _ownerUserId);
 
             // Assert
             Assert.That(_club.Owner, Is.EqualTo(_member));
@@ -993,7 +1033,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var newRoleName = "A new name to the role";
             var permission = ClubPermission.ChangeRoleName;
-            var action = (Guid performingMemberId) => _club.UpdateRoleName(newRoleName, _role.Id, performingMemberId);
+            var action = (Guid actorId) => _club.UpdateRoleName(newRoleName, _role.Id, actorId);
             var assert = () =>
             {
                 Assert.That(_role.Name, Is.EqualTo(newRoleName));
@@ -1057,7 +1097,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         {
             // Arrange
             var permission = ClubPermission.ChangeVisibility;
-            var action = (Guid performingMemberId) => _club.UpdateVisibility(ClubVisibility.Public, performingMemberId);
+            var action = (Guid actorId) => _club.UpdateVisibility(ClubVisibility.Public, actorId);
             var assert = () =>
             {
                 Assert.That(_club.Visibility, Is.EqualTo(ClubVisibility.Public));
