@@ -1,8 +1,12 @@
 ﻿using API.Configurations;
 
 using CocktailsApp.API;
+using CocktailsApp.Application.SeedWork.Mappers;
+
+using Hellang.Middleware.ProblemDetails;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +27,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
 
+builder.Services.AddDbContext(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddRepositories();
+builder.Services.AddApplicationServices();
+builder.Services.AddApplicationHandlers();
+builder.Services.AddCustomErrors();
+
 builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();
 
 var app = builder.Build();
@@ -42,6 +53,8 @@ app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseProblemDetails();
 
 app.MapControllers();
 

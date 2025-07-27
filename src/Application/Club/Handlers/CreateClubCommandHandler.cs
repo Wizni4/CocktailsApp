@@ -1,0 +1,60 @@
+﻿/*
+ * Domain namespaces
+ */
+using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
+/*
+ * Application namespaces
+ */
+using CocktailsApp.Application.SeedWork;
+/*
+ * Framework namespaces
+ */
+using AutoMapper;
+using CocktailsApp.Domain.UserAggregate;
+
+namespace CocktailsApp.Application.Club
+{
+    /// <summary>
+    /// Handles the <see cref="CreateClubCommand"/> by creating a new club and returning its data as a <see cref="ClubDTO"/>.
+    /// </summary>
+    /// <remarks>
+    /// This handler constructs the club aggregate using the builder pattern, persists it using the unit of work,
+    /// and maps the result to a DTO for return.
+    /// </remarks>
+    public class CreateClubCommandHandler(IUnitOfWork unitOfWork, IMapper autoMapper)
+        : ICommandHandler<CreateClubCommand, ClubDTO>
+    {
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _autoMapper = autoMapper;
+
+        /// <summary>
+        /// Handles the club creation command by building and saving a new club entity.
+        /// </summary>
+        /// <param name="request">The request containing the information needed to create a club.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation, with a <see cref="ClubDTO"/> containing the created club's data.
+        /// </returns>
+        /// <exception cref="KeyNotFoundException">
+        /// Thrown when the ownerId from the <paramref name="request"/> is not found in the db.
+        /// </exception>
+        public async Task<ClubDTO> Handle(CreateClubCommand request, CancellationToken cancellationToken)
+        {
+            var user = await _unitOfWork.Set<Domain.UserAggregate.User>().ReadAsync(new UserByIdSpecification(request.OwnerId)) ?? throw new KeyNotFoundException($"User with ID {request.OwnerId} was not found.");
+
+            var club = new ClubBuilder()
+                .WithAddress(_autoMapper.Map<Address>(request.Address))
+                .WithDescription(request.Description)
+                .WithName(request.Name)
+                .WithOwner(request.OwnerId)
+                .WithVisibility(request.Visibility)
+                .Build();
+
+            _unitOfWork.Set<Domain.ClubAggregate.Club>().Create(club);
+            await _unitOfWork.SaveChangesAsync();
+
+            return _autoMapper.Map<ClubDTO>(club);
+        }
+    }
+}

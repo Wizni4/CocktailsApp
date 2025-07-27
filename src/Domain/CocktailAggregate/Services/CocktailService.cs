@@ -3,22 +3,16 @@
  */
 using CocktailsApp.Domain.IngredientPricingAggregate;
 using CocktailsApp.Domain.SeedWork;
-
 /*
  * Framework namespaces
  */
 
 namespace CocktailsApp.Domain.CocktailAggregate
 {
-    public class CocktailService(IUnitOfWork unitOfWork) : Service, ICocktailService
+    public class CocktailService() : Service, ICocktailService
     {
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
-
-        public async Task<decimal> CalculateTotalPriceAsync(Cocktail cocktail)
+        public decimal CalculateTotalPriceAsync(Cocktail cocktail, List<IngredientPricing> ingredientPricings)
         {
-            var ingredientPricings = (await _unitOfWork.Set<IngredientPricing>()
-                .ReadRangeAsync(new IngredientPricingSpecification([.. cocktail.Ingredients.Select(ci => ci.Ingredient)])));
-
             var totalPrice = cocktail.Ingredients
                 .Sum(ci =>
                 {
@@ -32,11 +26,8 @@ namespace CocktailsApp.Domain.CocktailAggregate
             return totalPrice;
         }
 
-        public async Task<decimal> CalculateTotalCostAsync(Cocktail cocktail)
+        public decimal CalculateTotalCostAsync(Cocktail cocktail, List<IngredientPricing> ingredientPricings)
         {
-            var ingredientPricings = await _unitOfWork.Set<IngredientPricing>()
-                .ReadRangeAsync(new IngredientPricingSpecification([.. cocktail.Ingredients.Select(ci => ci.Ingredient)]));
-
             var totalPrice = cocktail.Ingredients
                 .Sum(ci =>
                 {

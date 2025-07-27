@@ -114,7 +114,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         {
             // Get the role, and ensure the member have the role.
             // Throw an error if the memebr doesn have the role.
-            var role = _roles.FirstOrDefault(r => r.Id == roleId) ?? throw new ArgumentException("The member doesn't have this role", nameof(roleId));
+            var role = _roles.FirstOrDefault(r => r.Id == roleId) ?? throw new ArgumentException("The member doesn't have this role.", nameof(roleId));
             _roles.Remove(role);
         }
 

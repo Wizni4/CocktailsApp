@@ -15,6 +15,10 @@ namespace CocktailsApp.Domain.CocktailAggregate
         public IReadOnlyCollection<CocktailIngredient> Ingredients { get { return _ingredients.AsReadOnly(); } }
         public string Name { get; private set; }
 
+#pragma warning disable CS8618
+        private Cocktail() { } // <----- EF forced me
+#pragma warning restore CS8618
+
         internal Cocktail(string name, List<CocktailIngredient> ingredients)
         {
             Name = name;

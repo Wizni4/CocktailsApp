@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 
 namespace CocktailsApp.Domain.StockAggregate
 {
-    class StockByIngredientSpecification(Ingredient ingredient) : Specification<Stock>
+    public class StockByIngredientSpecification(Ingredient ingredient) : Specification<Stock>
     {
         private readonly Ingredient _ingredient = ingredient;
 

@@ -6,10 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	<Configurations>Debug;Release;LOCAL</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UserAggregate\DTOs\" />
+    <Folder Include="Club\Queries\" />
+    <Folder Include="Order\Commands\" />
   </ItemGroup>
 
 </Project>

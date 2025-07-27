@@ -1,6 +1,7 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Domain.IngredientPricingAggregate;
 using CocktailsApp.Domain.SeedWork;
 
 /*
@@ -11,7 +12,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
 {
     public interface ICocktailService : IService
     {
-        Task<decimal> CalculateTotalPriceAsync(Cocktail cocktail);
-        Task<decimal> CalculateTotalCostAsync(Cocktail cocktail);
+        decimal CalculateTotalPriceAsync(Cocktail cocktail, List<IngredientPricing> ingredientPricings);
+        decimal CalculateTotalCostAsync(Cocktail cocktail, List<IngredientPricing> ingredientPricings);
     }
 }

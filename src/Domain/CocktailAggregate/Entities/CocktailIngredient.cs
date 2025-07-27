@@ -15,6 +15,9 @@ namespace CocktailsApp.Domain.CocktailAggregate
         public Ingredient Ingredient { get; }
         public decimal Quantity { get; }
 
+#pragma warning disable CS8618
+        private CocktailIngredient() { } // <----- EF forced me
+#pragma warning restore CS8618
         internal CocktailIngredient(Ingredient? ingredient, decimal quantity)
         {
             ArgumentNullException.ThrowIfNull(ingredient);

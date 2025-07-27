@@ -38,7 +38,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 .Build();
 
             // Set the owner
-            _owner = _club.Owner;
+            _owner = _club.Members.First();
 
             // Create Test role
             var roleName = "Test Role";
@@ -785,6 +785,16 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
+        public void RemoveRoleToMember_MemberDoesNotHaveRole_ThrowArgumentException()
+        {
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentException>(() =>
+                _club.RemoveRoleToMember(_member.Id, Guid.NewGuid(), _owner.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("The member doesn't have this role. (Parameter 'roleId')"));
+        }
+
+        [Test]
         public void RemoveRoleToMember_MemberNotInClub_ThrowArgumentException()
         {
             // Act & Assert
@@ -940,7 +950,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             _club.UpdateOwner(_member.Id, _owner.Id);
 
             // Assert
-            Assert.That(_club.Owner, Is.EqualTo(_member));
+            Assert.That(_club.Owner, Is.EqualTo(_member.Id));
         }
 
         [Test]

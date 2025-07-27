@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using CocktailsApp.Application.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailsApp.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("user")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController(IUserService userService) : ControllerBase
     {
-        [HttpGet(Name = "GetUSerId")]
+        private readonly IUserService _userService = userService;
+        [HttpPost("create", Name = "CreateUser")]
         [Tags("User")]
-        public IActionResult Get()
+        public async Task<IActionResult> Create()
         {
-            return Ok("Hello World");
+            var user = await _userService.CreateUserAsync();
+            return Ok(user);
         }
     }
 }

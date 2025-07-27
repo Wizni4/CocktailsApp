@@ -6,6 +6,8 @@
  * Framework namespaces
  */
 
+using CocktailsApp.Domain.SeedWork;
+
 namespace CocktailsApp.Domain.ClubAggregate
 {
     /// <summary>
@@ -97,5 +99,21 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Permission to remove a <see cref="ClubRole"/> from a <see cref="ClubMember"/>.
         /// </summary>
         RemoveRoleToMember,
+    }
+
+    /// <summary>
+    /// Enumerates the permissions that can be assigned to roles or members within a club.
+    /// </summary>
+    public class ClubPermissionEntity : ValueObject
+    {
+        public ClubPermission Id { get; }
+        public string Name { get => _name; }
+        private string _name;
+
+        internal ClubPermissionEntity(ClubPermission id)
+        {
+            Id = id;
+            _name = Id.ToString();
+        }
     }
 }

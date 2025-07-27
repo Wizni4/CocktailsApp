@@ -16,7 +16,9 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
         public Ingredient Ingredient { get; private set; }
         public decimal Price { get; private set; }
         public decimal Margin { get { return Cost - Price; } }
-
+#pragma warning disable CS8618
+        private IngredientPricing() { } // <----- EF forced me
+#pragma warning restore CS8618
         internal IngredientPricing(Ingredient? ingredient, decimal cost, decimal price)
         {
             if (ingredient is null)

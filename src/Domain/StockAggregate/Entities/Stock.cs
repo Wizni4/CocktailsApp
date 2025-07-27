@@ -17,6 +17,10 @@ namespace CocktailsApp.Domain.StockAggregate
         public IReadOnlyCollection<StockTransaction> StockTransactions { get { return _stockTransactions.AsReadOnly(); } }
         public string Unit { get; }
 
+#pragma warning disable CS8618
+        private Stock() { } // <----- EF forced me
+#pragma warning restore CS8618
+
         internal Stock(Ingredient ingredient, string unit)
         {
             Ingredient = ingredient;

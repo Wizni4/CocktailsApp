@@ -58,8 +58,8 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <remarks>
         /// Address can be changed using the <see cref="UpdateAddress(Address?, Guid)"/> method.
         /// </remarks>
-        public Address? Address { get; private set; }
-
+        public Address? Address { get => _address; }
+        private Address? _address = null!;
 
         /// <summary>
         /// Gets the <see langword="readonly"/> collection of <see cref="ClubCocktail"/> available in the club.
@@ -151,6 +151,10 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </remarks>
         public ClubVisibility Visibility { get; private set; }
 
+#pragma warning disable CS8618
+        private Club() { } // <----- EF forced me
+#pragma warning restore CS8618
+
         /// <summary>
         /// Creates a new instance of a <see cref="Club"/>.
         /// </summary>
@@ -188,7 +192,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // - Address
             // - Name
             // - Visibility
-            UpdateAddress(address, Owner.Id);
+            _address = address;
             UpdateDescription(description, Owner.Id);
             UpdateName(name, Owner.Id);
             UpdateVisibility(visibility, Owner.Id);
@@ -561,7 +565,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // Raise an exception if the user doesn't have permission to perform the action.
             ValidateMemberPermission(performingMemberId, ClubPermission.ChangeAddress);
             ArgumentNullException.ThrowIfNull(newAddress, nameof(newAddress));
-            Address = newAddress;
+            _address = newAddress;
 
         }
 
