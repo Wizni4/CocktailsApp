@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using Cocktails.API.Models.Shared;
 
+using CocktailsApp.API.Models.Shared;
 using CocktailsApp.Application.Shared;
 using CocktailsApp.Domain.ClubAggregate;
 

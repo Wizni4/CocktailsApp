@@ -31,6 +31,7 @@ namespace CocktailsApp.Application.SeedWork.Mappers
             CreateMap<CocktailsApp.Domain.ClubAggregate.Club, ClubDTO>();
             CreateMap<CocktailsApp.Domain.ClubAggregate.ClubCocktail, ClubCocktailDTO>();
             CreateMap<CocktailsApp.Domain.ClubAggregate.ClubMember, ClubMemberDTO>();
+            CreateMap<CocktailsApp.Domain.ClubAggregate.ClubPermission, ClubPermissionDTO>();
             CreateMap<CocktailsApp.Domain.ClubAggregate.ClubRole, ClubRoleDTO>();
 
             // Shared

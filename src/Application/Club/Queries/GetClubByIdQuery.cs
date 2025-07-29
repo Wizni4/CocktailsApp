@@ -24,9 +24,10 @@ namespace CocktailsApp.Application.Club
             get
             {
                 return c => c.Include(c => c.Cocktails)
-                              .Include(c => c.Members)
+                             .Include(c => c.Owner)
+                             .Include(c => c.Members)
                                 .ThenInclude(m => m.Roles)
-                              .Include(c => c.Roles);
+                             .Include(c => c.Roles);
             }
         }
     }

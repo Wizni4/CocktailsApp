@@ -28,6 +28,6 @@ namespace CocktailsApp.Application.Club
         /// <summary>
         /// Gets or sets the list of permissions associated with this role.
         /// </summary>
-        public List<ClubPermission> Permissions { get; set; } = [];
+        public List<ClubPermissionDTO> Permissions { get; set; } = [];
     }
 }

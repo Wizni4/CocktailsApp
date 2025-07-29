@@ -3,6 +3,7 @@
 using CocktailsApp.API;
 using CocktailsApp.API.Mappers;
 using CocktailsApp.Application.SeedWork.Mappers;
+using CocktailsApp.Infrastructure.Authentication;
 
 using Hellang.Middleware.ProblemDetails;
 
@@ -16,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("http://localhost:4200") // Replace with your front-end URL
+        builder => builder.WithOrigins("http://localhost:4200")
                           .AllowAnyHeader()
                           .AllowAnyMethod());
 });
@@ -28,13 +29,12 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddMediatR(builder.Configuration);
-builder.Services.AddAutoMapper(typeof(APIMapperProfile),typeof(ApplicationMapperProfile));
+builder.Services.AddAutoMapper(typeof(APIMapperProfile), typeof(ApplicationMapperProfile));
 builder.Services.AddRepositories();
 builder.Services.AddEventDispatcher();
-builder.Services.AddApplicationServices();
+builder.Services.AddAuthServices(builder.Configuration);
 builder.Services.AddApplicationValidators();
 builder.Services.AddCustomErrors();
-
 builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();
 
 var app = builder.Build();

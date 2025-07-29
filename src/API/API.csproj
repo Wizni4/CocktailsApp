@@ -7,10 +7,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<GenerateDocumentationFile>false</GenerateDocumentationFile>
 	<UserSecretsId>b19058a8-ca17-4dbf-afbf-d58a3521827d</UserSecretsId>
-	<Configurations>Debug;Release;LOCAL</Configurations>
+	<Configurations>Debug;Release;LOCAL;LOCAL-COGNITO</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="4.0.1.13" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.2" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />

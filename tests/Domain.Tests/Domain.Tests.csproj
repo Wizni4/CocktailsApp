@@ -7,7 +7,7 @@
 	<LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <Configurations>Debug;Release;LOCAL</Configurations>
+    <Configurations>Debug;Release;LOCAL;LOCAL-COGNITO</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

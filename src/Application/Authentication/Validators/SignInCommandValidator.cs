@@ -18,7 +18,7 @@ namespace CocktailsApp.Application.Authentication
     {
         public SignInCommandValidator()
         {
-            RuleFor(c => c.Login)
+            RuleFor(c => c.Username)
                 .NotNull()
                 .WithMessage("Login must be provided.")
                 .NotEmpty()

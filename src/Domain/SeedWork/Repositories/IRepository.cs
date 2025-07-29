@@ -30,7 +30,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// <param name="spec">Condition</param>
         /// <param name="includes">Properties that should be eagerly loaded</param>
         /// <returns>Domain model corresponding to the condition, including specified sub-properties</returns>
-        Task<T> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
+        Task<T?> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
         /// <summary>
         /// Get a list of domain models, according to a condition.
         /// </summary>

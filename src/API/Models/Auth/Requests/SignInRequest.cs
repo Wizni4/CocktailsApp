@@ -9,7 +9,7 @@ namespace CocktailsApp.API.Models.Authentication
     public class SignInRequest
     {
         [Required]
-        public required string Login { get; set; }
+        public required string Username { get; set; }
         [Required]
         public required string Password { get; set; }
     }

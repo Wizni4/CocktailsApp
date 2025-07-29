@@ -4,6 +4,10 @@
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="LOCAL-COGNITO|AnyCPU">
+      <Configuration>LOCAL-COGNITO</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="LOCAL|AnyCPU">
       <Configuration>LOCAL</Configuration>
       <Platform>AnyCPU</Platform>

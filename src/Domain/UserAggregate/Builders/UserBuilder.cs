@@ -13,12 +13,23 @@ namespace CocktailsApp.Domain.UserAggregate
 {
     public class UserBuilder : IBuilder<User>
     {
-        private string? _login;
+        private Guid _id = Guid.NewGuid();
+        private string? _email;
+        private string? _username;
         private string? _password;
-
-        public UserBuilder WithLogin(string login)
+        public UserBuilder WithId(Guid id)
         {
-            _login = login;
+            _id = id;
+            return this;
+        }
+        public UserBuilder WithEmail(string email)
+        {
+            _email = email;
+            return this;
+        }
+        public UserBuilder WithUsername(string username)
+        {
+            _username = username;
             return this;
         }
         public UserBuilder WithPassword(string password)
@@ -28,7 +39,7 @@ namespace CocktailsApp.Domain.UserAggregate
         }
         public User Build()
         {
-            return new User(_login, _password);
+            return new User(_id, _username, _email, _password);
         }
     }
 }

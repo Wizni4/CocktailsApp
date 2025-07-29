@@ -63,7 +63,7 @@ namespace API.Configurations
         }
     }
 #endif
-#if COGNITO
+#if LOCAL_COGNITO
     public class JwtBearerConfigureOptions(IConfiguration configuration)
     : IConfigureNamedOptions<JwtBearerOptions>
     {

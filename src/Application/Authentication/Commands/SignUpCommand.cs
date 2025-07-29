@@ -12,9 +12,7 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public record SignUpCommand(string Login, string Password) : ICommand
+    public record SignUpCommand(string Username, string Email, string Password) : ICommand
     {
-        public string Login { get; } = Login;
-        public string Password { get; } = Password;
     }
 }

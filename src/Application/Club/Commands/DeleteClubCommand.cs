@@ -22,17 +22,8 @@ namespace CocktailsApp.Application.Club
     /// This may be a <see cref="ClubMember.UserId"/> or a <see cref="ClubMember.Id"/>, depending on the context.
     /// The domain logic is responsible for resolving and authorizing the actor.
     /// </param>
-    public record DeleteClubCommand(Guid ClubId, Guid ActorId) : ICommand<ClubDTO>
-    {
-        /// <summary>
-        /// Gets the unique identifier of the club to delete.
-        /// </summary>
-        public Guid ClubId { get; } = ClubId;
-
-        /// <summary>
-        /// Gets the identifier of the actor performing the deletion.
-        /// May represent either a club member or system user depending on context.
-        /// </summary>
-        public Guid ActorId { get; } = ActorId;
-    }
+    public record DeleteClubCommand(
+        Guid ClubId,
+        Guid ActorId
+    ) : ICommand<ClubDTO>;
 }

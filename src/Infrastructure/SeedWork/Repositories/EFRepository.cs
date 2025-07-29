@@ -2,15 +2,9 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.SeedWork;
-
-using Microsoft.EntityFrameworkCore;
 /*
 * Framework namespaces
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CocktailsApp.Infrastructure.SeedWork
 {
@@ -43,7 +37,10 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="entities">The collection of entities to create.</param>
         public void CreateRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            if (entities == null || entities.Count() == 0)
+                throw new ArgumentNullException(nameof(entities));
+
+            _dbContext.Set<T>().AddRange(entities);
         }
 
         /// <summary>
@@ -64,7 +61,10 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="entities">The collection of entities to delete.</param>
         public void DeleteRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            if (entities == null || entities.Count() == 0)
+                throw new ArgumentNullException(nameof(entities));
+
+            _dbContext.Set<T>().RemoveRange(entities);
         }
 
         /// <summary>
@@ -74,7 +74,13 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of all entities.</returns>
         public Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null)
         {
-            throw new NotImplementedException();
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            // Add include to the query
+            if (includes != null)
+                query = query.IncludeMultiples(includes);
+
+            return Task.FromResult(query.AsEnumerable());
         }
 
         /// <summary>
@@ -83,12 +89,18 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="spec">The specification that defines the query criteria.</param>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the matching entity.</returns>
-        public Task<T> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null)
+        public Task<T?> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null)
         {
             if (spec == null)
                 throw new ArgumentNullException(nameof(spec));
 
-            return Task.FromResult(_dbContext.Set<T>().IncludeMultiples(includes).FirstOrDefault(spec.SpecExpression));
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            // Add include to the query
+            if (includes != null)
+                query = query.IncludeMultiples(includes);
+
+            return Task.FromResult(query.FirstOrDefault(spec.SpecExpression));
         }
 
         /// <summary>
@@ -99,7 +111,16 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of matching entities.</returns>
         public Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null)
         {
-            throw new NotImplementedException();
+            if (spec == null)
+                throw new ArgumentNullException(nameof(spec));
+
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            // Add include to the query
+            if (includes != null)
+                query = query.IncludeMultiples(includes);
+
+            return Task.FromResult(query.Where(spec.SpecExpression).AsEnumerable());
         }
 
         /// <summary>
@@ -120,7 +141,10 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="entities">The collection of entities to update.</param>
         public void UpdateRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            if (entities == null || entities.Count() == 0)
+                throw new ArgumentNullException(nameof(entities));
+
+            _dbContext.UpdateRange(entities);
         }
     }
 }

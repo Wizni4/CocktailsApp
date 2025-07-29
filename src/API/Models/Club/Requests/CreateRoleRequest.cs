@@ -4,7 +4,7 @@
 
 namespace CocktailsApp.API.Models.Club
 {
-    public class CreateRoleRequest
+    public class CreateRoleRequest: PermissionsRequest
     {
         public required string Name { get; set; }
     }

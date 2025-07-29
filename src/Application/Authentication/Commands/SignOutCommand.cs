@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Authentication.Commands
 {
-    public record SignOutCommand(Guid UserId) : ICommand
+    public record SignOutCommand(string? Username, Guid UserId) : ICommand
     {
-        public Guid UserId { get; } = UserId;
     }
 }

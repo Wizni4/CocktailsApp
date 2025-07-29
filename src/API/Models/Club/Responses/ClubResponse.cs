@@ -2,14 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Cocktails.API.Models.Shared;
 
-using CocktailsApp.Application.Club;
-using CocktailsApp.Application.Cocktail;
-using CocktailsApp.Application.Shared;
+using CocktailsApp.API.Models.Shared;
 using CocktailsApp.Domain.ClubAggregate;
+using System.ComponentModel.DataAnnotations;
 
-namespace API.Models.Club.Responses
+namespace CocktailsApp.API.Models.Club
 {
     public class ClubResponse
     {
@@ -55,39 +53,6 @@ namespace API.Models.Club.Responses
         public int Visibility { get; set; }
     }
 
-    public class AddressResponse
-    {
-        /// <summary>
-        /// Gets or sets the name of the street (e.g., "Main Street").
-        /// </summary>
-        public required string Street { get; set; }
-
-        /// <summary>
-        /// Gets or sets the street number (e.g., "42B").
-        /// </summary>
-        public required string StreetNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets the city name (e.g., "Paris").
-        /// </summary>
-        public required string City { get; set; }
-
-        /// <summary>
-        /// Gets or sets the postal or ZIP code (e.g., "75001").
-        /// </summary>
-        public required string PostalCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the state, province, or region (e.g., "Île-de-France").
-        /// </summary>
-        public required string State { get; set; }
-
-        /// <summary>
-        /// Gets or sets the country name (e.g., "France").
-        /// </summary>
-        public required string Country { get; set; }
-    }
-
     public class ClubCocktailResponse
     {
         /// <summary>
@@ -102,7 +67,7 @@ namespace API.Models.Club.Responses
         /// <summary>
         /// Gets or sets the list of permissions granted to the club member.
         /// </summary>
-        public List<ClubPermission> Permissions { get; set; } = [];
+        public List<string> Permissions { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the list of roles assigned to the club member.
@@ -121,7 +86,7 @@ namespace API.Models.Club.Responses
         /// <summary>
         /// Gets or sets the list of permissions associated with this role.
         /// </summary>
-        public List<ClubPermission> Permissions { get; set; } = [];
+        public List<string> Permissions { get; set; } = [];
     }
 
 }

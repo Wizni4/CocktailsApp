@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GenerateDocumentationFile>false</GenerateDocumentationFile>
-	<Configurations>Debug;Release;LOCAL</Configurations>
+	<Configurations>Debug;Release;LOCAL;LOCAL-COGNITO</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

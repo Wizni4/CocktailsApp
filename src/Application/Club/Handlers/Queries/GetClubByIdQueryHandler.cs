@@ -9,7 +9,6 @@ using CocktailsApp.Application.SeedWork;
 /*
  * Domain namespaces
  */
-using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Club

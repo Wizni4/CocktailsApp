@@ -10,16 +10,7 @@ using System.Linq.Expressions;
 
 namespace CocktailsApp.Domain.CocktailAggregate
 {
-    public class CocktailByIdsSpecification(List<Guid> ids) : Specification<Cocktail>
+    public class CocktailByIdsSpecification(List<Guid> ids) : ByIdsSpecification<Cocktail>(ids)
     {
-        private readonly List<Guid> _ids = ids;
-
-        public override Expression<Func<Cocktail, bool>> SpecExpression
-        {
-            get
-            {
-                return cocktail => _ids.Any(id => cocktail.Id == id);
-            }
-        }
     }
 }

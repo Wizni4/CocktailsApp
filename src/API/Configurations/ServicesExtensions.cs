@@ -4,10 +4,12 @@
 /*
  * Application namespaces
  */
+using Amazon.CognitoIdentityProvider;
+
+using CocktailsApp.API.Swagger;
 using CocktailsApp.Application.Authentication;
 using CocktailsApp.Application.Club;
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Application.User;
 using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.SeedWork;
 using CocktailsApp.Domain.UserAggregate;
@@ -31,8 +33,6 @@ using MediatR;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 using System.Globalization;
@@ -44,19 +44,31 @@ namespace CocktailsApp.API
     {
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-#if LOCAL
+#if LOCAL || LOCAL_COGNITO
             string connectionStr = configuration.GetConnectionString("Local");
-            string secretKey = configuration["Jwt:SecretKey"];
 #elif AWS_TEST
             string connectionStr = await SecretManager.GetSecret(configuration);
 #endif
             services.AddDbContextPool<EFDbContext>(options => options.UseSqlServer(connectionStr));
-            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+            return services;
+        }
+
+        public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration)
+        {
+#if LOCAL
+            services.AddScoped<IAuthService, LocalAuthService>();
+#elif LOCAL_COGNITO
+            services.AddScoped<IAuthService, CognitoAuthService>();
+            services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+            services.AddAWSService<IAmazonCognitoIdentityProvider>();
+            services.Configure<CognitoSettings>(configuration.GetSection("Cognito"));
+#endif
             return services;
         }
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
+            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IIncludable<>), typeof(Includable<>));
             services.AddScoped<IRepository<User>, UserRepository>();
@@ -69,13 +81,6 @@ namespace CocktailsApp.API
         public static IServiceCollection AddEventDispatcher(this IServiceCollection services)
         {
             services.AddScoped<DomainEventDispatcher>();
-            return services;
-        }
-
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        {
-            services.AddScoped<IAuthService, LocalAuthService>();
-            
             return services;
         }
 
@@ -95,18 +100,18 @@ namespace CocktailsApp.API
                 // -- Command Hanlders
                 cfg.RegisterServicesFromAssemblyContaining<AddCocktailCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<AddMemberCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<AddPermissionToMemberCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<AddRolePermissionCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<AddRoleToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<AddPermissionsToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<AddPermissionsToRoleCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<AddRolesToMemberCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<CreateClubCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<CreateRoleCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<DeleteClubCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<DeleteRoleCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<RemoveCocktailCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemoveCocktailsCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<RemoveMemberCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<RemovePermissionToMemberCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<RemoveRolePermissionCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<RemoveRoleToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemovePermissionsToMemberCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemovePermissionsToRoleCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<RemoveRolesToMemberCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<UpdateAddressCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<UpdateDescriptionCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<UpdateNameCommandHandler>();
@@ -130,20 +135,20 @@ namespace CocktailsApp.API
             services.AddValidatorsFromAssemblyContaining<SignUpCommandValidator>();
 
             // Club
-            services.AddValidatorsFromAssemblyContaining<AddCocktailCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddCocktailsCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<AddMemberCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<AddPermissionToMemberCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<AddRolePermissionCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<AddRoleToMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddPermissionsToMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddPermissionsToRoleCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<AddRolesToMemberCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateClubCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateRoleCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<DeleteClubCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<DeleteRoleCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<RemoveCocktailCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<RemoveMemberCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<RemovePermissionToMemberCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<RemoveRolePermissionCommandValidator>();
-            services.AddValidatorsFromAssemblyContaining<RemoveRoleToMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemoveCocktailsCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemoveMembersCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemovePermissionsToMemberCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemovePermissionsToRoleCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RemoveRolesToMemberCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<UpdateAddressCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<UpdateDescriptionCommandValidator>();
             services.AddValidatorsFromAssemblyContaining<UpdateNameCommandValidator>();
@@ -173,6 +178,14 @@ namespace CocktailsApp.API
                 options.IncludeExceptionDetails = (ctx, ex) => false; // 🔒 Never include stack traces
 
                 options.Map<ValidationException>(ex =>
+                    new ProblemDetails
+                    {
+                        Title = "Bad Request",
+                        Status = StatusCodes.Status400BadRequest,
+                        Detail = ex.Message
+                    });
+
+                options.Map<ArgumentException>(ex =>
                     new ProblemDetails
                     {
                         Title = "Bad Request",
@@ -225,6 +238,8 @@ namespace CocktailsApp.API
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
+
+                c.SchemaFilter<ClubPermissionSchemaFilter>();
 
                 // Define the BearerAuth scheme
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

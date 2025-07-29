@@ -23,18 +23,20 @@ namespace CocktailsApp.Domain.ClubAggregate
         private string _name = null!;
 
         /// <summary>
-        /// Gets the <see langword="readonly"/> list of <see cref="ClubPermission"/> of the <see cref="ClubRole"/>.
+        /// Gets the <see langword="readonly"/> list of <see cref="ClubPermissionType"/> of the <see cref="ClubRole"/>.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// <see cref="ClubPermission"/> can be added within the <see cref="ClubRole"/> using the <see cref="AddPermission(ClubPermission)"/> method.
+        /// <see cref="ClubPermissionType"/> can be added within the <see cref="ClubRole"/> using the <see cref="AddPermission(ClubPermissionType)"/> method.
         /// </para>
         /// <para>
-        /// <see cref="ClubPermission"/> can be removed from the <see cref="ClubRole"/> using the <see cref="RemovePermission(ClubPermission)"/> method.
+        /// <see cref="ClubPermissionType"/> can be removed from the <see cref="ClubRole"/> using the <see cref="RemovePermission(ClubPermissionType)"/> method.
         /// </para>
         /// </remarks>
         public IReadOnlyCollection<ClubPermission> Permissions { get { return _permissions.AsReadOnly(); } }
         private readonly List<ClubPermission> _permissions = [];
+
+        public bool IsOwnerRole { get; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="ClubRole"/>
@@ -43,36 +45,77 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="name"/> is <see langword="null"/> or <see langword="empty"/>).
         /// </exception>
-        internal ClubRole(string name)
+        internal ClubRole(string name, bool isOwnerRole = false)
         {
+            IsOwnerRole = isOwnerRole;
             UpdateName(name);
         }
 
+        internal ClubRole(string name, IEnumerable<ClubPermissionType> permissions, bool isOwnerRole = false) : this(name, isOwnerRole)
+        {
+            AddPermissions(permissions);
+        }
+
         /// <summary>
-        /// Adds <see cref="ClubPermission"/> to the <see cref="ClubRole"/>
+        /// Adds <see cref="ClubPermissionType"/> to the <see cref="ClubRole"/>
         /// </summary>
-        /// <param name="permission">The <see cref="ClubPermission"/> to add to the role.</param>
+        /// <param name="permission">The <see cref="ClubPermissionType"/> to add to the role.</param>
         /// <exception cref="ArgumentException">
         /// Thrown when the role already has the <paramref name="permission"/>.
         /// </exception>
-        internal void AddPermission(ClubPermission permission)
+        internal void AddPermission(ClubPermissionType permission)
         {
             // Ensure the role doesn't already have this permission.
-            if (_permissions.Any(p => p == permission))
+            if (_permissions.Any(p => p.Permission == permission))
                 throw new ArgumentException("The role already has the permission.", nameof(permission));
 
             // Give the permission to the role.
             // FYI: As Permission is a ValueObject, instanciating a new Permission will not create new entry in the database.
-            _permissions.Add(permission);
+            _permissions.Add(new ClubPermission(permission));
         }
 
         /// <summary>
-        /// Removes <see cref="ClubPermission"/> from the <see cref="ClubRole"/>
+        /// Adds a list of <see cref="ClubPermissionType"/> to the <see cref="ClubRole"/>
         /// </summary>
-        /// <param name="permission">The <see cref="ClubPermission"/> to remove from the role.</param>
-        internal void RemovePermission(ClubPermission permission)
+        /// <param name="permissions">The list of <see cref="ClubPermissionType"/> to add to the member</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the <see cref="ClubRole"/> already has the <paramref name="permissions"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the <paramref name="permissions"/> is null or empty
+        /// </exception>
+        internal void AddPermissions(IEnumerable<ClubPermissionType> permissions)
         {
-            _permissions.Remove(permission);
+            if (permissions is null || permissions.Count() == 0)
+                throw new ArgumentException("The permission list cannot be null or empty.", nameof(permissions));
+
+            foreach (var permission in permissions)
+                AddPermission(permission);
+        }
+
+        /// <summary>
+        /// Removes <see cref="ClubPermissionType"/> from the <see cref="ClubRole"/>
+        /// </summary>
+        /// <param name="permission">The <see cref="ClubPermissionType"/> to remove from the role.</param>
+        internal void RemovePermission(ClubPermissionType permission)
+        {
+            _permissions.Remove(new ClubPermission(permission));
+        }
+
+        /// <summary>
+        /// Removes a list of <see cref="ClubPermissionType"/> from the <see cref="ClubRole"/>
+        /// </summary>
+        /// <param name="permissions">The list of <see cref="ClubPermissionType"/> to remove from the member</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the <paramref name="permissions"/> is null or empty
+        /// </exception>
+        internal void RemovePermissions(IEnumerable<ClubPermissionType> permissions)
+        {
+            if (permissions is null || permissions.Count() == 0)
+                throw new ArgumentException("The permission list cannot be null or empty.", nameof(permissions));
+
+            foreach (var permission in permissions)
+                RemovePermission(permission);
         }
 
         /// <summary>
@@ -92,13 +135,13 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <summary>
         /// Verifies if the role is authorized to perform an action.
         /// </summary>
-        /// <param name="permission">The required <see cref="ClubPermission"/> to perform the action.</param>
+        /// <param name="permission">The required <see cref="ClubPermissionType"/> to perform the action.</param>
         /// <returns>
         /// <see langword="true"/> if the role has the required permission, otherwise <see langword="false"/>
         /// </returns>
-        internal bool HasPermission(ClubPermission permission)
+        internal bool HasPermission(ClubPermissionType permission)
         {
-            return Permissions.Any(p => p == permission);
+            return Permissions.Any(p => p.Permission == permission);
         }
     }
 }

@@ -16,8 +16,9 @@ namespace CocktailsApp.Application.Authentication
 {
     public interface IAuthService
     {
-        Task SignUpAsync(SignUpCommand request);
+        Task<string> SignUpAsync(SignUpCommand request);
         Task<SignInResponseDTO> SignInAsync(SignInCommand request);
+        Task<SignInResponseDTO> RefreshTokenAsync(string refreshToken);
         Task SignOutAsync(SignOutCommand request);
     }
 }

@@ -8,6 +8,8 @@
 using Application.Authentication.Commands;
 
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.UserAggregate;
 
 using MediatR;
 /*
@@ -16,10 +18,10 @@ using MediatR;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public class SignOutCommandHandler(IAuthService authService) : ICommandHandler<SignOutCommand>
+    public class SignOutCommandHandler(IAuthService authService, IUnitOfWork unitOfWork) : ICommandHandler<SignOutCommand>
     {
         private readonly IAuthService _authService = authService;
-
+        
         public async Task Handle(SignOutCommand request, CancellationToken cancellationToken)
         {
             await _authService.SignOutAsync(request);

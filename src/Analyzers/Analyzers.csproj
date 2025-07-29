@@ -5,6 +5,7 @@
     <LangVersion>latest</LangVersion>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <AnalyzerRulesVersion>latest</AnalyzerRulesVersion>
+    <Configurations>Debug;Release;LOCAL-COGNITO</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

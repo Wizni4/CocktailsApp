@@ -40,22 +40,62 @@ namespace CocktailsApp.Infrastructure.SeedWork
         {
             base.OnModelCreating(modelBuilder);
 
-            //Configure the tables
-            modelBuilder.Entity<User>(new UserMap().Configure);
-            modelBuilder.Entity<Stock>(new StockMap().Configure);
-            modelBuilder.Entity<StockTransaction>(new StockTransactionMap().Configure);
-            modelBuilder.Entity<Address>(new AddressMap().Configure);
-            modelBuilder.Entity<Ingredient>(new IngredientMap().Configure);
-            modelBuilder.Entity<Order>(new OrderMap().Configure);
-            modelBuilder.Entity<OrderItem>(new OrderItemMap().Configure);
-            modelBuilder.Entity<IngredientPricing>(new IngredientPricingMap().Configure);
-            modelBuilder.Entity<Cocktail>(new CocktailMap().Configure);
-            modelBuilder.Entity<CocktailIngredient>(new CocktailIngredientMap().Configure);
-            modelBuilder.Entity<Club>(new ClubMap().Configure);
-            modelBuilder.Entity<ClubCocktail>(new ClubCocktailMap().Configure);
-            modelBuilder.Entity<ClubMember>(new ClubMemberMap().Configure);
-            modelBuilder.Entity<ClubRole>(new ClubRoleMap().Configure);
-            modelBuilder.Entity<ClubPermissionEntity>(new ClubPermissionMap().Configure);
+            modelBuilder.MapClubAggregate()
+                .MapCocktailAggregate()
+                .MapIngredientPricingAggregate()
+                .MapOrderAggregate()
+                .MapStockAggregate()
+                .MapUserAggregate();
         }
+    }
+
+    public static class ModelBuilderExtension
+    {
+        public static ModelBuilder MapClubAggregate(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Club>(new ClubMap().Configure)
+                .Entity<ClubCocktail>(new ClubCocktailMap().Configure)
+                .Entity<ClubMember>(new ClubMemberMap().Configure)
+                .Entity<ClubRole>(new ClubRoleMap().Configure);
+
+            return modelBuilder;
+        }
+
+        public static ModelBuilder MapCocktailAggregate(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Cocktail>(new CocktailMap().Configure);
+
+            return modelBuilder;
+        }
+
+        public static ModelBuilder MapIngredientPricingAggregate(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IngredientPricing>(new IngredientPricingMap().Configure);
+
+            return modelBuilder;
+        }
+
+        public static ModelBuilder MapOrderAggregate(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>(new OrderMap().Configure)
+                .Entity<OrderItem>(new OrderItemMap().Configure);
+
+            return modelBuilder;
+        }
+
+        public static ModelBuilder MapStockAggregate(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Stock>(new StockMap().Configure)
+                .Entity<StockTransaction>(new StockTransactionMap().Configure);
+
+            return modelBuilder;
+        }
+
+        public static ModelBuilder MapUserAggregate(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>(new UserMap().Configure);
+
+            return modelBuilder;
+        }        
     }
 }

@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Cocktails.API.Models.Shared
+namespace CocktailsApp.API.Models.Shared
 {
     public class Address
     {
