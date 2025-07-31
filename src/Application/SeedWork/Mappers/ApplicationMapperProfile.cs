@@ -17,7 +17,7 @@ using CocktailsApp.Application.User;
 using CocktailsApp.Domain.CocktailAggregate;
 using CocktailsApp.Domain.Shared;
 
-namespace CocktailsApp.Application.SeedWork.Mappers
+namespace CocktailsApp.Application.SeedWork
 {
     public class ApplicationMapperProfile : Profile
     {
@@ -27,12 +27,7 @@ namespace CocktailsApp.Application.SeedWork.Mappers
             CreateMap<CocktailsApp.Domain.CocktailAggregate.Cocktail, CocktailDTO>();
             CreateMap<CocktailIngredient, CocktailIngredientDTO>();
 
-            // Club
-            CreateMap<CocktailsApp.Domain.ClubAggregate.Club, ClubDTO>();
-            CreateMap<CocktailsApp.Domain.ClubAggregate.ClubCocktail, ClubCocktailDTO>();
-            CreateMap<CocktailsApp.Domain.ClubAggregate.ClubMember, ClubMemberDTO>();
-            CreateMap<CocktailsApp.Domain.ClubAggregate.ClubPermission, ClubPermissionDTO>();
-            CreateMap<CocktailsApp.Domain.ClubAggregate.ClubRole, ClubRoleDTO>();
+            
 
             // Shared
             CreateMap<Address, AddressDTO>();

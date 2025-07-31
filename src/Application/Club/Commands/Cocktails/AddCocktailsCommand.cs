@@ -8,7 +8,6 @@ using CocktailsApp.Application.SeedWork;
 /*
  * Domain namespaces
  */
-using CocktailsApp.Domain.ClubAggregate;
 
 
 namespace CocktailsApp.Application.Club
@@ -27,5 +26,5 @@ namespace CocktailsApp.Application.Club
         Guid ClubId,
         IEnumerable<Guid> CocktailIds,
         Guid ActorId
-    ) : ICommand<ClubDTO>;
+    ) : ICommand<IEnumerable<ClubCocktailDTO>>;
 }

@@ -20,11 +20,12 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
     [TestFixture]
     public class ClubTest
     {
-        private Guid _ownerUserId = Guid.NewGuid();
         private Guid _memberUserId = Guid.NewGuid();
+        private Guid _ownerUserId = Guid.NewGuid();
         private Club _club;
         private ClubMember _member;
         private ClubMember _owner;
+        private ClubRole _ownerRole;
         private ClubRole _role;
         private ClubCocktail _cocktail;
 
@@ -41,6 +42,9 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
             // Set the owner
             _owner = _club.Members.First();
+
+            // Set the owner role id
+            _ownerRole = _club.Roles.First();
 
             // Create Test role
             var roleName = "Test Role";
@@ -66,14 +70,13 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             {
                 return
                 [
-                //  new TestCaseData(scenario       , shouldSucceed),
-                    new TestCaseData("owner"        , true         ),
-                    new TestCaseData("user"         , true         ),
-                    new TestCaseData("member"       , true         ),
-                    new TestCaseData("role"         , true         ),
-                    new TestCaseData("not_permitted", false        ),
-                    new TestCaseData("not_a_member" , false        ),
-                    new TestCaseData("empty_user_id", false        ),
+                //  new TestCaseData(scenario        , shouldSucceed),
+                    new TestCaseData("owner"         , true         ),
+                    new TestCaseData("user"          , true         ),
+                    new TestCaseData("member"        , true         ),
+                    new TestCaseData("not_permitted" , false        ),
+                    new TestCaseData("not_a_member"  , false        ),
+                    new TestCaseData("empty_actor_id", false        ),
                 ];
             }
         }
@@ -85,23 +88,21 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             switch (scenario)
             {
                 case "owner":
-                    _club.UpdateOwner(_member.Id, _owner.Id);
+                    actorId = _owner.Id;
                     break;
                 case "user":
-                    _member.AddPermission(permission);
-                    actorId = _memberUserId;
+                    _role.AddPermission(permission);
                     break;
                 case "member":
-                    _member.AddPermission(permission);
-                    break;
-                case "role":
                     _role.AddPermission(permission);
                     break;
                 case "not_a_member":
                     _club.RemoveMember(_member.Id, _owner.Id);
                     break;
-                case "empty_user_id":
+                case "empty_actor_id":
                     actorId = Guid.Empty;
+                    break;
+                default: // Not permitted -> nothing to do by default not permitted
                     break;
             }
 
@@ -134,7 +135,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             string scenario,
             bool shouldSucceed,
             Func<Guid, TResult> action,
-            Action assert
+            Action<TResult> assert
          )
         {
             var actorId = SetupScenario(permission, scenario);
@@ -142,7 +143,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             if (shouldSucceed)
             {
                 var result = action(actorId);
-                assert();
+                assert(result);
             }
             else
             {
@@ -162,50 +163,51 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var permission = ClubPermissionType.AddCocktail;
             var cocktailId = Guid.NewGuid();
             var action = (Guid actorId) => _club.AddCocktail(cocktailId, actorId);
-            var assert = () =>
+
+            // Assert on success (has permissions)
+            void Assert(ClubCocktail newCocktail)
             {
                 // Assert
-                var newCocktail = _club.Cocktails.First(m => m.CocktailId == cocktailId);
-                Assert.Multiple(() =>
+                NUnit.Framework.Assert.Multiple(() =>
                 {
-                    Assert.That(_club.Cocktails, Has.Count.EqualTo(2));
-                    Assert.That(newCocktail.CocktailId, Is.EqualTo(cocktailId));
-                    Assert.That(newCocktail.Id, Is.Not.EqualTo(Guid.Empty));
-                    Assert.That(newCocktail.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
-                    Assert.That(newCocktail.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
+                    NUnit.Framework.Assert.That(_club.Cocktails, Has.Count.EqualTo(2));
+                    NUnit.Framework.Assert.That(_club.Cocktails.Any(c => c.Id == newCocktail.Id), Is.True);
+                    NUnit.Framework.Assert.That(_club.Cocktails.Any(c => c.CocktailId == cocktailId), Is.True);
+                    NUnit.Framework.Assert.That(newCocktail.CocktailId, Is.EqualTo(cocktailId));
+                    NUnit.Framework.Assert.That(newCocktail.Id, Is.Not.EqualTo(Guid.Empty));
+                    NUnit.Framework.Assert.That(newCocktail.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
+                    NUnit.Framework.Assert.That(newCocktail.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
+                    NUnit.Framework.Assert.That(newCocktail.UpdateDate.Kind, Is.EqualTo(DateTimeKind.Utc));
+                    NUnit.Framework.Assert.That(newCocktail.UpdateDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
                 });
-            };
+            }
             // Act & Assert
             RunPermissionScenarios(
                 permission,
                 scenario,
                 shouldSucceed,
                 action,
-                assert);
+                Assert);
         }
 
         [Test]
-        public void AddCocktail_EmptyCocktailId_ThrowsArgumentNullException()
+        public void AddCocktail_EmptyCocktailId_ThrowsArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddCocktail(Guid.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("CocktailId cannot be null. (Parameter 'cocktailId')"));
+            Assert.That(exception.Message, Is.EqualTo("CocktailId cannot be null."));
         }
 
         [Test]
         public void AddCocktail_CocktailAlreadyInClub_ThrowsArgumentException()
         {
-            //Arrange
-            var cocktailId = Guid.NewGuid();
-            _club.AddCocktail(cocktailId, _owner.Id);
-
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
-                _club.AddCocktail(cocktailId, _owner.Id));
+                _club.AddCocktail(_cocktail.CocktailId, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("This cocktail is already in the club. (Parameter 'cocktailId')"));
+            Assert.That(exception.Message, Is.EqualTo("This cocktail is already in the club."));
         }
 
         #endregion
@@ -219,17 +221,22 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var permission = ClubPermissionType.AddMember;
             var userId = Guid.NewGuid();
             var action = (Guid actorId) => _club.AddMember(userId, actorId);
-            var assert = () =>
+
+            // Assert on success (has permissions)
+            void Assert(ClubMember newMember)
             {
                 // Assert
-                var newMember = _club.Members.First(m => m.UserId == userId);
-                Assert.Multiple(() =>
+                NUnit.Framework.Assert.Multiple(() =>
                 {
-                    Assert.That(_club.Members, Has.Count.EqualTo(3));
-                    Assert.That(newMember.UserId, Is.EqualTo(userId));
-                    Assert.That(newMember.Id, Is.Not.EqualTo(Guid.Empty));
-                    Assert.That(newMember.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
-                    Assert.That(newMember.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
+                    NUnit.Framework.Assert.That(_club.Members, Has.Count.EqualTo(3));
+                    NUnit.Framework.Assert.That(_club.Members.Any(m => m.Id == newMember.Id), Is.True);
+                    NUnit.Framework.Assert.That(_club.Members.Any(m => m.UserId == userId), Is.True);
+                    NUnit.Framework.Assert.That(newMember.UserId, Is.EqualTo(userId));
+                    NUnit.Framework.Assert.That(newMember.Id, Is.Not.EqualTo(Guid.Empty));
+                    NUnit.Framework.Assert.That(newMember.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
+                    NUnit.Framework.Assert.That(newMember.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
+                    NUnit.Framework.Assert.That(newMember.UpdateDate.Kind, Is.EqualTo(DateTimeKind.Utc));
+                    NUnit.Framework.Assert.That(newMember.UpdateDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
                 });
             };
             // Act & Assert
@@ -238,17 +245,17 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 scenario,
                 shouldSucceed,
                 action,
-                assert);
+                Assert);
         }
 
         [Test]
-        public void AddMember_EmptyMemberId_ThrowsArgumentNullException()
+        public void AddMember_EmptyMemberId_ThrowsArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddMember(Guid.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("UserId cannot be null. (Parameter 'userId')"));
+            Assert.That(exception.Message, Is.EqualTo("UserId cannot be null."));
         }
 
         [Test]
@@ -258,69 +265,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddMember(_member.UserId, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("This user is already a member of the club. (Parameter 'userId')"));
-        }
-
-        #endregion
-
-        #region AddPermissionToMember
-
-        [Test, TestCaseSource(nameof(PermissionTestCases))]
-        public void AddPermissionToMember_PermissionScenarios(string scenario, bool shouldSucceed)
-        {
-            // Arrange
-            var permission = ClubPermissionType.AddPermissionToMember;
-            var permissionAdded = ClubPermissionType.RemoveRoleToMember;
-            var action = (Guid actorId) => _club.AddPermissionToMember(_member.Id, permissionAdded, actorId);
-            var assert = () => Assert.That(_member.Permissions.Any(p => p.Permission == permissionAdded), Is.True);
-
-            // Act & Assert
-            RunPermissionScenarios(
-                permission,
-                scenario,
-                shouldSucceed,
-                action,
-                assert);
-        }
-
-        [Test]
-        public void AddPermissionToMember_MemberNotInClub_ThrowsArgumentException()
-        {
-            // Arrange
-            var permission = ClubPermissionType.RemoveRoleToMember;
-
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.AddPermissionToMember(Guid.NewGuid(), permission, _owner.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
-        }
-
-        [Test]
-        public void AddPermissionToMember_EmptyMemberId_ThrowsArgumentException()
-        {
-            // Arrange
-            var permission = ClubPermissionType.RemoveRoleToMember;
-
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.AddPermissionToMember(Guid.Empty, permission, _owner.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
-        }
-
-        [Test]
-        public void AddPermissionToMember_MemberAlreadyHasPermission_ThrowsArgumentException()
-        {
-            // Arrange
-            var permission = ClubPermissionType.RemoveRoleToMember;
-            _member.AddPermission(permission);
-
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.AddPermissionToMember(_member.Id, permission, _owner.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("The member already has specified permission. (Parameter 'permission')"));
+            Assert.That(exception.Message, Is.EqualTo("This user is already a member of the club."));
         }
 
         #endregion
@@ -331,9 +276,11 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void AddRolePermission_PermissionScenarios(string scenario, bool shouldSucceed)
         {
             // Arrange
-            var permission = ClubPermissionType.AddRolePermission;
+            var permission = ClubPermissionType.AddPermissionToRole;
             var permissionAdded = ClubPermissionType.RemoveRoleToMember;
             var action = (Guid actorId) => _club.AddPermissionToRole(_role.Id, permissionAdded, actorId);
+
+            // Assert on success (has permissions)
             var assert = () => Assert.That(_role.Permissions.Any(p => p.Permission == permissionAdded), Is.True);
 
             // Act & Assert
@@ -355,7 +302,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddPermissionToRole(Guid.NewGuid(), permission, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         [Test]
@@ -368,7 +315,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddPermissionToRole(Guid.Empty, permission, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         [Test]
@@ -382,7 +329,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddPermissionToRole(_role.Id, permission, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role already has the permission. (Parameter 'permission')"));
+            Assert.That(exception.Message, Is.EqualTo("The role already has the permission."));
         }
 
         #endregion
@@ -400,7 +347,9 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Arrange
             var permission = ClubPermissionType.AddRoleToMember;
             var action = (Guid actorId) => _club.AddRoleToMember(_member.Id, role.Id, actorId);
-            var assert = () => Assert.That(_member.Roles.Any(r => r.Name == roleName), Is.True);
+
+            // Assert on success (has permissions)
+            var assert = () => Assert.That(_member.Roles.Any(r => r.Name == roleName), Is.True);           
 
             // Act & Assert
             RunPermissionScenarios(
@@ -412,13 +361,26 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
+        public void AddRoleToMember_OwnerRoleActorNotOwner_ThrowsUnauthorizedAccessException()
+        {
+            // Arrange
+            _role.AddPermission(ClubPermissionType.AddRoleToMember);
+
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                _club.AddRoleToMember(_member.Id, _ownerRole.Id, _member.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("Only member with the Owner role can grant the Owner role to another member."));
+        }
+
+        [Test]
         public void AddRoleToMember_MemberNotInClub_ThrowsArgumentException()
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddRoleToMember(Guid.NewGuid(), _role.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
+            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club."));
         }
 
         [Test]
@@ -428,7 +390,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddRoleToMember(_member.Id, Guid.NewGuid(), _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         [Test]
@@ -438,7 +400,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddRoleToMember(_member.Id, _role.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The member already has this role. (Parameter 'role')"));
+            Assert.That(exception.Message, Is.EqualTo("The member already has this role."));
         }
 
         #endregion
@@ -452,16 +414,17 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var permission = ClubPermissionType.CreateRole;
             var roleName = "Test role";
             var action = (Guid actorId) => _club.CreateRole(roleName, actorId);
-            var assert = () =>
+            void Assert(ClubRole newRole)
             {
-                var role = _club.Roles.First(r => r.Name == roleName);
-                Assert.Multiple(() =>
+                NUnit.Framework.Assert.Multiple(() =>
                 {
-                    Assert.That(_club.Roles, Has.Count.EqualTo(2));
-                    Assert.That(role.Name, Is.EqualTo(roleName));
-                    Assert.That(role.Id, Is.Not.EqualTo(Guid.Empty));
-                    Assert.That(role.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
-                    Assert.That(role.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
+                    NUnit.Framework.Assert.That(_club.Roles, Has.Count.EqualTo(3));
+                    NUnit.Framework.Assert.That(_club.Roles.Any(r => r.Id == newRole.Id), Is.True);
+                    NUnit.Framework.Assert.That(_club.Roles, Has.Count.EqualTo(3));
+                    NUnit.Framework.Assert.That(newRole.Name, Is.EqualTo(roleName));
+                    NUnit.Framework.Assert.That(newRole.Id, Is.Not.EqualTo(Guid.Empty));
+                    NUnit.Framework.Assert.That(newRole.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
+                    NUnit.Framework.Assert.That(newRole.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
                 });
             };
 
@@ -471,7 +434,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 scenario,
                 shouldSucceed,
                 action,
-                assert);
+                Assert);
         }
 
         [Test]
@@ -479,19 +442,19 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
-                _club.CreateRole("", _owner.Id));
+                _club.CreateRole(string.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The value cannot be an empty string or composed entirely of whitespace. (Parameter 'newName')"));
+            Assert.That(exception.Message, Is.EqualTo("The role name cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
-        public void CreateRole_NullName_ThrowArgumentNullException()
+        public void CreateRole_NullName_ThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.CreateRole(null, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'newName')"));
+            Assert.That(exception.Message, Is.EqualTo("The role name cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
@@ -501,7 +464,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.CreateRole("  ", _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The value cannot be an empty string or composed entirely of whitespace. (Parameter 'newName')"));
+            Assert.That(exception.Message, Is.EqualTo("The role name cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
@@ -511,7 +474,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.CreateRole(_role.Name, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("This role name already exists. (Parameter 'roleName')"));
+            Assert.That(exception.Message, Is.EqualTo("This role name already exists."));
         }
 
         #endregion
@@ -534,7 +497,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(_club.Roles, Has.Count.EqualTo(1));
+                    Assert.That(_club.Roles, Has.Count.EqualTo(2));
                     Assert.That(_club.Roles.Any(r => r.Id == role.Id), Is.False);
                     Assert.That(_member.Roles.Any(r => r.Id == role.Id), Is.False);
                 });
@@ -550,13 +513,23 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
+        public void DeleteRole_OwnerRole_ThrowUnauthorizedAccessException()
+        {
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                _club.DeleteRole(_ownerRole.Id, _owner.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("Owner role can't be removed from the club."));
+        }
+
+        [Test]
         public void DeleteRole_RoleNotInClub_ThrowArgumentException()
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.DeleteRole(Guid.NewGuid(), _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         [Test]
@@ -566,7 +539,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.DeleteRole(Guid.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         #endregion
@@ -628,7 +601,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.RemoveCocktail(Guid.NewGuid(), _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The cocktail could not be found in the club. (Parameter 'cocktailId')"));
+            Assert.That(exception.Message, Is.EqualTo("The cocktail could not be found in the club."));
         }
 
         [Test]
@@ -638,7 +611,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.RemoveCocktail(Guid.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The cocktail could not be found in the club. (Parameter 'cocktailId')"));
+            Assert.That(exception.Message, Is.EqualTo("The cocktail could not be found in the club."));
         }
 
         #endregion
@@ -649,14 +622,15 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void RemoveMember_PermissionScenarios(string scenario, bool shouldSucceed)
         {
             // Arrange
+            var memberToRemove = _club.AddMember(Guid.NewGuid(), _owner.Id);
             var permission = ClubPermissionType.RemoveMember;
-            var action = (Guid actorId) => _club.RemoveMember(_member.Id, actorId);
+            var action = (Guid actorId) => _club.RemoveMember(memberToRemove.Id, actorId);
             var assert = () =>
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(_club.Members, Has.Count.EqualTo(1));
-                    Assert.That(_club.Members.Any(m => m.Id == _member.Id), Is.False);
+                    Assert.That(_club.Members, Has.Count.EqualTo(2));
+                    Assert.That(_club.Members.Any(m => m.Id == memberToRemove.Id), Is.False);
                 });
             };
 
@@ -676,7 +650,20 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<UnauthorizedAccessException>(() =>
                 _club.RemoveMember(_owner.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The owner of the club can't be remove from the club"));
+            Assert.That(exception.Message, Is.EqualTo("The owners of the club can't be removed from the club"));
+        }
+
+        [Test]
+        public void RemoveMember_RemoveHimself_ThrowUnauthorizedAccessException()
+        {
+            // Arrange
+            _role.AddPermission(ClubPermissionType.RemoveMember);
+
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                _club.RemoveMember(_member.Id, _member.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("A member can't remove him self from a club."));
         }
 
         [Test]
@@ -686,7 +673,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.RemoveMember(Guid.NewGuid(), _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
+            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club."));
         }
 
         [Test]
@@ -696,79 +683,22 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.RemoveMember(Guid.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
+            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club."));
         }
 
         #endregion
 
-        #region RemovePermissionToMember
+        #region RemovePermissionFromRole
 
         [Test, TestCaseSource(nameof(PermissionTestCases))]
-        public void RemovePermissionToMember_PermissionScenarios(string scenario, bool shouldSucceed)
-        {
-            // Add a permission to the member which will be removed
-            _club.AddPermissionToMember(_member.Id, ClubPermissionType.AddCocktail, _owner.Id);
-
-            // Arrange
-            var permission = ClubPermissionType.RemovePermissionToMember;
-            var action = (Guid actorId) => _club.RemovePermissionToMember(_member.Id, ClubPermissionType.AddCocktail, actorId);
-            var assert = () =>
-            {
-                Assert.That(_member.Permissions.Any(p => p.Permission == ClubPermissionType.AddCocktail), Is.False);
-            };
-
-            // Act & Assert
-            RunPermissionScenarios(
-                permission,
-                scenario,
-                shouldSucceed,
-                action,
-                assert);
-        }
-
-        [Test]
-        public void RemovePermissionToMember_MemberDoesNotHaveThePermission_ThrowArgumentException()
-        {
-            // Act
-            _club.RemovePermissionToMember(_member.Id, ClubPermissionType.AddCocktail, _owner.Id);
-
-            // Assert
-            Assert.That(_member.Permissions, Has.Count.EqualTo(0));
-        }
-
-        [Test]
-        public void RemovePermissionToMember_MemberNotInClub_ThrowArgumentException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.RemovePermissionToMember(Guid.NewGuid(), ClubPermissionType.AddCocktail, _owner.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
-        }
-
-        [Test]
-        public void RemovePermissionToMember_EmptMemberId_ThrowArgumentException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.RemovePermissionToMember(Guid.Empty, ClubPermissionType.AddCocktail, _owner.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
-        }
-
-        #endregion
-
-        #region RemovePermissionToRole
-
-        [Test, TestCaseSource(nameof(PermissionTestCases))]
-        public void RemovePermissionToRole_PermissionScenarios(string scenario, bool shouldSucceed)
+        public void RemovePermissionFromRole_PermissionScenarios(string scenario, bool shouldSucceed)
         {
             // Add a permission to the role which will be removed
             _role.AddPermission(ClubPermissionType.AddCocktail);
 
             // Arrange
-            var permission = ClubPermissionType.RemoveRolePermission;
-            var action = (Guid actorId) => _club.RemovePermissionToRole(_role.Id, ClubPermissionType.AddCocktail, actorId);
+            var permission = ClubPermissionType.RemovePermissionFromRole;
+            var action = (Guid actorId) => _club.RemovePermissionFromRole(_role.Id, ClubPermissionType.AddCocktail, actorId);
             var assert = () =>
             {
                 Assert.That(_role.Permissions.Any(p => p.Permission == ClubPermissionType.AddCocktail), Is.False);
@@ -784,33 +714,44 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
-        public void RemovePermissionToRole_RoleDoesNotHaveThePermission_ThrowArgumentException()
+        public void RemovePermissionFromRole_OwnerRole_ThrowUnauthorizedAccessException()
         {
-            // Act
-            _club.RemovePermissionToRole(_role.Id, ClubPermissionType.AddCocktail, _owner.Id);
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                _club.RemovePermissionFromRole(_ownerRole.Id, ClubPermissionType.AddCocktail, _owner.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("Permissions cannot be removed from the Owner role."));
+        }
+
+        [Test]
+        public void RemovePermissionFromRole_RoleDoesNotHaveThePermission_ThrowKeyNotFoundException()
+        {
+            // Act & Assert
+            var exception = Assert.Throws<KeyNotFoundException>(() =>
+                _club.RemovePermissionFromRole(_role.Id, ClubPermissionType.AddCocktail, _owner.Id));
 
             // Assert
-            Assert.That(_member.Permissions, Has.Count.EqualTo(0));
+            Assert.That(exception.Message, Is.EqualTo("Permission 'AddCocktail' was not found in the 'Test Role' role."));
         }
 
         [Test]
-        public void RemovePermissionToRole_RoleNotInClub_ThrowArgumentException()
+        public void RemovePermissionFromRole_RoleNotInClub_ThrowArgumentException()
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
-                _club.RemovePermissionToRole(Guid.NewGuid(), ClubPermissionType.AddCocktail, _owner.Id));
+                _club.RemovePermissionFromRole(Guid.NewGuid(), ClubPermissionType.AddCocktail, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         [Test]
-        public void RemovePermissionToRole_EmptyRoleId_ThrowArgumentException()
+        public void RemovePermissionFromRole_EmptyRoleId_ThrowArgumentException()
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
-                _club.RemovePermissionToRole(Guid.Empty, ClubPermissionType.AddCocktail, _owner.Id));
+                _club.RemovePermissionFromRole(Guid.Empty, ClubPermissionType.AddCocktail, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         #endregion
@@ -828,7 +769,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
             // Arrange
             var permission = ClubPermissionType.RemoveRoleToMember;
-            var action = (Guid actorId) => _club.RemoveRoleToMember(_member.Id, role.Id, actorId);
+            var action = (Guid actorId) => _club.RemoveRoleFromMember(_member.Id, role.Id, actorId);
             var assert = () =>
             {
                 Assert.Multiple(() =>
@@ -848,13 +789,39 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
-        public void RemoveRoleToMember_MemberDoesNotHaveRole_ThrowArgumentException()
+        public void RemoveRoleToMember_OwnerRoleActorNotOwner_ThrowUnauthorizedAccessException()
+        {
+            // Arrange
+            _role.AddPermission(ClubPermissionType.RemoveRoleToMember);
+
+            // Act & Assert
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                _club.RemoveRoleFromMember(_owner.Id, _ownerRole.Id, _member.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("The owner of the club can't be removed from the owner role."));
+        }
+
+        [Test]
+        public void RemoveRoleToMember_NoMemberLeftInOwnerRole_ThrowUnauthorizedAccessException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.RemoveRoleToMember(_member.Id, Guid.NewGuid(), _owner.Id));
+            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
+                _club.RemoveRoleFromMember(_owner.Id, _ownerRole.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The member doesn't have this role. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("At least one member must have the Owner role."));
+        }
+
+        [Test]
+        public void RemoveRoleToMember_MemberDoesNotHaveRole_ThrowArgumentException()
+        {
+            // Arrange
+            _member.RemoveRole(_role.Id);
+
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentException>(() =>
+                _club.RemoveRoleFromMember(_member.Id, _role.Id, _owner.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("The member doesn't have this role."));
         }
 
         [Test]
@@ -862,9 +829,9 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
-                _club.RemoveRoleToMember(Guid.NewGuid(), _role.Id, _owner.Id));
+                _club.RemoveRoleFromMember(Guid.NewGuid(), _role.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
+            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club."));
         }
 
         [Test]
@@ -872,9 +839,9 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
-                _club.RemoveRoleToMember(Guid.Empty, _role.Id, _owner.Id));
+                _club.RemoveRoleFromMember(Guid.Empty, _role.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'clubMemberId')"));
+            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club."));
         }
 
         #endregion
@@ -906,10 +873,10 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void UpdateAddress_NewAdressNull_ThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateAddress(null, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'newAddress')"));
+            Assert.That(exception.Message, Is.EqualTo("The address cannot be null."));
         }
 
         #endregion
@@ -938,23 +905,33 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
-        public void UpdateDescription_NewDescriptionEmpty_ThrowArgumentException()
+        public void UpdateDescription_WhitespaceDescriptiopn_ThrowArgumentException()
+        {
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentException>(() =>
+                _club.UpdateDescription(" ", _owner.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("The club description cannot be an empty string or composed entirely of whitespace."));
+        }
+
+        [Test]
+        public void UpdateDescription_EmptyDescriptiopn_ThrowArgumentException()
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateDescription(string.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The value cannot be an empty string or composed entirely of whitespace. (Parameter 'newDescription')"));
+            Assert.That(exception.Message, Is.EqualTo("The club description cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
-        public void UpdateDescription_NewDescriptionNull_ThrowArgumentException()
+        public void UpdateDescription_NullDescription_ThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateDescription(null, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'newDescription')"));
+            Assert.That(exception.Message, Is.EqualTo("The club description cannot be an empty string or composed entirely of whitespace."));
         }
 
         #endregion
@@ -983,77 +960,33 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
-        public void UpdateName_NewDescriptionEmpty_ThrowArgumentException()
+        public void UpdateName_WhitespaceName_ThrowArgumentException()
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateName(string.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The value cannot be an empty string or composed entirely of whitespace. (Parameter 'newName')"));
+            Assert.That(exception.Message, Is.EqualTo("The club name cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
-        public void UpdateName_NewDescriptionNull_ThrowArgumentException()
+        public void UpdateName_EmptyName_ThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
+                _club.UpdateName(string.Empty, _owner.Id));
+
+            Assert.That(exception.Message, Is.EqualTo("The club name cannot be an empty string or composed entirely of whitespace."));
+        }
+
+        [Test]
+        public void UpdateName_NullName_ThrowArgumentException()
+        {
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateName(null, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'newName')"));
-        }
-
-        #endregion
-
-        #region UpdateOwner
-
-        [Test]
-        public void UpdateOwner_PerformedByOwnerId_OwnerChanged()
-        {
-            // Act
-            _club.UpdateOwner(_member.Id, _owner.Id);
-
-            // Assert
-            Assert.That(_club.Owner, Is.EqualTo(_member));
-        }
-
-        [Test]
-        public void UpdateOwner_PerformedByOwnerUserId_OwnerChanged()
-        {
-            // Act
-            _club.UpdateOwner(_memberUserId, _ownerUserId);
-
-            // Assert
-            Assert.That(_club.Owner, Is.EqualTo(_member));
-        }
-
-        [Test]
-        public void UpdateOwner_PerformedByMember_ThrowUnauthorizedAccessException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<UnauthorizedAccessException>(() =>
-                _club.UpdateOwner(_member.Id, _member.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("Only the Owner of the club can change the ownership."));
-        }
-
-        [Test]
-        public void UpdateOwner_MemberNotInClub_ThrowArgumentException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.UpdateOwner(Guid.NewGuid(), _owner.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'newOwnerId')"));
-        }
-
-        [Test]
-        public void UpdateOwner_EmptyMemberId_ThrowArgumentException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _club.UpdateOwner(Guid.Empty, _owner.Id));
-
-            Assert.That(exception.Message, Is.EqualTo("The member could not be found in the club. (Parameter 'newOwnerId')"));
+            Assert.That(exception.Message, Is.EqualTo("The club name cannot be an empty string or composed entirely of whitespace."));
         }
 
         #endregion
@@ -1088,7 +1021,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateRoleName("A new role", Guid.NewGuid(), _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         [Test]
@@ -1098,7 +1031,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateRoleName("A new role", Guid.Empty, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club. (Parameter 'roleId')"));
+            Assert.That(exception.Message, Is.EqualTo("The role could not be found in the club."));
         }
 
         [Test]
@@ -1108,17 +1041,17 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateRoleName(string.Empty, _role.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The value cannot be an empty string or composed entirely of whitespace. (Parameter 'newName')"));
+            Assert.That(exception.Message, Is.EqualTo("The role name cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
-        public void UpdateRoleName_NullRoleName_ThrowArgumentNullException()
+        public void UpdateRoleName_NullRoleName_ThrowArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.UpdateRoleName(null, _role.Id, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'newName')"));
+            Assert.That(exception.Message, Is.EqualTo("The role name cannot be an empty string or composed entirely of whitespace."));
         }
 
         #endregion

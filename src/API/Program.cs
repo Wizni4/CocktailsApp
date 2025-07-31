@@ -1,41 +1,36 @@
-﻿using API.Configurations;
-
-using CocktailsApp.API;
-using CocktailsApp.API.Mappers;
-using CocktailsApp.Application.SeedWork.Mappers;
-using CocktailsApp.Infrastructure.Authentication;
+﻿
+using CocktailsApp.API.SeedWork;
 
 using Hellang.Middleware.ProblemDetails;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("http://localhost:4200")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod());
-});
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddCustomSwagger();
+// -- Base services
+builder.Services.AddAuthentication(
+    JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-builder.Services.AddDbContext(builder.Configuration);
-builder.Services.AddMediatR(builder.Configuration);
-builder.Services.AddAutoMapper(typeof(APIMapperProfile), typeof(ApplicationMapperProfile));
-builder.Services.AddRepositories();
-builder.Services.AddEventDispatcher();
-builder.Services.AddAuthServices(builder.Configuration);
-builder.Services.AddApplicationValidators();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+    
+// -- Custom services
+builder.Services.AddCustomCors();
 builder.Services.AddCustomErrors();
-builder.Services.ConfigureOptions<JwtBearerConfigureOptions>();
+builder.Services.AddCustomSwagger();
+
+// -- Dependencies injections
+builder.Services.AddApplicationValidators();
+builder.Services.AddApplicationServices();
+builder.Services.AddAutoMapper();
+builder.Services.AddEventDispatcher();
+builder.Services.AddMediatR(builder.Configuration);
+builder.Services.AddRepositories();
+
+// -- Environment configuration
+builder.ConfigureEnvironment();
 
 var app = builder.Build();
 

@@ -1,9 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.UserAggregate;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +28,9 @@ namespace CocktailsApp.Infrastructure.SeedWork
             foreach (var entity in _dbContext.ChangeTracker.Entries<AggregateRoot>())
                 entity.Entity.ClearDomainEvents();
 
+
+            // Update last update date of all modified entities
+            UpdateTimestamps();
             await _dispatcher.DispatchAsync(domainEvents);
             await _dbContext.SaveChangesAsync();
         }
@@ -36,6 +38,18 @@ namespace CocktailsApp.Infrastructure.SeedWork
         public IRepository<T> Set<T>() where T : Entity, IAggregateRoot
         {
             return _serviceProvider.GetRequiredService<IRepository<T>>();
+        }
+
+        /// <summary>
+        /// Update the <see cref="Entity.UpdateDate"> of all <see cref="Entity"/> modified or added
+        /// </summary>
+        private void UpdateTimestamps()
+        {
+            var modifiedEntries = _dbContext.ChangeTracker.Entries<Entity>()
+                    .Where(e => e.State == EntityState.Modified || e.State == EntityState.Modified);
+
+            foreach (var entry in modifiedEntries)
+                entry.Entity.RefreshUpdateDate();
         }
     }
 }

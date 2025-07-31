@@ -23,11 +23,11 @@ namespace CocktailsApp.Application.Club
         /// <summary>
         /// Gets or sets the name of the role (e.g., "Administrator", "Moderator").
         /// </summary>
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the list of permissions associated with this role.
         /// </summary>
-        public List<ClubPermissionDTO> Permissions { get; set; } = [];
+        public List<ClubPermissionType> Permissions { get; set; } = [];
     }
 }

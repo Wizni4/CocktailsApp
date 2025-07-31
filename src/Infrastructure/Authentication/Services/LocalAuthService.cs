@@ -1,5 +1,4 @@
-﻿using Application.Authentication.Commands;
-using CocktailsApp.Application.Authentication;
+﻿using CocktailsApp.Application.Authentication;
 using CocktailsApp.Infrastructure.SeedWork;
 
 
@@ -15,12 +14,12 @@ namespace CocktailsApp.Infrastructure.Authentication
             return Task.FromResult(Guid.NewGuid().ToString());
         }
 
-        public Task<SignInResponseDTO> SignInAsync(SignInCommand command)
+        public Task<AuthDTO> SignInAsync(SignInCommand command)
         {
             throw new NotImplementedException("Handled in Application layer");
         }
 
-        public Task<SignInResponseDTO> RefreshTokenAsync(string refreshToken)
+        public Task<AuthDTO> RefreshTokenAsync(string refreshToken)
         {
             throw new NotImplementedException();
         }

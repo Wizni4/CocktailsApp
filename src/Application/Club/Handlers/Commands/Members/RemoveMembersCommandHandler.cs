@@ -9,21 +9,23 @@ using AutoMapper;
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Club
 {
     /// <summary>
-    /// Handles the <see cref="RemoveMemberCommand"/> by removing a member from a club.
+    /// Handles the <see cref="RemoveMembersCommand"/> by removing a member from a club.
     /// </summary>
     /// <param name="unitOfWork">The unit of work used for data access and persistence.</param>
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
-    public class RemoveMemberCommandHandler(IUnitOfWork unitOfWork, IMapper autoMapper)
-        : ClubCommandHandler<RemoveMemberCommand>(unitOfWork, autoMapper), ICommandHandler<RemoveMemberCommand, ClubDTO>
+    public class RemoveMemberCommandHandler(
+        IUnitOfWork unitOfWork,
+        IClubRepository clubRepository,
+        IMapper autoMapper
+    ) : ICommandHandler<RemoveMembersCommand, IEnumerable<ClubMemberDTO>>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
+        private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
         /// Handles the member removal by loading the club aggregate,
@@ -35,21 +37,21 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown if the specified club does not exist.
         /// </exception>
-        public override async Task<ClubDTO> Handle(RemoveMemberCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ClubMemberDTO>> Handle(RemoveMembersCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await base.GetClubFromRepositoryAsync(request.ClubId);
+            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members));
 
             // Delegate the removal to the domain
-            club.RemoveMember(request.MemberId, request.ActorId);
+            foreach ( var memberId in request.MemberIds)
+                club!.RemoveMember(memberId, request.ActorId);
 
             // Persist the changes.
+            _clubRepository.Update(club!);
             await _unitOfWork.SaveChangesAsync();
 
             // Return the updated club as a DTO.
-            return _autoMapper.Map<ClubDTO>(club);
+            return _autoMapper.Map<IEnumerable<ClubMemberDTO>>(club!.Members);
         }
-
-        
     }
 }

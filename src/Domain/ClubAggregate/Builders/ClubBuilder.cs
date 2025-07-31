@@ -20,7 +20,6 @@ namespace CocktailsApp.Domain.ClubAggregate
         private string? _name;
         private Guid _ownerId = Guid.Empty;
         private ClubVisibility _visibility = ClubVisibility.Private;
-        private IEnumerable<ClubPermissionType> _permissions = Enum.GetValues<ClubPermissionType>();
 
         /// <summary>
         /// Sets the address for the <see cref="Club"/> being built.

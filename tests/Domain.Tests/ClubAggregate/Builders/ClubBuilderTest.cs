@@ -38,7 +38,6 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 Assert.That(club.Address, Is.EqualTo(_address));
                 Assert.That(club.Description, Is.EqualTo(_description));
                 Assert.That(club.Name, Is.EqualTo(_name));
-                Assert.That(club.Owner.UserId, Is.EqualTo(_ownerId));
                 Assert.That(club.Members, Has.Count.EqualTo(1));
                 Assert.That(club.Members.Any(m => m.UserId == _ownerId), Is.True);
                 Assert.That(club.Visibility, Is.EqualTo(ClubVisibility.Public));
@@ -46,10 +45,10 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         }
 
         [Test]
-        public void Build_WithoutAddress_ThrowsArgumentNullException()
+        public void Build_WithoutAddress_ThrowsArgumentException()
         {
             // Act
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 new ClubBuilder()
                     .WithDescription(_description)
                     .WithName(_name)
@@ -57,49 +56,49 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                     .Build());
 
             // Assert
-            Assert.That(exception.Message, Is.EqualTo("Value cannot be null. (Parameter 'newAddress')"));
+            Assert.That(exception.Message, Is.EqualTo("The address cannot be null."));
         }
 
         [Test]
-        public void Build_WithoutDescription_ThrowsArgumentNullException()
+        public void Build_WithoutDescription_ThrowsArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 new ClubBuilder()
                     .WithAddress(_address)
                     .WithName(_name)
                     .WithOwner(_ownerId)
                     .Build());
 
-            Assert.That(exception.Message, Does.Contain("Value cannot be null. (Parameter 'newDescription')"));
+            Assert.That(exception.Message, Does.Contain("The club description cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
-        public void Build_WithoutName_ThrowsArgumentNullException()
+        public void Build_WithoutName_ThrowsArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 new ClubBuilder()
                     .WithAddress(_address)
                     .WithDescription(_description)
                     .WithOwner(_ownerId)
                     .Build());
 
-            Assert.That(exception.Message, Does.Contain("Value cannot be null. (Parameter 'newName')"));
+            Assert.That(exception.Message, Does.Contain("The club name cannot be an empty string or composed entirely of whitespace."));
         }
 
         [Test]
-        public void Build_WithoutOwnerId_ThrowsArgumentNullException()
+        public void Build_WithoutOwnerId_ThrowsArgumentException()
         {
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 new ClubBuilder()
                     .WithAddress(_address)
                     .WithDescription(_description)
                     .WithName(_name)
                     .Build());
 
-            Assert.That(exception.Message, Does.Contain("UserId cannot be null. (Parameter 'userId')"));
+            Assert.That(exception.Message, Does.Contain("UserId cannot be null."));
         }
 
         [Test]
@@ -119,7 +118,6 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                 Assert.That(club.Address, Is.EqualTo(_address));
                 Assert.That(club.Description, Is.EqualTo(_description));
                 Assert.That(club.Name, Is.EqualTo(_name));
-                Assert.That(club.Owner.UserId, Is.EqualTo(_ownerId));
                 Assert.That(club.Members, Has.Count.EqualTo(1));
                 Assert.That(club.Members.Any(m => m.UserId == _ownerId), Is.True);
                 Assert.That(club.Visibility, Is.EqualTo(ClubVisibility.Private));

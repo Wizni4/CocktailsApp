@@ -5,13 +5,9 @@
 /*
  * Application namespaces
  */
-using Application.Authentication.Commands;
-
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
 using CocktailsApp.Domain.UserAggregate;
-
-using MediatR;
 /*
  * Framework namespaces
  */

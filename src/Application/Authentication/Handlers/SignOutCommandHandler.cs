@@ -5,20 +5,14 @@
 /*
  * Application namespaces
  */
-using Application.Authentication.Commands;
-
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.UserAggregate;
-
-using MediatR;
 /*
  * Framework namespaces
  */
 
 namespace CocktailsApp.Application.Authentication
 {
-    public class SignOutCommandHandler(IAuthService authService, IUnitOfWork unitOfWork) : ICommandHandler<SignOutCommand>
+    public class SignOutCommandHandler(IAuthService authService) : ICommandHandler<SignOutCommand>
     {
         private readonly IAuthService _authService = authService;
         

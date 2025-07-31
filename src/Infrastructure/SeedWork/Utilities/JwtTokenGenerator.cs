@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+
 using System.IdentityModel.Tokens.Jwt;
 
 
@@ -21,7 +22,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
                 new System.Security.Claims.Claim("userId", userId.ToString())
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey));
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

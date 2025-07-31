@@ -1,6 +1,7 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Application.User;
 using CocktailsApp.Domain.UserAggregate;
 using CocktailsApp.Infrastructure.SeedWork;
 
@@ -12,9 +13,5 @@ namespace CocktailsApp.Infrastructure.UserAggregate
 {
     public class UserRepository(EFDbContext dbContext) : EFRepository<User>(dbContext), IUserRepository
     {
-        public Task<bool> AuthenticateUserAsync(User entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

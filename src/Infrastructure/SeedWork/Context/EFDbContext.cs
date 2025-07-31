@@ -9,13 +9,17 @@ using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.CocktailAggregate;
 using CocktailsApp.Domain.IngredientPricingAggregate;
 using CocktailsApp.Domain.OrderAggregate;
-using CocktailsApp.Domain.Shared;
 using CocktailsApp.Domain.StockAggregate;
 using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.ClubAggregate;
+using CocktailsApp.Infrastructure.CocktailAggregate;
+using CocktailsApp.Infrastructure.IngredientPricingAggregate;
+using CocktailsApp.Infrastructure.OrderAggregate;
+using CocktailsApp.Infrastructure.StockAggregate;
+using CocktailsApp.Infrastructure.UserAggregate;
 
 using Microsoft.EntityFrameworkCore;
 
-using System.Transactions;
 
 namespace CocktailsApp.Infrastructure.SeedWork
 {

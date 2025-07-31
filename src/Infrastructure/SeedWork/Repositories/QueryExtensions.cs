@@ -1,14 +1,11 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
 /*
 * Framework namespaces
 */
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-
-using System.Linq.Expressions;
 
 namespace CocktailsApp.Infrastructure.SeedWork
 {

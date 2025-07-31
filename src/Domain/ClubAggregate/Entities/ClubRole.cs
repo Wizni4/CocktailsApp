@@ -33,7 +33,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <see cref="ClubPermissionType"/> can be removed from the <see cref="ClubRole"/> using the <see cref="RemovePermission(ClubPermissionType)"/> method.
         /// </para>
         /// </remarks>
-        public IReadOnlyCollection<ClubPermission> Permissions { get { return _permissions.AsReadOnly(); } }
+        public IReadOnlyCollection<ClubPermission> Permissions { get { return GetPermissions().ToList().AsReadOnly(); } }
         private readonly List<ClubPermission> _permissions = [];
 
         public bool IsOwnerRole { get; }
@@ -51,11 +51,6 @@ namespace CocktailsApp.Domain.ClubAggregate
             UpdateName(name);
         }
 
-        internal ClubRole(string name, IEnumerable<ClubPermissionType> permissions, bool isOwnerRole = false) : this(name, isOwnerRole)
-        {
-            AddPermissions(permissions);
-        }
-
         /// <summary>
         /// Adds <see cref="ClubPermissionType"/> to the <see cref="ClubRole"/>
         /// </summary>
@@ -67,30 +62,11 @@ namespace CocktailsApp.Domain.ClubAggregate
         {
             // Ensure the role doesn't already have this permission.
             if (_permissions.Any(p => p.Permission == permission))
-                throw new ArgumentException("The role already has the permission.", nameof(permission));
+                throw new ArgumentException("The role already has the permission.");
 
             // Give the permission to the role.
             // FYI: As Permission is a ValueObject, instanciating a new Permission will not create new entry in the database.
             _permissions.Add(new ClubPermission(permission));
-        }
-
-        /// <summary>
-        /// Adds a list of <see cref="ClubPermissionType"/> to the <see cref="ClubRole"/>
-        /// </summary>
-        /// <param name="permissions">The list of <see cref="ClubPermissionType"/> to add to the member</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown when the <see cref="ClubRole"/> already has the <paramref name="permissions"/>
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown when the <paramref name="permissions"/> is null or empty
-        /// </exception>
-        internal void AddPermissions(IEnumerable<ClubPermissionType> permissions)
-        {
-            if (permissions is null || permissions.Count() == 0)
-                throw new ArgumentException("The permission list cannot be null or empty.", nameof(permissions));
-
-            foreach (var permission in permissions)
-                AddPermission(permission);
         }
 
         /// <summary>
@@ -99,23 +75,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <param name="permission">The <see cref="ClubPermissionType"/> to remove from the role.</param>
         internal void RemovePermission(ClubPermissionType permission)
         {
-            _permissions.Remove(new ClubPermission(permission));
-        }
-
-        /// <summary>
-        /// Removes a list of <see cref="ClubPermissionType"/> from the <see cref="ClubRole"/>
-        /// </summary>
-        /// <param name="permissions">The list of <see cref="ClubPermissionType"/> to remove from the member</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown when the <paramref name="permissions"/> is null or empty
-        /// </exception>
-        internal void RemovePermissions(IEnumerable<ClubPermissionType> permissions)
-        {
-            if (permissions is null || permissions.Count() == 0)
-                throw new ArgumentException("The permission list cannot be null or empty.", nameof(permissions));
-
-            foreach (var permission in permissions)
-                RemovePermission(permission);
+            _permissions.Remove(GetPermission(permission));
         }
 
         /// <summary>
@@ -127,7 +87,9 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </exception>
         internal void UpdateName(string newName)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(newName, nameof(newName));
+            if (string.IsNullOrWhiteSpace(newName))
+                throw new ArgumentException("The role name cannot be an empty string or composed entirely of whitespace.");
+
             _name = newName;
 
         }
@@ -142,6 +104,22 @@ namespace CocktailsApp.Domain.ClubAggregate
         internal bool HasPermission(ClubPermissionType permission)
         {
             return Permissions.Any(p => p.Permission == permission);
+        }
+
+        private ClubPermission GetPermission(ClubPermissionType permissionType)
+        {
+            var permission = _permissions.FirstOrDefault(new PermissionByTypeSpecification(permissionType).SpecExpression.Compile())
+                ?? throw new KeyNotFoundException($"Permission '{permissionType.ToString()}' was not found in the '{Name}' role.");
+
+            return permission;
+        }
+
+        private IEnumerable<ClubPermission> GetPermissions()
+        {
+            if (IsOwnerRole)
+                return Enum.GetValues<ClubPermissionType>().Select(p => new ClubPermission(p));
+
+            return _permissions;
         }
     }
 }

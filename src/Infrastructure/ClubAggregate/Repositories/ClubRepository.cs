@@ -1,6 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Application.Club;
+using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Infrastructure.SeedWork;
 /*
@@ -15,5 +17,20 @@ namespace CocktailsApp.Infrastructure.ClubAggregate
     /// </summary>
     public class ClubRepository(EFDbContext dbContext) : EFRepository<Club>(dbContext), IClubRepository
     {
+        public Task<Club?> GetClubBydIdAsync(Guid clubId, Func<IIncludable<Club>, IIncludable>? additionalIncludes = null)
+        {
+            // Defines the base include to manage permissions
+            // Add add additional ones if specified
+            Func<IIncludable<Club>, IIncludable> includes = c =>
+            {
+                var query = c.Include(club => club.Members)
+                                .ThenInclude(member => member.Roles)
+                             .Include(club => club.Roles);
+
+                return additionalIncludes != null ? additionalIncludes(query) : query;
+            };
+
+            return base.ReadAsync(new ClubByIdSpecification(clubId), includes);
+        }
     }
 }

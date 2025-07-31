@@ -5,8 +5,6 @@
 /*
  * Application namespaces
  */
-using Application.Authentication.Commands;
-
 using CocktailsApp.Application.SeedWork;
 /*
  * Framework namespaces
@@ -14,11 +12,11 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public interface IAuthService
+    public interface IAuthService : IService<AuthDTO>
     {
         Task<string> SignUpAsync(SignUpCommand request);
-        Task<SignInResponseDTO> SignInAsync(SignInCommand request);
-        Task<SignInResponseDTO> RefreshTokenAsync(string refreshToken);
+        Task<AuthDTO> SignInAsync(SignInCommand request);
+        Task<AuthDTO> RefreshTokenAsync(string refreshToken);
         Task SignOutAsync(SignOutCommand request);
     }
 }

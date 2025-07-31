@@ -5,12 +5,13 @@
  * Framework namespaces
  */
 using AutoMapper;
+
+using CocktailsApp.Application.Cocktail;
+
 /*
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Club
 {
@@ -19,11 +20,15 @@ namespace CocktailsApp.Application.Club
     /// </summary>
     /// <param name="unitOfWork">The unit of work used for data access and persistence.</param>
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
-    public class RemoveCocktailsCommandHandler(IUnitOfWork unitOfWork, IMapper autoMapper)
-        : ClubCommandHandler<RemoveCocktailsCommand>(unitOfWork, autoMapper), ICommandHandler<RemoveCocktailsCommand, ClubDTO>
+    public class RemoveCocktailsCommandHandler(
+        IUnitOfWork unitOfWork,
+        IClubRepository clubRepository,
+        IMapper autoMapper
+    ) : ICommandHandler<RemoveCocktailsCommand, IEnumerable<ClubCocktailDTO>>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
+        private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
         /// Handles the cocktail removal by loading the club aggregate,
@@ -35,19 +40,21 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown if the specified club does not exist.
         /// </exception>
-        public override async Task<ClubDTO> Handle(RemoveCocktailsCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ClubCocktailDTO>> Handle(RemoveCocktailsCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await base.GetClubFromRepositoryAsync(request.ClubId);
+            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
 
             // Delegate the removal to the domain
-            club.RemoveCocktails(request.CocktailIds, request.ClubId);
+            foreach(var cocktailId in request.CocktailIds)
+                club!.RemoveCocktail(cocktailId, request.ClubId);
 
             // Persist the changes.
+            _clubRepository.Update(club!);
             await _unitOfWork.SaveChangesAsync();
 
             // Return the updated club as a DTO.
-            return _autoMapper.Map<ClubDTO>(club);
+            return _autoMapper.Map<IEnumerable<ClubCocktailDTO>>(club!.Cocktails);
         }
     }
 }

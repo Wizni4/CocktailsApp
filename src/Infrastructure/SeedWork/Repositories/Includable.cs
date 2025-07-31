@@ -1,6 +1,7 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
 /*
 * Framework namespaces
@@ -42,8 +43,8 @@ namespace CocktailsApp.Infrastructure.SeedWork
 
     public class Includable<TEntity, TProperty> : Includable<TEntity>, IIncludable<TEntity, TProperty> where TEntity : Entity, IAggregateRoot
     {
-        private readonly IIncludableQueryable<TEntity, TProperty> _includableInput;
-        private readonly IIncludableQueryable<TEntity, IEnumerable<TProperty>> _includableListInput;
+        private readonly IIncludableQueryable<TEntity, TProperty>? _includableInput;
+        private readonly IIncludableQueryable<TEntity, IEnumerable<TProperty>>? _includableListInput;
 
         public Includable(IIncludableQueryable<TEntity, TProperty> queryable) : base(queryable)
         {
@@ -57,36 +58,36 @@ namespace CocktailsApp.Infrastructure.SeedWork
 
         public IIncludable<TEntity, TOtherProperty> ThenInclude<TOtherProperty>(Expression<Func<TProperty, TOtherProperty>> propertySelector)
         {
-            IIncludableQueryable<TEntity, TOtherProperty> result = null;
+            IIncludableQueryable<TEntity, TOtherProperty> result = null!;
 
             if (_includableInput != null)
                 result = _includableInput.ThenInclude(propertySelector);
             else
-                result = _includableListInput.ThenInclude(propertySelector);
+                result = _includableListInput!.ThenInclude(propertySelector);
 
             return new Includable<TEntity, TOtherProperty>(result);
         }
 
         public IIncludable<TEntity, TOtherProperty> ThenInclude<TOtherProperty>(Expression<Func<TProperty, IEnumerable<TOtherProperty>>> propertySelector)
         {
-            IIncludableQueryable<TEntity, IEnumerable<TOtherProperty>> result = null;
+            IIncludableQueryable<TEntity, IEnumerable<TOtherProperty>> result = null!;
 
             if (_includableInput != null)
                 result = _includableInput.ThenInclude(propertySelector);
             else
-                result = _includableListInput.ThenInclude(propertySelector);
+                result = _includableListInput!.ThenInclude(propertySelector);
 
             return new Includable<TEntity, TOtherProperty>(result);
         }
 
         public IIncludable<TEntity, TOtherProperty> ThenInclude<TOtherProperty>(Expression<Func<TProperty, IReadOnlyCollection<TOtherProperty>>> propertySelector)
         {
-            IIncludableQueryable<TEntity, IReadOnlyCollection<TOtherProperty>> result = null;
+            IIncludableQueryable<TEntity, IReadOnlyCollection<TOtherProperty>> result = null!;
 
             if (_includableInput != null)
                 result = _includableInput.ThenInclude(propertySelector);
             else
-                result = _includableListInput.ThenInclude(propertySelector);
+                result = _includableListInput!.ThenInclude(propertySelector);
 
             return new Includable<TEntity, TOtherProperty>(result);
         }

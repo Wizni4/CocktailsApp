@@ -9,7 +9,11 @@
 /*
  * Framework namespaces
  */
+using CocktailsApp.Application.SeedWork;
+using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
+using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 using FluentValidation;
+using CocktailsApp.Application.Cocktail;
 
 namespace CocktailsApp.Application.Club
 {
@@ -22,25 +26,16 @@ namespace CocktailsApp.Application.Club
         /// Initializes a new instance of the <see cref="AddCocktailsCommandValidator"/> class.
         /// Defines validation rules for the <see cref="AddCocktailsCommand"/> properties.
         /// </summary>
-        public AddCocktailsCommandValidator()
+        public AddCocktailsCommandValidator(IUnitOfWork unitOfWork)
         {
+            RuleFor(c => c.ActorId).ValidGuid();
             RuleFor(c => c.ClubId)
-                .NotEqual(Guid.Empty)
-                .WithMessage("ClubId must be a valid non-empty GUID.");
-
-            RuleFor(c => c.CocktailIds)
-                .NotNull()
-                .WithMessage("CocktailIds must not be null.")
-                .NotEmpty()
-                .WithMessage("CocktailIds must not be an empty list.");
-
-           RuleForEach(c => c.CocktailIds)
-                .NotEqual(Guid.Empty)
-                .WithMessage("Each CocktailId must be a valid non-empty GUID.");
-
-            RuleFor(c => c.ActorId)
-                .NotEqual(Guid.Empty)
-                .WithMessage("ActorId must be a valid non-empty GUID.");
+                .ValidGuid()
+                .IsClubExists(unitOfWork.Set<DomainClub>());
+            RuleFor(c => c.CocktailIds).ValidList();
+            RuleForEach(c => c.CocktailIds)
+                .ValidGuid()
+                .IsCocktailExists(unitOfWork.Set<DomainCocktail>());
         }
     }
 }

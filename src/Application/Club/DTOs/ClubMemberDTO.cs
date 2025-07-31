@@ -20,11 +20,6 @@ namespace CocktailsApp.Application.Club
     public class ClubMemberDTO: EntityDTO
     {
         /// <summary>
-        /// Gets or sets the list of permissions granted to the club member.
-        /// </summary>
-        public List<ClubPermissionDTO> Permissions { get; set; } = [];
-
-        /// <summary>
         /// Gets or sets the list of roles assigned to the club member.
         /// </summary>
         public List<ClubRoleDTO> Roles { get; set; } = [];

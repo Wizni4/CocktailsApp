@@ -25,5 +25,5 @@ namespace CocktailsApp.Application.Club
     public record DeleteClubCommand(
         Guid ClubId,
         Guid ActorId
-    ) : ICommand<ClubDTO>;
+    ) : ICommand;
 }

@@ -26,6 +26,11 @@ namespace CocktailsApp.Domain.SeedWork
         /// <see cref="Entity"/> date of creation.
         /// </summary>
         public DateTime CreationDate { get; }
+        /// <summary>
+        /// <see cref="Entity"/> last date of update.
+        /// </summary>
+        public DateTime UpdateDate { get => _updateDate; }
+        private DateTime _updateDate = DateTime.UtcNow;
 
         /// <summary>
         /// Constructor to create a new instance of <see cref="Entity"/>.
@@ -34,6 +39,14 @@ namespace CocktailsApp.Domain.SeedWork
         {
             Id = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Update the <see cref="UpdateDate"/> to <see cref="DateTime.UtcNow"/>
+        /// </summary>
+        public void RefreshUpdateDate()
+        {
+            _updateDate = DateTime.UtcNow;
         }
     }
 }

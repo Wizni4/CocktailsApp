@@ -9,7 +9,11 @@
 /*
  * Framework namespaces
  */
+using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
+using CocktailsApp.Application.SeedWork;
+
 using FluentValidation;
+using CocktailsApp.Domain.ClubAggregate;
 
 namespace CocktailsApp.Application.Club
 {
@@ -22,25 +26,35 @@ namespace CocktailsApp.Application.Club
         /// Initializes a new instance of the <see cref="RemoveCocktailsCommandValidator"/> class.
         /// Defines validation rules for the <see cref="RemoveCocktailsCommand"/>.
         /// </summary>
-        public RemoveCocktailsCommandValidator()
+        public RemoveCocktailsCommandValidator(IUnitOfWork unitOfWork)
         {
             RuleFor(c => c.ClubId)
-               .NotEqual(Guid.Empty)
-               .WithMessage("ClubId must be a valid non-empty GUID.");
+                .ValidGuid()
+                .IsClubExists(unitOfWork.Set<DomainClub>());
+            RuleFor(c => c.CocktailIds).ValidList();
+            RuleForEach(c => c.CocktailIds).ValidGuid();
+            RuleFor(c => c.ActorId).ValidGuid();
 
-            RuleFor(c => c.CocktailIds)
-                .NotNull()
-                .WithMessage("CocktailIds must not be null.")
-                .NotEmpty()
-                .WithMessage("CocktailIds must not be an empty list.");
+            RuleFor(c => c)
+                .CustomAsync(async (command, validationContext, cancellationToken) =>
+                {
+                    var club = await unitOfWork.Set<DomainClub>().ReadAsync(
+                        new ClubByIdSpecification(command.ClubId),
+                        opt => opt.Include(c => c.Cocktails));
 
-            RuleForEach(c => c.CocktailIds)
-                 .NotEqual(Guid.Empty)
-                 .WithMessage("CocktailId must be a valid non-empty GUID.");
+                    if (club != null)
+                    {
+                        // List missing cocktails
+                        var missingCocktailIds = command.CocktailIds
+                            .Where(id => !club.Cocktails.Any(cc => new ClubCocktailByIdSpecification(id).SpecExpression.Compile()(cc)))
+                            .ToList();
 
-            RuleFor(c => c.ActorId)
-                .NotEqual(Guid.Empty)
-                .WithMessage("ActorId must be a valid non-empty GUID.");
+                        // Add validation message if some cocktails dont exist in the club
+                        if (missingCocktailIds.Any())
+                            validationContext.AddFailure(
+                                 $"The following cocktail do not exist in the club:\n- {string.Join("\n- ", missingCocktailIds)}");
+                    }
+                });
         }
     }
 }

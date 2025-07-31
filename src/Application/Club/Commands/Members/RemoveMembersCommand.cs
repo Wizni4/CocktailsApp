@@ -23,9 +23,9 @@ namespace CocktailsApp.Application.Club
     /// This may be a <see cref="ClubMember.UserId"/> or a <see cref="ClubMember.Id"/>, depending on the context.
     /// The domain logic is responsible for resolving and authorizing the actor.
     /// </param>
-    public record RemoveMemberCommand(
+    public record RemoveMembersCommand(
         Guid ClubId,
-        Guid MemberId,
+        IEnumerable<Guid> MemberIds,
         Guid ActorId
-    ) : ICommand<ClubDTO>;
+    ) : ICommand<IEnumerable<ClubMemberDTO>>;
 }

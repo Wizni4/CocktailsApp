@@ -5,12 +5,12 @@
  * Framework namespaces
  */
 using AutoMapper;
+
+using CocktailsApp.Application.SeedWork;
 /*
  * Application namespaces
  */
-using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
+using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 namespace CocktailsApp.Application.Club
 {
@@ -19,11 +19,15 @@ namespace CocktailsApp.Application.Club
     /// </summary>
     /// <param name="unitOfWork">The unit of work used for data access and persistence.</param>
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
-    public class DeleteClubCommandHandler(IUnitOfWork unitOfWork, IMapper autoMapper)
-        : ClubCommandHandler<DeleteClubCommand>(unitOfWork, autoMapper), ICommandHandler<DeleteClubCommand, ClubDTO>
+    public class DeleteClubCommandHandler(
+        IUnitOfWork unitOfWork,
+        IClubRepository clubRepository,
+        IMapper autoMapper
+    ) : ICommandHandler<DeleteClubCommand>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
+        private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
         /// Handles the club deletion by loading the club aggregate,
@@ -35,22 +39,19 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown if the specified club does not exist.
         /// </exception>
-        public override async Task<ClubDTO> Handle(DeleteClubCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteClubCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await base.GetClubFromRepositoryAsync(request.ClubId);
+            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
 
-            // Delegate the club
-            club.DeleteClub(request.ActorId);
+            // Delegate the club removal to the domain
+            club!.DeleteClub(request.ActorId);
 
             // Delete the club from the DB
-            _unitOfWork.Set<Domain.ClubAggregate.Club>().Delete(club);
+            _clubRepository.Delete(club);
 
             // Persist the changes.
             await _unitOfWork.SaveChangesAsync();
-
-            // Return the updated club as a DTO.
-            return _autoMapper.Map<ClubDTO>(club);
         }
     }
 }

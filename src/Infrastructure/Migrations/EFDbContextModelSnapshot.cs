@@ -43,6 +43,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -50,6 +53,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Visibility")
                         .HasColumnType("int");
@@ -99,6 +105,12 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CocktailId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClubId");
@@ -116,8 +128,11 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ClubId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -125,10 +140,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClubId");
-
-                    b.HasIndex("OwnerId")
-                        .IsUnique()
-                        .HasFilter("[OwnerId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -143,12 +154,18 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ClubId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsOwnerRole")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -162,9 +179,15 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -180,9 +203,15 @@ namespace Infrastructure.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.ComplexProperty<Dictionary<string, object>>("Ingredient", "CocktailsApp.Domain.IngredientPricingAggregate.IngredientPricing.Ingredient#Ingredient", b1 =>
                         {
@@ -206,10 +235,16 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ClubId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -229,12 +264,18 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CocktailId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -250,9 +291,15 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Unit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.ComplexProperty<Dictionary<string, object>>("Ingredient", "CocktailsApp.Domain.StockAggregate.Stock.Ingredient#Ingredient", b1 =>
                         {
@@ -273,6 +320,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -290,6 +340,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StockId");
@@ -300,11 +353,18 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("CocktailsApp.Domain.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -357,41 +417,11 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CocktailsApp.Domain.ClubAggregate.Club", null)
-                        .WithOne("Owner")
-                        .HasForeignKey("CocktailsApp.Domain.ClubAggregate.ClubMember", "OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("CocktailsApp.Domain.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsMany("CocktailsApp.Domain.ClubAggregate.ClubPermission", "Permissions", b1 =>
-                        {
-                            b1.Property<Guid>("ClubMemberId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Permission")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("ClubMemberId", "Id");
-
-                            b1.ToTable("ClubMember_Permissions");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ClubMemberId");
-                        });
-
-                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("CocktailsApp.Domain.ClubAggregate.ClubRole", b =>
@@ -419,7 +449,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("ClubRoleId", "Id");
 
-                            b1.ToTable("ClubRole_Permissions");
+                            b1.ToTable("ClubPermission");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClubRoleId");
@@ -494,9 +524,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Cocktails");
 
                     b.Navigation("Members");
-
-                    b.Navigation("Owner")
-                        .IsRequired();
 
                     b.Navigation("Roles");
                 });

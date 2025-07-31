@@ -1,7 +1,11 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 /*
 * Framework namespaces
 */

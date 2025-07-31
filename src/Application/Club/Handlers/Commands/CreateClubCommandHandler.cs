@@ -5,14 +5,14 @@
  * Framework namespaces
  */
 using AutoMapper;
+
+using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.Shared;
 /*
  * Application namespaces
  */
-using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.Shared;
-using CocktailsApp.Domain.UserAggregate;
+using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 namespace CocktailsApp.Application.Club
 {
@@ -25,8 +25,10 @@ namespace CocktailsApp.Application.Club
     /// </remarks>
     /// <param name="unitOfWork">The unit of work used for data access and persistence.</param>
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
-    public class CreateClubCommandHandler(IUnitOfWork unitOfWork, IMapper autoMapper)
-        : ClubCommandHandler<CreateClubCommand>(unitOfWork, autoMapper), ICommandHandler<CreateClubCommand, ClubDTO>
+    public class CreateClubCommandHandler(
+        IUnitOfWork unitOfWork,
+        IMapper autoMapper
+    ) : ICommandHandler<CreateClubCommand, ClubDTO>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
@@ -41,10 +43,8 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown when the ownerId from the <paramref name="request"/> is not found in the db.
         /// </exception>
-        public override async Task<ClubDTO> Handle(CreateClubCommand request, CancellationToken cancellationToken)
+        public async Task<ClubDTO> Handle(CreateClubCommand request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.Set<Domain.UserAggregate.User>().ReadAsync(new UserByIdSpecification(request.OwnerId)) ?? throw new KeyNotFoundException($"User with ID {request.OwnerId} was not found.");
-
             var club = new ClubBuilder()
                 .WithAddress(_autoMapper.Map<Address>(request.Address))
                 .WithDescription(request.Description)
@@ -53,9 +53,8 @@ namespace CocktailsApp.Application.Club
                 .WithVisibility(request.Visibility)
                 .Build();
 
-            _unitOfWork.Set<Domain.ClubAggregate.Club>().Create(club);
+            _unitOfWork.Set<DomainClub>().Create(club);
             await _unitOfWork.SaveChangesAsync();
-
             return _autoMapper.Map<ClubDTO>(club);
         }
     }

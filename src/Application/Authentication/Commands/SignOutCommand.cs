@@ -1,18 +1,18 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
+﻿/*
+ * Domain namespaces
+ */
 
+/*
+ * Application namespaces
+ */
 using CocktailsApp.Application.SeedWork;
+/*
+ * Framework namespaces
+ */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Authentication.Commands
+namespace CocktailsApp.Application.Authentication
 {
-    public record SignOutCommand(string? Username, Guid UserId) : ICommand
+    public record SignOutCommand(string? Username) : ICommand
     {
     }
 }

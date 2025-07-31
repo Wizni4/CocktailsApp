@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Club\Handlers\SeedWork\" />
     <Folder Include="Order\Commands\" />
   </ItemGroup>
 

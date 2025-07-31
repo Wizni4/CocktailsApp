@@ -9,6 +9,8 @@
 /*
  * Framework namespaces
  */
+using CocktailsApp.Application.SeedWork;
+
 using FluentValidation;
 
 namespace CocktailsApp.Application.Club
@@ -16,7 +18,7 @@ namespace CocktailsApp.Application.Club
     /// <summary>
     /// Validates the <see cref="RemoveMembersCommand"/> to ensure all required identifiers are provided and valid.
     /// </summary>
-    public class RemoveMembersCommandValidator : AbstractValidator<RemoveMemberCommand>
+    public class RemoveMembersCommandValidator : AbstractValidator<RemoveMembersCommand>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoveMembersCommandValidator"/> class.
@@ -24,17 +26,10 @@ namespace CocktailsApp.Application.Club
         /// </summary>
         public RemoveMembersCommandValidator()
         {
-            RuleFor(c => c.ClubId)
-               .NotEqual(Guid.Empty)
-               .WithMessage("ClubId must be a valid non-empty GUID.");
-
-            RuleFor(c => c.MemberId)
-                .NotEqual(Guid.Empty)
-                .WithMessage("ActorId must be a valid non-empty GUID.");
-
-            RuleFor(c => c.ActorId)
-                .NotEqual(Guid.Empty)
-                .WithMessage("ActorId must be a valid non-empty GUID.");
+            RuleFor(c => c.ClubId).ValidGuid();
+            RuleFor(c => c.MemberIds).ValidList();
+            RuleForEach(c => c.MemberIds).ValidGuid();
+            RuleFor(c => c.ActorId).ValidGuid();
         }
     }
 }

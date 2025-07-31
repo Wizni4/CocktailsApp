@@ -58,7 +58,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// Should be implemented in <see cref="ValueObject"/> children classes.
         /// </remarks>
         /// <returns><see cref="IEnumerable{T}"/> containing all the properties values of a <see cref="ValueObject"/> based type.</returns>
-        private protected IEnumerable<object?> GetEqualityComponents()
+        private virtual protected IEnumerable<object?> GetEqualityComponents()
         {
             // Get all public properties of the object
             return this.GetType()

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace CocktailsApp.Domain.SeedWork
 {
-    public abstract class ByIdSpecification<T>(Guid id) : Specification<T> where T : Entity
+    public class ByIdSpecification<T>(Guid id) : Specification<T> where T : Entity
     {
         private readonly Guid _id = id;
 

@@ -46,11 +46,6 @@ namespace CocktailsApp.Application.Club
         public List<ClubMemberDTO> Members { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets the owner of the club.
-        /// </summary>
-        public required ClubMemberDTO Owner { get; set; }
-
-        /// <summary>
         /// Gets or sets the list of roles available within the club.
         /// </summary>
         public List<ClubRoleDTO> Roles { get; set; } = [];

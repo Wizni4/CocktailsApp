@@ -27,5 +27,5 @@ namespace CocktailsApp.Application.Club
         Guid ClubId,
         IEnumerable<Guid> CocktailIds,
         Guid ActorId
-    ) : ICommand<ClubDTO>;
+    ) : ICommand<IEnumerable<ClubCocktailDTO>>;
 }

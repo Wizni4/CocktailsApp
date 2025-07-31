@@ -18,25 +18,15 @@ namespace CocktailsApp.Application.Authentication
     {
         public SignUpCommandValidator()
         {
-            RuleFor(c => c.Email)
-                .NotNull()
-                .WithMessage("Login must be provided.")
-                .NotEmpty()
-                .WithMessage("Login cannot be empty.");
+            RuleFor(c => c.Username).ValidString();
 
             RuleFor(c => c.Email)
-                .NotNull()
-                .WithMessage("Login must be provided.")
-                .NotEmpty()
-                .WithMessage("Login cannot be empty.")
+                .ValidString()
                 .Matches(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*")
                 .WithMessage("Email has an incorrect format. E.g: youreamiladress@domain.com");
 
             RuleFor(c => c.Password)
-                .NotNull()
-                .WithMessage("Password must be provided.")
-                .NotEmpty()
-                .WithMessage("Password cannot be empty.")
+                .ValidString()
                 .Matches("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])|(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])).{8,}$")
                 .WithMessage("Password must be at least 8 characters and contain at 3 of 4 of the following: upper case (A - Z), lower case (a - z), number(0 - 9) and special character(e.g. !@#$%^&*)");
         }

@@ -1,33 +1,21 @@
 ﻿using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 
-using Application.Authentication.Commands;
-
 using CocktailsApp.Application.Authentication;
-using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.UserAggregate;
 using CocktailsApp.Infrastructure.SeedWork;
 
 using Microsoft.Extensions.Options;
 
 namespace CocktailsApp.Infrastructure.Authentication
-{
-    public class CognitoSettings
-    {
-        public string UserPoolId { get; set; } = default!;
-        public string ClientId { get; set; } = default!;
-    }
-
+{ 
     public class CognitoAuthService(
         IAmazonCognitoIdentityProvider cognitoClient,
-        IOptions<CognitoSettings> options,
-        IUnitOfWork unitOfWork
+        IOptions<CognitoSettings> options
     ) : IAuthService
     {
         private readonly IAmazonCognitoIdentityProvider _cognitoClient = cognitoClient;
         private readonly string _userPoolId = options.Value.UserPoolId;
         private readonly string _clientId = options.Value.ClientId;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<string> SignUpAsync(SignUpCommand command)
         {
@@ -48,12 +36,13 @@ namespace CocktailsApp.Infrastructure.Authentication
             return response.UserSub;
         }
 
-        public async Task<SignInResponseDTO> SignInAsync(SignInCommand command)
+        public async Task<AuthDTO> SignInAsync(SignInCommand command)
         {
-            var authRequest = new InitiateAuthRequest
+            var authRequest = new AdminInitiateAuthRequest
             {
+                UserPoolId = _userPoolId,
                 ClientId = _clientId,
-                AuthFlow = AuthFlowType.USER_PASSWORD_AUTH,
+                AuthFlow = AuthFlowType.ADMIN_USER_PASSWORD_AUTH,
                 AuthParameters = new Dictionary<string, string>
                 {
                     { "USERNAME", command.Username },
@@ -61,21 +50,20 @@ namespace CocktailsApp.Infrastructure.Authentication
                 },
             };
 
-            var response = await _cognitoClient.InitiateAuthAsync(authRequest);
+            var response = await _cognitoClient.AdminInitiateAuthAsync(authRequest);
 
             if (response.AuthenticationResult == null)
                 throw new UnauthorizedAccessException("Invalid credentials");
 
-            return new SignInResponseDTO
+            return new AuthDTO
             {
                 AccessToken = response.AuthenticationResult.AccessToken,
                 IdToken = response.AuthenticationResult.IdToken,
                 RefreshToken = response.AuthenticationResult.RefreshToken,
-                //ExpiresIn = response.AuthenticationResult.ExpiresIn
             };
         }
 
-        public async Task<SignInResponseDTO> RefreshTokenAsync(string refreshToken)
+        public async Task<AuthDTO> RefreshTokenAsync(string refreshToken)
         {
             var refreshRequest = new InitiateAuthRequest
             {
@@ -92,12 +80,11 @@ namespace CocktailsApp.Infrastructure.Authentication
             if (response.AuthenticationResult == null)
                 throw new UnauthorizedAccessException("Refresh failed");
 
-            return new SignInResponseDTO
+            return new AuthDTO
             {
                 AccessToken = response.AuthenticationResult.AccessToken,
                 IdToken = response.AuthenticationResult.IdToken,
-                RefreshToken = refreshToken, // AWS usually doesn't return a new one
-                ExpiresIn = response.AuthenticationResult.ExpiresIn
+                RefreshToken = refreshToken,
             };
         }
 

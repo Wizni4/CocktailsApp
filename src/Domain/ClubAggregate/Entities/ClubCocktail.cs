@@ -29,7 +29,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         internal ClubCocktail(Guid cocktailId)
         {
             if (cocktailId == Guid.Empty)
-                throw new ArgumentNullException(nameof(cocktailId), "CocktailId cannot be null.");
+                throw new ArgumentException("CocktailId cannot be null.");
             CocktailId = cocktailId;
         }
     }

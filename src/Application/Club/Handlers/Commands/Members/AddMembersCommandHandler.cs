@@ -1,0 +1,48 @@
+﻿/*
+ * Framework namespaces
+ */
+using AutoMapper;
+
+using CocktailsApp.Application.SeedWork;
+/*
+ * Application namespaces
+ */
+/*
+ * Domain namespaces
+ */
+
+namespace CocktailsApp.Application.Club
+{
+    public class AddMembersCommandHandler(
+        IUnitOfWork unitOfWork,
+        IClubRepository clubRepository,
+        IMapper autoMapper
+    ) : ICommandHandler<AddMembersCommand, IEnumerable<ClubMemberDTO>>
+    {
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _autoMapper = autoMapper;
+        private readonly IClubRepository _clubRepository = clubRepository;
+
+        public async Task<IEnumerable<ClubMemberDTO>> Handle(AddMembersCommand request, CancellationToken cancellationToken)
+        {
+            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members));
+
+            // Add members to the club
+            foreach (var newMember in request.NewMembers)
+            {
+                // Add member
+                var clubMember = club!.AddMember(newMember.UserId, request.ActorId);
+
+                // Add roles to member
+                if(newMember.RoleIds is not null)
+                    foreach(var roleId in newMember.RoleIds)
+                        club.AddRoleToMember(clubMember.Id, roleId, request.ActorId);
+            }
+
+            // Persit data in DB
+            _clubRepository.Update(club!);
+            await _unitOfWork.SaveChangesAsync();
+            return _autoMapper.Map<IEnumerable<ClubMemberDTO>>(club!.Members);
+        }
+    }
+}

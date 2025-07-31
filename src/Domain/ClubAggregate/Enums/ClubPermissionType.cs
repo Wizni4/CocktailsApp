@@ -26,14 +26,9 @@ namespace CocktailsApp.Domain.ClubAggregate
         AddMember,
 
         /// <summary>
-        /// Permission to add a <see cref="ClubPermissionType"/> to a <see cref="ClubMember"/>.
-        /// </summary>
-        AddPermissionToMember,
-
-        /// <summary>
         /// Permission to add a <see cref="ClubPermissionType"/> to a <see cref="ClubRole"/>.
         /// </summary>
-        AddRolePermission,
+        AddPermissionToRole,
 
         /// <summary>
         /// Permission to assign a <see cref="ClubRole"/> to a <see cref="ClubMember"/>.
@@ -86,14 +81,9 @@ namespace CocktailsApp.Domain.ClubAggregate
         RemoveMember,
 
         /// <summary>
-        /// Permission to remove a <see cref="ClubPermissionType"/> from a <see cref="ClubMember"/>.
-        /// </summary>
-        RemovePermissionToMember,
-
-        /// <summary>
         /// Permission to remove a <see cref="ClubPermissionType"/> from a <see cref="ClubRole"/>.
         /// </summary>
-        RemoveRolePermission,
+        RemovePermissionFromRole,
 
         /// <summary>
         /// Permission to remove a <see cref="ClubRole"/> from a <see cref="ClubMember"/>.

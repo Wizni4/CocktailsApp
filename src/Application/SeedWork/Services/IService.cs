@@ -9,6 +9,9 @@
  * Framework namespaces
  */
 
+using CocktailsApp.Application.Cocktail;
+using CocktailsApp.Domain.SeedWork;
+
 namespace CocktailsApp.Application.SeedWork
 {
     /// <summary>

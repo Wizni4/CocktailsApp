@@ -12,10 +12,10 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public class SignInCommandHandler(IAuthService authService) : ICommandHandler<SignInCommand, SignInResponseDTO>
+    public class SignInCommandHandler(IAuthService authService) : ICommandHandler<SignInCommand, AuthDTO>
     {
         private readonly IAuthService _authService = authService;
-        public async Task<SignInResponseDTO> Handle(SignInCommand request, CancellationToken cancellationToken)
+        public async Task<AuthDTO> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
             return await _authService.SignInAsync(request);
         }

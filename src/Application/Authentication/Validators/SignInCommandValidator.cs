@@ -5,10 +5,11 @@
 /*
  * Application namespaces
  */
-using CocktailsApp.Application.SeedWork;
 /*
  * Framework namespaces
  */
+using CocktailsApp.Application.SeedWork;
+
 using FluentValidation;
 
 
@@ -18,17 +19,8 @@ namespace CocktailsApp.Application.Authentication
     {
         public SignInCommandValidator()
         {
-            RuleFor(c => c.Username)
-                .NotNull()
-                .WithMessage("Login must be provided.")
-                .NotEmpty()
-                .WithMessage("Login cannot be empty.");
-
-            RuleFor(c => c.Password)
-                .NotNull()
-                .WithMessage("Password must be provided.")
-                .NotEmpty()
-                .WithMessage("Password cannot be empty.");
+            RuleFor(c => c.Username).ValidString();
+            RuleFor(c => c.Password).ValidString();
         }
     }
 }
