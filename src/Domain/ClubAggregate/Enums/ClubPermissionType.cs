@@ -88,6 +88,6 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <summary>
         /// Permission to remove a <see cref="ClubRole"/> from a <see cref="ClubMember"/>.
         /// </summary>
-        RemoveRoleToMember,
+        RemoveRoleFromMember,
     }
 }

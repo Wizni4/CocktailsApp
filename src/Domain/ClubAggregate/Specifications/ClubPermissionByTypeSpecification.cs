@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace CocktailsApp.Domain.ClubAggregate
 {
-    public class PermissionByTypeSpecification(ClubPermissionType permission) : Specification<ClubPermission>
+    public class ClubPermissionByTypeSpecification(ClubPermissionType permission) : Specification<ClubPermission>
     {
         private readonly ClubPermissionType _permission = permission;
         public override Expression<Func<ClubPermission, bool>> SpecExpression => p => p.Permission == _permission;

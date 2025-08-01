@@ -1,7 +1,7 @@
-import container from '../../../di-container';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAuthService, IUser  } from '../auth.service';
+import { SignInRequest } from '../auth.interface';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -10,15 +10,14 @@ import { IAuthService, IUser  } from '../auth.service';
   standalone: false,
 })
 export class SignInComponent {
-  private authService: IAuthService = container.resolve<IAuthService>('AuthService');
   loading: boolean = false;
-  user: IUser = {} as IUser;
+  signInRequest: SignInRequest = {} as SignInRequest;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   public signIn(): void {
     this.loading = true;
-    this.authService.signIn(this.user)
+    this.authService.signIn(this.signInRequest)
       .then(() => {
         this.router.navigate(['/auth/profile']);
       }).catch((reason: any) => {

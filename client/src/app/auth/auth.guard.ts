@@ -1,29 +1,25 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { IAuthService } from './auth.service';
-import container from '../../di-container';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  private authService: IAuthService = container.resolve<IAuthService>('AuthService');
+  constructor(private auth: AuthService, private router: Router) { }
 
-  constructor(private router: Router) { }
-
-  async canActivate(): Promise<boolean> {
-    try {
-      const isAuthenticated = await this.authService.isAuthenticated();
-      if (!isAuthenticated) {
-        // Redirect to login page if not authenticated
-        this.router.navigate(['/auth/signin']);
-      }
-      return isAuthenticated;
-    } catch (error) {
-      console.error('Error checking authentication:', error);
-      // Redirect to login page in case of an error
-      this.router.navigate(['/auth/signin']);
-      return false;
-    }
+  canActivate(): Observable<boolean> {
+    return this.auth.isAuthenticated().pipe(
+      take(1), // take the latest auth value and complete
+      map(isAuth => {
+        if (!isAuth) {
+          this.router.navigate(['/auth/signin']);
+          return false;
+        }
+        return true;
+      })
+    );
   }
 }

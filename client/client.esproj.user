@@ -29,8 +29,7 @@
   "type": "chrome",
   "request": "launch",
   "url": "http://localhost:4200",
-  "webRoot": "D:\\Documents\\Code\\CocktailsApp\\client",
-  "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
+  "webRoot": "D:\\Documents\\Code\\CocktailsApp\\client"
 }</LaunchJsonTarget>
   </PropertyGroup>
 </Project>

@@ -277,7 +277,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         {
             // Arrange
             var permission = ClubPermissionType.AddPermissionToRole;
-            var permissionAdded = ClubPermissionType.RemoveRoleToMember;
+            var permissionAdded = ClubPermissionType.RemoveRoleFromMember;
             var action = (Guid actorId) => _club.AddPermissionToRole(_role.Id, permissionAdded, actorId);
 
             // Assert on success (has permissions)
@@ -296,7 +296,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void AddRolePermission_RoleNotInClub_ThrowsArgumentException()
         {
             // Arrange
-            var permission = ClubPermissionType.RemoveRoleToMember;
+            var permission = ClubPermissionType.RemoveRoleFromMember;
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
@@ -309,7 +309,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void AddRolePermission_EmptyRoleId_ThrowsArgumentException()
         {
             // Arrange
-            var permission = ClubPermissionType.RemoveRoleToMember;
+            var permission = ClubPermissionType.RemoveRoleFromMember;
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
@@ -322,7 +322,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void AddRolePermission_RoleAlreadyHasPermission_ThrowsArgumentException()
         {
             // Arrange
-            var permission = ClubPermissionType.RemoveRoleToMember;
+            var permission = ClubPermissionType.RemoveRoleFromMember;
             _role.AddPermission(permission);
 
             // Act & Assert
@@ -768,7 +768,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             _member.AddRole(role);
 
             // Arrange
-            var permission = ClubPermissionType.RemoveRoleToMember;
+            var permission = ClubPermissionType.RemoveRoleFromMember;
             var action = (Guid actorId) => _club.RemoveRoleFromMember(_member.Id, role.Id, actorId);
             var assert = () =>
             {
@@ -792,7 +792,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void RemoveRoleToMember_OwnerRoleActorNotOwner_ThrowUnauthorizedAccessException()
         {
             // Arrange
-            _role.AddPermission(ClubPermissionType.RemoveRoleToMember);
+            _role.AddPermission(ClubPermissionType.RemoveRoleFromMember);
 
             // Act & Assert
             var exception = Assert.Throws<UnauthorizedAccessException>(() =>

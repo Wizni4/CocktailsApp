@@ -4,7 +4,6 @@
 /*
  * Application namespaces
  */
-using CocktailsApp.Application.SeedWork;
 /*
  * Domain namespaces
  */
@@ -15,7 +14,7 @@ namespace CocktailsApp.Application.Club
         Guid ClubId,
         IEnumerable<AddMemberModel> NewMembers,
         Guid ActorId
-    ) : ICommand<IEnumerable<ClubMemberDTO>>;
+    ) : ClubCommand<IEnumerable<ClubMemberDTO>>(ClubId, ActorId);
 
     public class AddMemberModel
     {

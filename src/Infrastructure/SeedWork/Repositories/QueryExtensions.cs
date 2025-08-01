@@ -3,6 +3,8 @@
  */
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
+
+using Microsoft.EntityFrameworkCore;
 /*
 * Framework namespaces
 */
@@ -17,7 +19,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
                 return query;
 
             var includable = (Includable<T>)includes(new Includable<T>(query));
-            return includable.Input;
+            return includable.Input.AsSplitQuery();
         }
     }
 }

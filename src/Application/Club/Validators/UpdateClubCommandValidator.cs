@@ -10,17 +10,21 @@
  * Framework namespaces
  */
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.ClubAggregate;
 
 using FluentValidation;
 
 namespace CocktailsApp.Application.Club
 {
-    public class UpdateClubCommandValidator : AbstractValidator<UpdateClubCommand>
+    public class UpdateClubCommandValidator : ClubBaseValidator<UpdateClubCommand>
     {
-        public UpdateClubCommandValidator()
+        public UpdateClubCommandValidator(IClubRepository clubRepository)
+            : base(clubRepository, [
+                ClubPermissionType.ChangeAddress,
+                ClubPermissionType.ChangeName,
+                ClubPermissionType.ChangeDescription,
+                ClubPermissionType.ChangeVisibility])
         {
-            RuleFor(c => c.ClubId).ValidGuid();
-            RuleFor(c => c.ActorId).ValidGuid();
             When(c => c.Address is not null, () =>
             {
                 RuleFor(c => c.Address!).ValidAddress();

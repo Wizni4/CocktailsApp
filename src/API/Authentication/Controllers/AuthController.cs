@@ -11,13 +11,21 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CocktailsApp.API.Authentication
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController(IMediator mediator, IMapper autoMapper) : ControllerBase
+    public class AuthController(
+        ICookieService cookieService,
+        IMediator mediator,
+        IMapper autoMapper
+    ) : ControllerBase
     {
+        private readonly ICookieService _cookieService = cookieService;
         private readonly IMediator _mediator = mediator;
         private readonly IMapper _autoMapper = autoMapper;
 
@@ -35,8 +43,8 @@ namespace CocktailsApp.API.Authentication
         public async Task<ActionResult<SignInResponse>> SignIn([FromBody] SignInRequest request)
         {
             var command = new SignInCommand(request.Username, request.Password);
-            var response = _autoMapper.Map<SignInResponse>(await _mediator.Send(command));
-            return Ok(response);
+            var response = await _mediator.Send(command);
+            return Ok(_autoMapper.Map<SignInResponse>(response));
         }
 
         [HttpPost("signout")]
@@ -47,16 +55,16 @@ namespace CocktailsApp.API.Authentication
             var username = this.GetUsername();
             var command = new SignOutCommand(username);
             await _mediator.Send(command);
+            _cookieService.DeleteRefreshTokenCookie();
             return NoContent();
         }
 
         [HttpPost("refresh-token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<SignInResponse>> RefreshToken([FromBody] RefreshTokenRequest request)
+        public async Task<ActionResult<SignInResponse>> RefreshToken()
         {
-            var command = new RefreshTokenCommand(request.RefreshToken);
-            var response = _autoMapper.Map<SignInResponse>(await _mediator.Send(command));
-            return Ok(response);
+            var response = await _mediator.Send(new RefreshTokenCommand(_cookieService.GetRefreshTokenFromCookie()));
+            return Ok(_autoMapper.Map<SignInResponse>(response));
         }
     }
 }

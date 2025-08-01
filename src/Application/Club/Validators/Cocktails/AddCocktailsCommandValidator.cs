@@ -14,24 +14,24 @@ using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 using FluentValidation;
 using CocktailsApp.Application.Cocktail;
+using CocktailsApp.Domain.ClubAggregate;
 
 namespace CocktailsApp.Application.Club
 {
     /// <summary>
     /// Validates the <see cref="AddCocktailsCommand"/> to ensure all required identifiers are provided and valid.
     /// </summary>
-    public class AddCocktailsCommandValidator : AbstractValidator<AddCocktailsCommand>
+    public class AddCocktailsCommandValidator : ClubBaseValidator<AddCocktailsCommand>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddCocktailsCommandValidator"/> class.
         /// Defines validation rules for the <see cref="AddCocktailsCommand"/> properties.
         /// </summary>
-        public AddCocktailsCommandValidator(IUnitOfWork unitOfWork)
+        public AddCocktailsCommandValidator(
+            IUnitOfWork unitOfWork,
+            IClubRepository clubRepository
+        ) : base(clubRepository, [ClubPermissionType.AddCocktail])
         {
-            RuleFor(c => c.ActorId).ValidGuid();
-            RuleFor(c => c.ClubId)
-                .ValidGuid()
-                .IsClubExists(unitOfWork.Set<DomainClub>());
             RuleFor(c => c.CocktailIds).ValidList();
             RuleForEach(c => c.CocktailIds)
                 .ValidGuid()

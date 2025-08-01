@@ -20,6 +20,7 @@ namespace CocktailsApp.API.Authentication
             services.AddScoped<IAuthService, CognitoAuthService>();
             services.AddDefaultAWSOptions(configuration.GetAWSOptions());
             services.AddAWSService<IAmazonCognitoIdentityProvider>();
+            services.AddSingleton<ICookieService, CookieService>();
 
             return services;
         }

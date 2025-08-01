@@ -517,7 +517,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// Removes a <see cref="ClubRole"/> from a <see cref="ClubMember"/> within the <see cref="Club"/>.
         /// </summary>
         /// <remarks>
-        /// Only <paramref name="actorId"/> with the <see cref="ClubPermissionType.RemoveRoleToMember"/> permission can perform this action.
+        /// Only <paramref name="actorId"/> with the <see cref="ClubPermissionType.RemoveRoleFromMember"/> permission can perform this action.
         /// </remarks>
         /// <param name="clubMemberId">The <see cref="Entity.Id"/> of the member.</param>
         /// <param name="roleId">The <see cref="Entity.Id"/> of the role.</param>
@@ -532,7 +532,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         {
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
-            ValidateMemberPermission(actorId, ClubPermissionType.RemoveRoleToMember);
+            ValidateMemberPermission(actorId, ClubPermissionType.RemoveRoleFromMember);
 
             // Throw an exception if the member does not exist in the club
             var member = GetMember(clubMemberId);

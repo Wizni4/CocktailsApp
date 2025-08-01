@@ -22,7 +22,5 @@ namespace CocktailsApp.Application.Club
         string? Description,
         ClubVisibility? Visibility,
         Guid ActorId
-    ) : ICommand<ClubDTO>
-    {
-    }
+    ) : ClubCommand<ClubDTO>(ClubId, ActorId);
 }

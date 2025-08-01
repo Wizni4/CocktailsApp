@@ -1,7 +1,6 @@
-import container from '../../../di-container';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAuthService, IUser } from '../auth.service';
+import { AuthService } from '../auth.service';
 
 
 @Component({
@@ -11,10 +10,7 @@ import { IAuthService, IUser } from '../auth.service';
   styleUrl: './signout.component.css'
 })
 export class SignOutComponent {
-  private authService: IAuthService = container.resolve<IAuthService>('AuthService');
-  user: IUser = {} as IUser;
-
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   public signOut(): void {
     this.authService.signOut();

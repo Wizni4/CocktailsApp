@@ -10,7 +10,8 @@
  * Framework namespaces
  */
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Application.Shared;
+using DomainUser = CocktailsApp.Domain.UserAggregate.User;
+using CocktailsApp.Application.User;
 
 using FluentValidation;
 
@@ -28,12 +29,14 @@ namespace CocktailsApp.Application.Club
         /// Initializes a new instance of the <see cref="CreateClubCommandValidator"/> class.
         /// Defines validation rules for the <see cref="CreateClubCommand"/>.
         /// </summary>
-        public CreateClubCommandValidator()
+        public CreateClubCommandValidator(IUnitOfWork unitOfWork)
         {
             RuleFor(c => c.Address).ValidAddress();
             RuleFor(c => c.Description).ValidString();
             RuleFor(c => c.Name).ValidString();
-            RuleFor(c => c.OwnerId).ValidGuid();
+            RuleFor(c => c.OwnerId)
+                .ValidGuid()
+                .IsUserExists(unitOfWork.Set<DomainUser>());
             RuleFor(c => c.Visibility).ValidEnum();
         }
     }

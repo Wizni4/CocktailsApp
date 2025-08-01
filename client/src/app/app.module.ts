@@ -3,15 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProfileComponent } from './auth/profile/profile.component';
-import { SignInComponent } from './auth/signin/signin.component';
-import { SignUpComponent } from './auth/signup/signup.component';
 import { ApiModule } from './api/api.module';
 import { AuthModule } from './auth/auth.module';
+import { HomeComponent } from './home/home.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { APP_INITIALIZER } from '@angular/core';
+import { AuthService } from './auth/auth.service';
+
+export function initializeApp(authService: AuthService) {
+  return () => authService.refreshToken().catch(() => { });
+}
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -20,7 +27,17 @@ import { AuthModule } from './auth/auth.module';
     ApiModule,
     AuthModule,
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AuthService],
+      multi: true
+}],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

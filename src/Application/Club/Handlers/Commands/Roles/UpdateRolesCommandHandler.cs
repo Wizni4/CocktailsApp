@@ -59,7 +59,7 @@ namespace CocktailsApp.Application.Club
 
                     // Get the Permisisons to add (= permissions not already associated to the role)
                     var permissionsToAdd = updatedRole.Permissions
-                        .Where(newPermission => !currentRole!.Permissions.Any(p => new PermissionByTypeSpecification(newPermission).SpecExpression.Compile()(p)));
+                        .Where(newPermission => !currentRole!.Permissions.Any(p => new ClubPermissionByTypeSpecification(newPermission).SpecExpression.Compile()(p)));
 
                     // Add permissions if specified
                     if(permissionsToAdd.Any())
@@ -68,7 +68,7 @@ namespace CocktailsApp.Application.Club
 
                     // Get the Permisisons to remvoe (= permissions already associated to the role)
                     var permissionsToRemove = currentRole!.Permissions
-                        .Where(p => !updatedRole.Permissions.Any(newPermission => new PermissionByTypeSpecification(newPermission).SpecExpression.Compile()(p)))
+                        .Where(p => !updatedRole.Permissions.Any(newPermission => new ClubPermissionByTypeSpecification(newPermission).SpecExpression.Compile()(p)))
                         .Select(p => p.Permission);
 
                     // Remove permissions if specified

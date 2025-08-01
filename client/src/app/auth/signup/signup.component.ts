@@ -1,7 +1,7 @@
-import container from '../../../di-container';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAuthService, IUser } from '../auth.service';
+import { SignUpRequest } from '../auth.interface';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,17 +10,15 @@ import { IAuthService, IUser } from '../auth.service';
   standalone: false,
 })
 export class SignUpComponent {
-
-  private authService: IAuthService = container.resolve<IAuthService>('AuthService');
   loading: boolean = false;
   isConfirm: boolean = false;
-  user: IUser = {} as IUser;
+  signUpRequest: SignUpRequest = {} as SignUpRequest;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   public signUp(): void {
     this.loading = true;
-    this.authService.signUp(this.user)
+    this.authService.signUp(this.signUpRequest)
       .then(() => {
         this.loading = false;
         this.isConfirm = true;
@@ -29,14 +27,14 @@ export class SignUpComponent {
       });
   }
 
-  public confirmSignUp(): void {
-    this.loading = true;
-    this.authService.confirmSignUp(this.user)
-      .then(() => {
-        this.router.navigate(['/auth/signin']);
-      }).catch(() => {
-        this.loading = false;
-      });
-  }
+  //public confirmSignUp(): void {
+  //  this.loading = true;
+  //  this.authService.confirmSignUp(this.signUpRequest)
+  //    .then(() => {
+  //      this.router.navigate(['/auth/signin']);
+  //    }).catch(() => {
+  //      this.loading = false;
+  //    });
+  //}
 
 }

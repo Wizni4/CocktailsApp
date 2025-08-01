@@ -108,7 +108,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
         private ClubPermission GetPermission(ClubPermissionType permissionType)
         {
-            var permission = _permissions.FirstOrDefault(new PermissionByTypeSpecification(permissionType).SpecExpression.Compile())
+            var permission = _permissions.FirstOrDefault(new ClubPermissionByTypeSpecification(permissionType).SpecExpression.Compile())
                 ?? throw new KeyNotFoundException($"Permission '{permissionType.ToString()}' was not found in the '{Name}' role.");
 
             return permission;
