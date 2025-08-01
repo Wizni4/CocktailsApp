@@ -19,7 +19,7 @@ namespace CocktailsApp.Application.Club
         IMapper automapper,
         IOptions<ClubSettingsDTO> clubSettings,
         IUnitOfWork unitOfWork
-    ) : Service<ClubDTO>, IClubService
+    ) : IClubService
     {
         private readonly IMapper _automapper = automapper;
         private readonly IOptions<ClubSettingsDTO> _clubSettings = clubSettings;

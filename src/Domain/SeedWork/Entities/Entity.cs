@@ -44,7 +44,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// <summary>
         /// Update the <see cref="UpdateDate"/> to <see cref="DateTime.UtcNow"/>
         /// </summary>
-        public void RefreshUpdateDate()
+        private protected void Touch()
         {
             _updateDate = DateTime.UtcNow;
         }

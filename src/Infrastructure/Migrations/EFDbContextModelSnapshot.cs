@@ -217,6 +217,9 @@ namespace Infrastructure.Migrations
                         {
                             b1.IsRequired();
 
+                            b1.Property<int>("BaseUnit")
+                                .HasColumnType("int");
+
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
@@ -304,6 +307,9 @@ namespace Infrastructure.Migrations
                     b.ComplexProperty<Dictionary<string, object>>("Ingredient", "CocktailsApp.Domain.StockAggregate.Stock.Ingredient#Ingredient", b1 =>
                         {
                             b1.IsRequired();
+
+                            b1.Property<int>("BaseUnit")
+                                .HasColumnType("int");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
@@ -465,13 +471,13 @@ namespace Infrastructure.Migrations
                             b1.Property<Guid>("CocktailId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<int>("Id")
+                            b1.Property<int>("Id1")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int");
 
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id1"));
 
-                            b1.HasKey("CocktailId", "Id");
+                            b1.HasKey("CocktailId", "Id1");
 
                             b1.ToTable("CocktailIngredient");
 

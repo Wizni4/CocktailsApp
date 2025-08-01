@@ -29,7 +29,7 @@ namespace CocktailsApp.Application.Club
         /// Initializes a new instance of the <see cref="CreateClubCommandValidator"/> class.
         /// Defines validation rules for the <see cref="CreateClubCommand"/>.
         /// </summary>
-        public CreateClubCommandValidator(IUnitOfWork unitOfWork)
+        public CreateClubCommandValidator(IUnitOfWork unitOfWork, IClubService clubService)
         {
             RuleFor(c => c.Address).ValidAddress();
             RuleFor(c => c.Description).ValidString();
@@ -38,6 +38,14 @@ namespace CocktailsApp.Application.Club
                 .ValidGuid()
                 .IsUserExists(unitOfWork.Set<DomainUser>());
             RuleFor(c => c.Visibility).ValidEnum();
+            RuleFor(c => c)
+                .CustomAsync(async (command, context, _) =>
+                {
+                    var clubLimit = await clubService.GetClubLimitInfoAsync(command.OwnerId);
+
+                    if (!clubLimit.CanCreateClub)
+                        context.AddFailure($"User {command.OwnerId} has reached the maximum number of owned club.\nOwned club(s): {clubLimit.NumberOfOwnedClubs}/{clubLimit.MaxNumberOfOwnedClubs}");
+                });
         }
     }
 }

@@ -38,6 +38,7 @@ namespace CocktailsApp.Infrastructure.IngredientPricingAggregate
                 a.IsRequired();
 
                 a.Property(i => i.Name).IsRequired();
+                a.Property(i => i.BaseUnit).IsRequired();
             });
         }
     }

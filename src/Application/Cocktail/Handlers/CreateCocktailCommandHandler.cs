@@ -11,7 +11,9 @@ using CocktailsApp.Application.SeedWork;
  * Domain namespaces
  */
 using CocktailsApp.Domain.CocktailAggregate;
-using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Shared;
+
+using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 
 namespace CocktailsApp.Application.Cocktail
 {
@@ -23,14 +25,16 @@ namespace CocktailsApp.Application.Cocktail
 
         public async Task<CocktailDTO> Handle(CreateCocktailCommand request, CancellationToken cancellationToken)
         {
-            var ingredients = request.Ingredients.Select(i => _autoMapper.Map<CocktailIngredient>(i)).ToList();
-            var cocktail = new CocktailBuilder()
-                .WithName(request.Name)
-                .AddIngredients(ingredients)
-                .Build();
-            _unitOfWork.Set<CocktailsApp.Domain.CocktailAggregate.Cocktail>().Create(cocktail);
-            await _unitOfWork.SaveChangesAsync();
+            var cocktailBuilder = new CocktailBuilder()
+                .WithName(request.Descripotion)
+                .WithName(request.Name);
 
+            foreach (var ingredient in request.Ingredients)
+                cocktailBuilder.AddIngredient(_autoMapper.Map<Ingredient>(ingredient), 1);
+
+            var cocktail = cocktailBuilder.Build();
+            _unitOfWork.Set<DomainCocktail>().Create(cocktail);
+            await _unitOfWork.SaveChangesAsync();
             return _autoMapper.Map<CocktailDTO>(cocktail);
         }
     }

@@ -11,7 +11,7 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Club
 {
-    public interface IClubService : IService<ClubDTO>
+    public interface IClubService : IService
     {
         Task<ClubLimitInfo> GetClubLimitInfoAsync(Guid userId);
     }

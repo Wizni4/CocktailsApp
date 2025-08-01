@@ -21,7 +21,7 @@ namespace CocktailsApp.Application.User
     public class UserService(
         IUnitOfWork unitOfWork,
         IMapper autoMapper
-    ) : Service<UserDTO>,  IUserService
+    ) : IUserService
     {
         private readonly IMapper _autoMapper = autoMapper;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;

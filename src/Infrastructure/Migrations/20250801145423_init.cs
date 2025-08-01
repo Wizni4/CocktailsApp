@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class INIT : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,6 +54,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    Ingredient_BaseUnit = table.Column<int>(type: "int", nullable: false),
                     Ingredient_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -69,6 +70,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ingredient_BaseUnit = table.Column<int>(type: "int", nullable: false),
                     Ingredient_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -147,12 +149,12 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     CocktailId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id1 = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CocktailIngredient", x => new { x.CocktailId, x.Id });
+                    table.PrimaryKey("PK_CocktailIngredient", x => new { x.CocktailId, x.Id1 });
                     table.ForeignKey(
                         name: "FK_CocktailIngredient_Cocktail_CocktailId",
                         column: x => x.CocktailId,

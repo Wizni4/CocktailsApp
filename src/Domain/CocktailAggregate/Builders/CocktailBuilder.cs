@@ -12,8 +12,9 @@ namespace CocktailsApp.Domain.CocktailAggregate
 {
     public class CocktailBuilder : IBuilder<Cocktail>
     {
-        private readonly List<CocktailIngredient> _ingredients = [];
+        private Cocktail? _cocktail = null;
         private string _name = "";
+        private string _description = "";
 
         public CocktailBuilder WithName(string name)
         {
@@ -21,37 +22,37 @@ namespace CocktailsApp.Domain.CocktailAggregate
             return this;
         }
 
-        public CocktailBuilder AddIngredient(CocktailIngredient ingredient)
+        public CocktailBuilder WithDescription(string description)
         {
-            if (!_ingredients.Any(i => i == ingredient))
-                _ingredients.Add(ingredient);
+            this._description = description;
             return this;
         }
 
         public CocktailBuilder AddIngredient(Ingredient ingredient, decimal quantity)
         {
-            if (_ingredients.Any(ci => ci.Ingredient == ingredient))
-                throw new ArgumentException("Ingredient already exists in the cocktail.", nameof(ingredient));
+            TryCreateCocktail();
 
-            var cocktailIngredient = new CocktailIngredientBuilder()
-                .WithIngredient(ingredient)
-                .WithQuantity(quantity)
-                .Build();
+            if (_cocktail == null)
+                throw new InvalidOperationException("Cocktail must have a name and a description before adding ingrdients");
 
-            _ingredients.Add(cocktailIngredient);
-            return this;
-        }
-
-        public CocktailBuilder AddIngredients(List<CocktailIngredient> ingredients)
-        {
-            foreach (var ingredient in ingredients)
-                AddIngredient(ingredient);
+            _cocktail.AddIngredient(ingredient, quantity);
             return this;
         }
 
         public Cocktail Build()
         {
-            return new Cocktail(_name, _ingredients);
+            if(_cocktail == null)
+                throw new InvalidOperationException("Cocktail must have a name and description.");
+
+            return _cocktail;
         }
+
+        private void TryCreateCocktail()
+        {
+            // Create Cocktail instance as soon as we have both required fields
+            if (!string.IsNullOrWhiteSpace(_name) && !string.IsNullOrWhiteSpace(_description) && _cocktail == null)
+                _cocktail = new Cocktail(_name, _description);
+        }
+
     }
 }

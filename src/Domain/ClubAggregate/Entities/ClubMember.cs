@@ -64,6 +64,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // Add role to the member
             _roles.Add(role);
+            Touch();
         }
 
         /// <summary>
@@ -80,6 +81,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             var role = _roles.FirstOrDefault(r => r.Id == roleId)
                 ?? throw new ArgumentException("The member doesn't have this role.");
             _roles.Remove(role);
+            Touch();
         }
 
         /// <summary>

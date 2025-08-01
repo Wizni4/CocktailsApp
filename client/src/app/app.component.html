@@ -1,30 +1,25 @@
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Angular Amazon Cognito</a>
+<head>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div id="navbarContent" class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated">
-          <li class="nav-item" *ngIf="!isAuthenticated">
-            <a class="nav-link" routerLink="/auth/signup" routerLinkActive="active">Sign up</a>
-          </li>
-          <li class="nav-item" *ngIf="!isAuthenticated">
-            <a class="nav-link" routerLink="/auth/signin" routerLinkActive="active">Sign in</a>
-          </li>
-          <li class="nav-item" *ngIf="isAuthenticated">
-            <a class="nav-link" routerLink="/auth/profile" routerLinkActive="active">Profile</a>
-          </li>
-          <li class="nav-item" *ngIf="isAuthenticated">
-            <a class="nav-link" href="#" (click)="signOut()">Sign out</a>
-          </li>
-        </ng-container>
-      </ul>
+</head>
+<body class="app-body">
+  <header class="app-header">
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo" />
     </div>
-  </div>
-</nav>
+    <div class="auth-options">
+      <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated">
+        <button *ngIf="!isAuthenticated" routerLink="/auth/signup">Sign Up</button>
+        <button *ngIf="!isAuthenticated" routerLink="/auth/signin">Sign In</button>
+        <button *ngIf="isAuthenticated" (click)="signOut()">Sign Out</button>
+      </ng-container>
+    </div>
+  </header>
 
-<router-outlet></router-outlet>
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="app-footer">
+    <p>© 2025. All rights reserved.</p>
+  </footer>
+</body>

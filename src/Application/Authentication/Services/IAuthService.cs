@@ -12,7 +12,7 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public interface IAuthService : IService<AuthDTO>
+    public interface IAuthService : IService
     {
         Task<string> SignUpAsync(SignUpCommand request);
         Task<AuthDTO> SignInAsync(SignInCommand request);

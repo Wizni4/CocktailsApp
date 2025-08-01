@@ -12,7 +12,7 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.User
 {
-    public interface IUserService : IService<UserDTO>
+    public interface IUserService : IService
     {
     }
 }

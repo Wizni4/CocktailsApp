@@ -6,8 +6,7 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
-
-using MediatR;
+using CocktailsApp.Application.Shared;
 
 /*
  * Framework namespaces
@@ -15,9 +14,9 @@ using MediatR;
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public class CreateCocktailCommand(string name, List<CocktailIngredientDTO> ingredients) : ICommand<CocktailDTO>
-    {
-        public string Name { get; } = name;
-        public List<CocktailIngredientDTO> Ingredients { get; } = ingredients;
-    }
+    public record CreateCocktailCommand(
+        string Descripotion,
+        string Name,
+        List<IngredientDTO> Ingredients
+   ) : ICommand<CocktailDTO>;
 }

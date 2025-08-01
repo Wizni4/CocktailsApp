@@ -226,6 +226,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             var cocktail = new ClubCocktail(cocktailId);
             _cocktails.Add(cocktail);
+            Touch();
             return cocktail;
         }
 
@@ -256,7 +257,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // Create and add a new member to the club.
             var member = new ClubMember(userId);
             _members.Add(member);
-
+            Touch();
             return member;
         }
 
@@ -286,6 +287,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // Add the permission to the role
             role.AddPermission(permission);
+            Touch();
         }
 
         /// <summary>
@@ -326,6 +328,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // Add role to member
             member.AddRole(role);
+            Touch();
         }
 
         /// <summary>
@@ -358,7 +361,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             var role = new ClubRole(roleName);
 
             _roles.Add(role);
-
+            Touch();
             return role;
         }
 
@@ -378,7 +381,8 @@ namespace CocktailsApp.Domain.ClubAggregate
                 throw new UnauthorizedAccessException("Only the Owner of the club can delete the club.");
 
             // Raise the event
-            AddDomainEvent(new ClubDeletedEvent(actorId));
+            AddDomainEvent(new ClubDeletedEvent(Id));
+            Touch();
         }
 
         /// <summary>
@@ -420,6 +424,8 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // Remove role from the club
             _roles.Remove(role);
+            Touch();
+            AddDomainEvent(new ClubRoleDeletedEvent(Id, role.Id));
         }
 
         /// <summary>
@@ -446,6 +452,8 @@ namespace CocktailsApp.Domain.ClubAggregate
             var cocktail = GetCocktail(cocktailId);
 
             _cocktails.Remove(cocktail);
+            Touch();
+            AddDomainEvent(new ClubCocktailDeletedEvent(Id, cocktail.Id));
         }
 
         /// <summary>
@@ -480,6 +488,8 @@ namespace CocktailsApp.Domain.ClubAggregate
                 throw new UnauthorizedAccessException("A member can't remove him self from a club.");
 
             _members.Remove(member);
+            Touch();
+            AddDomainEvent(new ClubMemberDeletedEvent(Id, member.Id));
         }
 
         /// <summary>
@@ -511,6 +521,7 @@ namespace CocktailsApp.Domain.ClubAggregate
                 throw new UnauthorizedAccessException("Permissions cannot be removed from the Owner role.");
 
             role.RemovePermission(permision);
+            Touch();
         }
 
         /// <summary>
@@ -549,8 +560,9 @@ namespace CocktailsApp.Domain.ClubAggregate
                 _members.Count(m => m.Roles.Contains(role)) <= 1))
                 throw new UnauthorizedAccessException("At least one member must have the Owner role.");
 
-                // Remove role to member
-                member.RemoveRole(roleId);
+            // Remove role to member
+            member.RemoveRole(roleId);
+            Touch();
         }
 
         /// <summary>
@@ -575,7 +587,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             if (newAddress is null)
                 throw new ArgumentException("The address cannot be null.");
             _address = newAddress;
-
+            Touch();
         }
 
         /// <summary>
@@ -601,6 +613,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             if (string.IsNullOrWhiteSpace(newDescription))
                 throw new ArgumentException("The club description cannot be an empty string or composed entirely of whitespace.");
             _description = newDescription;
+            Touch();
         }
 
         /// <summary>
@@ -625,6 +638,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             if (string.IsNullOrWhiteSpace(newName))
                 throw new ArgumentException("The club name cannot be an empty string or composed entirely of whitespace.");
             _name = newName;
+            Touch();
         }
 
         /// <summary>
@@ -654,6 +668,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // Throw an exception if the member does not exist in the club
             var role = GetRole(roleId);
             role.UpdateName(newName);
+            Touch();
         }
 
         /// <summary>
@@ -673,6 +688,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // Raise an exception if the user doesn't have permission to perform the action.
             ValidateMemberPermission(actorId, ClubPermissionType.ChangeVisibility);
             Visibility = visibility;
+            Touch();
         }
 
         /// <summary>

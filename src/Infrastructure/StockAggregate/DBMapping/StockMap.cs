@@ -39,6 +39,7 @@ namespace CocktailsApp.Infrastructure.StockAggregate
             {
                 a.IsRequired();
                 a.Property(i => i.Name);
+                a.Property(i => i.BaseUnit);
             });
 
             // FK

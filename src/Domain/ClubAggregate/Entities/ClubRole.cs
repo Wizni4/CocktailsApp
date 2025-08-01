@@ -67,6 +67,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // Give the permission to the role.
             // FYI: As Permission is a ValueObject, instanciating a new Permission will not create new entry in the database.
             _permissions.Add(new ClubPermission(permission));
+            Touch();
         }
 
         /// <summary>
@@ -76,6 +77,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         internal void RemovePermission(ClubPermissionType permission)
         {
             _permissions.Remove(GetPermission(permission));
+            Touch();
         }
 
         /// <summary>
@@ -91,7 +93,7 @@ namespace CocktailsApp.Domain.ClubAggregate
                 throw new ArgumentException("The role name cannot be an empty string or composed entirely of whitespace.");
 
             _name = newName;
-
+            Touch();
         }
 
         /// <summary>

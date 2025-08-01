@@ -29,7 +29,7 @@ namespace CocktailsApp.Application.Club
             : base(clubRepository, [ClubPermissionType.DeleteRole])
         {
             RuleFor(c => c.RoleIds).ValidList();
-            RuleForEach(c => c.RoleIds).ValidEnum();
+            RuleForEach(c => c.RoleIds).ValidGuid();
         }
     }
 }

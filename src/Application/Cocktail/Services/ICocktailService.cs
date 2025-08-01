@@ -11,11 +11,10 @@ using CocktailsApp.Application.SeedWork;
  * Domain namespaces
  */
 using CocktailsApp.Domain.CocktailAggregate;
-using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public interface ICocktailService : IService<CocktailDTO>
+    public interface ICocktailService : IService
     {
     }
 }

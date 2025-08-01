@@ -16,7 +16,7 @@ using CocktailsApp.Application.SeedWork;
 namespace CocktailsApp.Application.Cocktail
 {
     public class CocktailService(
-    ) : Service<CocktailDTO>, ICocktailService
+    ) : ICocktailService
     {
     }
 }
