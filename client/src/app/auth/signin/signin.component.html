@@ -1,30 +1,39 @@
-<div class="row justify-content-center my-5">
-  <div class="col-4">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col mb-2">
-            <label for="name" class="form-label">Username:</label>
-            <input type="text" id="username" name="username" #email="ngModel" [(ngModel)]="signInRequest.username" class="form-control form-control-sm">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col mb-2">
-            <label for="password" class="form-label">Password:</label>
-            <div class="input-group input-group-sm">
-              <input type="password" id="password" name="password" #password="ngModel" [(ngModel)]="signInRequest.password" class="form-control form-control-sm">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col d-grid">
-            <button type="button" (click)="signIn()" class="btn btn-sm btn-success" [disabled]="loading">
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
-              Sign in
-            </button>
-          </div>
-        </div>
-      </div>
+<main class="auth-main">
+  <div class="auth-card">
+    <h2 class="auth-title">Sign In</h2>
+
+    <!-- Username -->
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text"
+             pInputText
+             id="username"
+             [(ngModel)]="signInRequest.username"
+             class="form-control" />
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password"
+             pInputText
+             id="password"
+             [(ngModel)]="signInRequest.password"
+             class="form-control" />
+    </div>
+
+    <!-- Sign In Button -->
+    <div class="form-group">
+      <button type="button"
+              pButton
+              label="Sign In"
+              class="w-full"
+              [disabled]="loading"
+              (click)="signIn()">
+        <ng-container *ngIf="loading">
+          <span class="pi pi-spin pi-spinner mr-2"></span>
+        </ng-container>
+      </button>
     </div>
   </div>
-</div>
+</main>

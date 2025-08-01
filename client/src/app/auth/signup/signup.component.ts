@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SignUpRequest } from '../auth.interface';
 import { AuthService } from '../auth.service';
@@ -7,7 +8,8 @@ import { AuthService } from '../auth.service';
   selector: 'app-sign-up',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
-  standalone: false,
+  standalone: true,
+  imports: [FormsModule]
 })
 export class SignUpComponent {
   loading: boolean = false;
