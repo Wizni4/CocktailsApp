@@ -1,0 +1,38 @@
+.auth-main {
+  background-color: var(--surface-card);
+  border-radius: 2.5%;
+  width: auto;
+  height: auto;
+}
+
+.auth-card {
+  display: flex;
+  flex-flow: column;
+  padding: 2rem;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.auth-title.h2 {
+  flex-flow: column;
+  text-align:center;
+  padding: 0 0 0.5rem 0;
+}
+
+.form-group {
+  width: 15rem;
+  padding: 0.5rem 0 0 0;
+}
+
+.p-floatlabel {
+  height: 2.5rem;
+}
+
+input {
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+  padding:0 0 0 1rem;
+  font-size: 8px;
+}

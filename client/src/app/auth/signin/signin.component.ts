@@ -3,13 +3,14 @@ import { Router } from '@angular/router';
 import { SignInRequest } from '../auth.interface';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.css'],
   standalone: true,
-  imports: [FormsModule]
+  imports: [FormsModule, ButtonModule, FloatLabelModule]
 })
 export class SignInComponent {
   loading: boolean = false;

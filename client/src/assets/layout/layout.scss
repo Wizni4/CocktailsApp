@@ -1,3 +1,6 @@
-@use './variables/_light';
+@use './variables/_common';
 @use './variables/_dark';
+@use './variables/_light';
+@use './_auth';
 @use './_core';
+@use './_header';

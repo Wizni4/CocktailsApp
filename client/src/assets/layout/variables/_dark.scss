@@ -1,10 +1,9 @@
 
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface-ground: var(--p-surface-950);
-    --surface-card: var(--p-surface-800);
-    --code-background: var(--p-surface-800);
-    --code-color: var(--p-surface-800);
-  }
- }
+:root[class*='app-dark'] {
+  --surface-color: var(--p-surface-950);
+  --surface-ground: var(--p-surface-950);
+  --surface-card: var(--p-surface-800);
+  --code-background: var(--p-surface-100);
+  --code-color: var(--p-surface-200);
+  --text-color: var(--p-primary-500);
+}

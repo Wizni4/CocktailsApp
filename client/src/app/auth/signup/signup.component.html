@@ -1,40 +1,37 @@
-<div class="row justify-content-center my-5">
-  <div class="col-4">
-    <div class="card">
-      @if (!isConfirm) {
-        <div class="card-body">
-          <div class="row">
-            <div class="col mb-2">
-              <label for="name" class="form-label">Username:</label>
-              <input type="text" id="username" name="username" #email="ngModel" [(ngModel)]="signUpRequest.username" class="form-control form-control-sm">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col mb-2">
-              <label for="email" class="form-label">Email:</label>
-              <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="signUpRequest.email" class="form-control form-control-sm">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col mb-2">
-              <label for="password" class="form-label">Password:</label>
-              <div class="input-group input-group-sm">
-                <input [type]="password" id="password" name="signUpRequest.password" #password="ngModel" [(ngModel)]="password" class="form-control form-control-sm">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col d-grid">
-              <button type="button" (click)="signUp()" class="btn btn-sm btn-success" [disabled]="loading">
-                @if (loading) {
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                }
-                Sign up
-              </button>
-            </div>
-          </div>
-        </div>
-      }
+<main class="auth-main shadow-2">
+  <div class="auth-card">
+    <h2 class="auth-title">Sign Up</h2>
+
+    <!-- Username -->
+    <div class="form-group">
+      <p-floatlabel variant="on">
+        <input [(ngModel)]="signUpRequest.username" pInputText id="username" autocomplete="off" type="text" />
+        <label for="username">Username</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Username -->
+    <div class="form-group">
+      <p-floatlabel variant="on">
+        <input [(ngModel)]="signUpRequest.email" pInputText id="email" autocomplete="off" type="email" />
+        <label for="email">Email</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <p-floatlabel variant="on">
+        <input [(ngModel)]="signUpRequest.password" pInputText id="password" autocomplete="off" type="password" />
+        <label for="password">Password</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Sign In Button -->
+    <div class="form-group">
+      <p-button label="Submit" (click)="signUp()"></p-button>
+      <ng-container *ngIf="loading">
+        <span class="pi pi-spin pi-spinner mr-2"></span>
+      </ng-container>
     </div>
   </div>
-</div>
+</main>

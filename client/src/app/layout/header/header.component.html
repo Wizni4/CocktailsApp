@@ -1,20 +1,23 @@
-<header class="app-header">
+<header class="app-header shadow-2">
   <div class="logo">
     <a routerLink="/home">
-      <img src="assets/logo.png" alt="Logo" />
+        <img src="assets/logo.png" alt="Logo" />
+        <span>Cocktails App</span>
     </a>
   </div>
   <div class="auth-options">
-    <i class="pi pi-user" style="font-size: 2.5rem"></i>
-    <p-button icon="pi pi-user" class="p-button-primary" [rounded]="true" severity="info" />
-    <!--<p-button icon="pi pi-user"
-            class="auth-btn"
-            severity="primary"
-            [routerLink]="'/auth/signin'">
-  </p-button>-->
+    <!--Dark mode toggler-->
+    <p-button *ngIf="layoutService.isDarkMode()" (click)="toggleDarkMode()" icon="pi pi-moon" [rounded]="true" [text]="true"/>
+    <p-button *ngIf="!layoutService.isDarkMode()" (click)="toggleDarkMode()" icon="pi pi-sun" [rounded]="true" [text]="true"/>
 
-    <button *ngIf="!(isAuthenticated$ | async)" routerLink="/auth/signup">Sign Up</button>
-    <button *ngIf="!(isAuthenticated$ | async)" routerLink="/auth/signin">Sign In</button>
-    <button *ngIf="(isAuthenticated$ | async)" (click)="signOut()">Sign Out</button>
+    <!--SignIn-->
+    <p-button *ngIf="!(isAuthenticated$ | async)" routerLink="/auth/signin" label="Sign In" variant="text" />
+
+    <!--SignUp-->
+    <p-button *ngIf="!(isAuthenticated$ | async)" routerLink="/auth/signup" label="Sign Up" [raised]="true" variant="outlined" />
+
+    <!--Profile (only if authicated)-->
+    <p-button *ngIf="(isAuthenticated$ | async)" routerLink="/auth/profile" icon="pi pi-user" [rounded]="true" [text]="true" severity="info" />
+    <p-button *ngIf="(isAuthenticated$ | async)" (click)="signOut()" routerLink="/auth/signout" icon="pi pi-power-off" [rounded]="true" [text]="true" />
   </div>
 </header>

@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SignUpRequest } from '../auth.interface';
 import { AuthService } from '../auth.service';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css'],
   standalone: true,
-  imports: [FormsModule]
+  imports: [FormsModule, FloatLabelModule, ButtonModule]
 })
 export class SignUpComponent {
   loading: boolean = false;
@@ -24,6 +25,7 @@ export class SignUpComponent {
       .then(() => {
         this.loading = false;
         this.isConfirm = true;
+        this.router.navigate(["/auth/signin"])
       }).catch(() => {
         this.loading = false;
       });

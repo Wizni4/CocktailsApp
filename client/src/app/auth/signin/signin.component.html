@@ -1,39 +1,29 @@
-<main class="auth-main">
+<main class="auth-main shadow-2">
   <div class="auth-card">
     <h2 class="auth-title">Sign In</h2>
 
     <!-- Username -->
     <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text"
-             pInputText
-             id="username"
-             [(ngModel)]="signInRequest.username"
-             class="form-control" />
+      <p-floatlabel variant="on">
+        <input [(ngModel)]="signInRequest.username" pInputText id="username" autocomplete="off" type="text"/>
+        <label for="username">Username</label>
+      </p-floatlabel>
     </div>
 
     <!-- Password -->
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password"
-             pInputText
-             id="password"
-             [(ngModel)]="signInRequest.password"
-             class="form-control" />
+    <div class="form-group" >
+      <p-floatlabel variant="on">
+        <input [(ngModel)]="signInRequest.password" pInputText id="password" autocomplete="off" type="password"/>
+        <label for="password">Password</label>
+      </p-floatlabel>
     </div>
 
     <!-- Sign In Button -->
     <div class="form-group">
-      <button type="button"
-              pButton
-              label="Sign In"
-              class="w-full"
-              [disabled]="loading"
-              (click)="signIn()">
-        <ng-container *ngIf="loading">
-          <span class="pi pi-spin pi-spinner mr-2"></span>
-        </ng-container>
-      </button>
+      <p-button label="Submit" (click)="signIn()"></p-button>
+      <ng-container *ngIf="loading">
+        <span class="pi pi-spin pi-spinner mr-2"></span>
+      </ng-container>
     </div>
   </div>
 </main>
