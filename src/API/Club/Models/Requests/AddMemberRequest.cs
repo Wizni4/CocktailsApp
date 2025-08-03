@@ -7,6 +7,6 @@ namespace API.Club.Models.Requests
     public class AddMemberRequest
     {
         public required Guid UserId { get; set; }
-        public required IEnumerable<Guid>? RoleIds { get; set; }
+        public IEnumerable<Guid>? RoleIds { get; set; }
     }
 }

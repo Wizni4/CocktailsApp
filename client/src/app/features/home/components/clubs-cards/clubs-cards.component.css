@@ -1,0 +1,28 @@
+.clubs-cards__main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem;
+  column-gap: 2rem;
+  row-gap: 3rem;
+}
+
+.add-club__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+  height: 25rem;
+  border: 1px dashed;
+  border-radius: 2.5%;
+  color: var(--p-sky-500);
+}
+
+  .add-club__container:hover {
+    transition: all 0.3s ease;
+    transform: scale(1.03);
+    cursor: pointer;
+  }
+
+

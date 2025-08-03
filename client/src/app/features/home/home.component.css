@@ -1,14 +1,16 @@
 .home-main {
   width: 100%;
-  flex: 1;
-}
-
-.no-clubs__actions {
   display: flex;
-  justify-content: space-evenly;
-  width: 100%;
+  flex-direction:column;
 }
 
-.no-clubs__button {
-  width: 8rem;
+.home-title {
+    text-align: center;
 }
+
+
+
+
+
+
+

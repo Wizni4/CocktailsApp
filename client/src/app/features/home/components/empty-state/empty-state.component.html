@@ -1,0 +1,13 @@
+<div class="empty-state__container">
+  <div class="empty-state__main" *ngIf="clubs.length === 0">
+    <h3>
+      You aren't in a club yet
+      <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png" style="height: 1.2em; vertical-align: middle;">
+    </h3>
+    <h4>Wanna join one? Or create your own?</h4>
+    <div class="empty-state__actions">
+      <p-button class="empty-state__button" label="Join" severity="info"></p-button>
+      <p-button class="empty-state__button" label="Create" severity="secondary" routerLink="/clubs/create"></p-button>
+    </div>
+  </div>
+</div>

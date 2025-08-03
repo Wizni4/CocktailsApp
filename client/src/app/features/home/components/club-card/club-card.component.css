@@ -1,0 +1,58 @@
+.club-card__main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+  height: 25rem;
+  border-radius: 2.5%
+}
+
+  .club-card__main:hover {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    transform: scale(1.03);
+  }
+
+  .club-card__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+  }
+
+.club-card__badge-container {
+  position: relative;
+}
+
+.club-card__badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+}
+
+.club-card__card-header {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  color: var(--text-color) !important;
+}
+
+.club-card__visibility {
+  padding: 1rem 0 0 1rem;
+}
+
+.club-card__club-description,
+.club-card__club-address {
+  color: var(--text-color) !important;
+  font-weight: 100;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  margin-bottom: 1rem;
+}
+

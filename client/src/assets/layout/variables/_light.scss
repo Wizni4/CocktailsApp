@@ -4,6 +4,7 @@
   --surface-card: var(--p-surface-100);
   --p-content-background: var(--surface-card);
   --text-color: var(--p-primary-800);
+  --text-color-secondary: var(--p-primary-900);
   --p-primary-color: var(--text-color);
-  --p-secondary-color: var(--text-color);
+  --p-secondary-color: var(--text-color-secondary);
 }

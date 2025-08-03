@@ -1,0 +1,10 @@
+<div class="clubs-cards__main">
+  <app-club-card *ngFor="let club of clubs" [club]="club"></app-club-card>
+  <div class="add-club__container shadow-2" routerLink="/clubs/create">
+    <!--<button pButton
+            class="p-button-rounded p-button-outlined p-button-info big-plus-button"
+            icon="pi pi-plus"></button>-->
+    <span class="pi pi-plus-circle" style="font-size: 2.5rem; "></span>
+    <span style="padding-top: 0.5rem;">Create a club</span>
+  </div>
+</div>

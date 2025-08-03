@@ -5,6 +5,7 @@ import { SignInComponent } from './features/auth/signin/signin.component';
 import { SignUpComponent } from './features/auth/signup/signup.component';
 import { AuthGuard } from './core/auth.guard';
 import { CreateClubComponent } from './features/club/create-club/create-club.component';
+import { ClubsDetailsComponent } from './features/club/clubs-details/clubs-details.component';
 
 export const routes: Routes = [
   {
@@ -14,7 +15,8 @@ export const routes: Routes = [
       { path: '', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'auth/signin', component: SignInComponent },
       { path: 'auth/signup', component: SignUpComponent },
-      { path: 'clubs/create', component: CreateClubComponent },
+      { path: 'clubs/create', component: CreateClubComponent, canActivate: [AuthGuard] },
+      { path: 'clubs/:clubIdd', component: ClubsDetailsComponent, canActivate: [AuthGuard] }
     ]
   },
   { path: '**', redirectTo: '' }

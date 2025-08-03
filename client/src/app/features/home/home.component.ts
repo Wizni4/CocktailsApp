@@ -7,13 +7,15 @@ import { Observable } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
-import { ClubCardComponent } from './components/club-card/club-card.component';
 import { MessageModule } from 'primeng/message';
 import { TabsModule } from 'primeng/tabs';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { SkeletonModule } from 'primeng/skeleton';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { EmptyStateComponent} from './components/empty-state/empty-state.component';
+import { ClubsCardsComponent } from './components/clubs-cards/clubs-cards.component';
+
 
 @Component({
   selector: 'app-home',
@@ -29,10 +31,11 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
     RouterModule,
     TableModule,
     MessageModule,
-    ClubCardComponent,
+    ClubsCardsComponent,
     TabsModule,
     SkeletonModule,
     SearchBarComponent,
+    EmptyStateComponent,
  ]
 })
 export class HomeComponent {
@@ -46,6 +49,9 @@ export class HomeComponent {
   }
   ngOnInit(): void {
     this.clubs$ = this.userService.getUserClubs();
+    this.clubs$.subscribe(
+      clubs => console.log(clubs)
+    )
   }
 
   onSearch(query: string) {

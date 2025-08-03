@@ -11,7 +11,6 @@ import { BadgeModule } from 'primeng/badge';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-import { SearchBarComponent } from '../../features/home/components/search-bar/search-bar.component';
 
 
 @Component({
@@ -27,7 +26,6 @@ import { SearchBarComponent } from '../../features/home/components/search-bar/se
     MenuModule,
     OverlayBadgeModule,
     RouterModule,
-    SearchBarComponent,
   ]
 })
 export class HeaderComponent {

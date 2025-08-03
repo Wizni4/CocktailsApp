@@ -11,27 +11,31 @@
               (click)="toggleDarkMode()"
               icon="pi pi-moon"
               [rounded]="true"
-              [text]="true">
+              [text]="true"
+              severity="secondary">
     </p-button>
     <p-button *ngIf="!layoutService.isDarkMode()"
               (click)="toggleDarkMode()"
               icon="pi pi-sun"
               [rounded]="true"
-              [text]="true">
+              [text]="true"
+              severity="secondary">
     </p-button>
 
     <!--SignIn-->
     <p-button *ngIf="!(isAuthenticated$ | async)"
               routerLink="/auth/signin"
               label="Sign in"
-              variant="text">
+              variant="text"
+              severity="secondary">
     </p-button>
     <!--SignUp-->
     <p-button *ngIf="!(isAuthenticated$ | async)"
               routerLink="/auth/signup"
               label="Sign up"
               [raised]="true"
-              variant="outlined">
+              variant="outlined"
+              severity="secondary">
     </p-button>
 
     <!--Profile (only if authicated)-->
