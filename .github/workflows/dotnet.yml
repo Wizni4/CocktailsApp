@@ -55,7 +55,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true --configuration Debug
+        run: dotnet build --configuration Debug --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true 
 
   tests:
     runs-on: ubuntu-latest
@@ -75,7 +75,7 @@ jobs:
           dotnet tool install -g dotnet-reportgenerator-globaltool
 
       - name: Test with Coverage
-        run: dotnet test --collect:"XPlat Code Coverage"
+        run: dotnet test --configuration Debug --collect:"XPlat Code Coverage" 
 
       - name: Generate Coverage Report
         run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
