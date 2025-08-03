@@ -1,0 +1,16 @@
+:host {
+    display: block;
+    width: 100%
+}
+
+.address-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.address-form__address-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+  align-items: flex-start;
+}

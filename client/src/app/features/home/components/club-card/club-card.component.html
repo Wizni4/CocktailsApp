@@ -1,0 +1,31 @@
+<p-card [header]="club.name" class="h-full relative secondary">
+  <ng-template pTemplate="header">
+    <div class="flex justify-content-between align-items-center">
+      <span class="font-medium">{{ club.name }}</span>
+      <p-badge [value]="club.members.length" severity="info" title="Members"></p-badge>
+    </div>
+  </ng-template>
+
+  <!--<p class="text-sm text-500 mb-3">
+    Next event:
+    <strong *ngIf="club.nextEvent; else none">{{ club.nextEvent | date }}</strong>
+    <ng-template #none>—</ng-template>
+  </p>-->
+
+  <!--<p-progressBar [value]="club.stockHealth"
+                 styleClass="mb-3"
+                 [style]="{ height: '6px' }"></p-progressBar>-->
+
+  <button pButton
+          label="Manage Stock"
+          icon="pi pi-box"
+          class="p-button-sm p-button-outlined w-full mb-2"></button>
+
+  <!-- Optional action button on hover -->
+  <button *ngIf="!discover"
+          pButton
+          type="button"
+          icon="pi pi-users"
+          class="p-button-rounded p-button-text absolute right-2 top-2"
+          pTooltip="Invite friends"></button>
+</p-card>

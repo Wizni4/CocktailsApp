@@ -1,0 +1,42 @@
+<main class="create-club__main shadow-2">
+  <div class="create-club__card">
+    <h2 class="create-club__title">Create a new club</h2>
+
+    <form [formGroup]="createClubForm" (ngSubmit)="createClub()" >
+      <div class="create-club__form">
+        <div class="create-club__description-section">
+          <h3>Club Description</h3>
+
+          <!-- Club name -->
+          <custom-input label="Name"
+                        id="name"
+                        name="name"
+                        required="true"></custom-input>
+
+          <!-- description -->
+          <custom-textarea label="Description"
+                           id="description"
+                           name="description"
+                           minHeight="100%"
+                           maxHeight="100%"
+                           required="true"></custom-textarea>
+        </div>
+        <div class="create-club__address-section">
+          <h3>
+            <img src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg">
+            <span>Club Address</span>
+          </h3>
+
+          <address-input name="address"></address-input>
+
+        </div>
+      </div>
+        <!-- Submit Button -->
+        <submit-button label="Create"
+                       [loading]="loading"
+                       [isInvalid]="createClubForm.invalid"
+                       [errorMessage]="errMessage">
+        </submit-button>
+    </form>
+  </div>
+</main>

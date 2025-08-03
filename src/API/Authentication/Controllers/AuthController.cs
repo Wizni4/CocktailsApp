@@ -44,6 +44,7 @@ namespace CocktailsApp.API.Authentication
         {
             var command = new SignInCommand(request.Username, request.Password);
             var response = await _mediator.Send(command);
+            _cookieService.SetRefreshTokenCookie(response.RefreshToken);
             return Ok(_autoMapper.Map<SignInResponse>(response));
         }
 

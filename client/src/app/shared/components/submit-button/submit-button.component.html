@@ -1,0 +1,23 @@
+<div class="submit-button">
+  <p-button [disabled]="isInvalid"
+            *ngIf="!loading"
+            class="submit-button__button"
+            [label]="label"
+            type="submit"
+            severity="info">
+  </p-button>
+  <p-button *ngIf="loading"
+            class="submit-button__button"
+            icon="pi pi-spin pi-spinner"
+            label=""
+            severity="info"
+            disabled>
+  </p-button>
+  <p-message *ngIf="errorMessage != ''"
+             severity="error"
+             size="small"
+             variant="simple"
+             styleClass="submit-button__error">
+    {{ errorMessage }}
+  </p-message>
+</div>

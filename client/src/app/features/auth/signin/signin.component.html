@@ -1,0 +1,22 @@
+<div class="auth-container">
+  <main class="auth-main shadow-2">
+    <div class="auth-card">
+      <h2 class="auth-title">Sign in</h2>
+
+      <form [formGroup]="authForm" (ngSubmit)="signIn()">
+        <!-- Username -->
+        <app-username-input></app-username-input>
+
+        <!-- Password -->
+        <app-password-input></app-password-input>
+
+        <!-- Sign In Button -->
+        <submit-button label="Sign In"
+                       [loading]="loading"
+                       [isInvalid]="authForm.invalid"
+                       [errorMessage]="signInError">
+        </submit-button>
+      </form>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,9 @@
+<!-- search-bar.component.html -->
+<div class="search-bar__main">
+  <span class="search-bar__logo"><i class="pi pi-search"></i></span>
+  <input pInputText
+         type="text"
+         [placeholder]="placeholder"
+         (input)="onChange($event)"
+         class="w-full" />
+</div>

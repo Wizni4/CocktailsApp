@@ -1,0 +1,45 @@
+<div class="address-form">
+  <div class="address-form__search-address">
+    <custom-input #locationInput
+                  label="Search Address"
+                  id="locationInput"
+                  name="locationInput">
+    </custom-input>
+  </div>
+  <div class="address-form__address-inputs" [formGroup]="addressGroup!">
+    <!--Street-->
+    <custom-input label="Street"
+                  id="street"
+                  name="street"
+                  required="true"></custom-input>
+    <!--Street number-->
+    <custom-input label="Street Number"
+                  id="streetNumber"
+                  name="streetNumber"
+                  required="true"></custom-input>
+    <!--City-->
+    <custom-input label="City"
+                  id="city"
+                  name="city"
+                  required="true"></custom-input>
+    <!--Postal Code-->
+    <custom-input label="Postal Code"
+                  id="postalCode"
+                  name="postalCode"
+                  required="true"></custom-input>
+    <!--State-->
+    <custom-input label="State"
+                  id="state"
+                  name="state"
+                  required="true"></custom-input>
+    <!--Country-->
+    <custom-input label="Country"
+                  id="country"
+                  name="country"
+                  required="true"></custom-input>
+
+  </div>
+</div>
+
+
+

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 const THEME_KEY = 'app-theme';
 const DARK_CLASS = 'app-dark';
+const LIGHT_CLASS = 'app-light';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class LayoutService {
 
   constructor() {
     const storedTheme = localStorage.getItem(THEME_KEY);
-    this.darkMode = storedTheme === 'dark' || (
-      !storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches
+    this.darkMode = storedTheme === 'dark' || 
+      (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches
     );
     this.applyTheme();
   }
@@ -29,6 +30,8 @@ export class LayoutService {
 
   private applyTheme(): void {
     const htmlEl = document.documentElement;
-    htmlEl.classList.toggle(DARK_CLASS, this.darkMode);
+
+    htmlEl.classList.remove(DARK_CLASS, LIGHT_CLASS);
+    htmlEl.classList.add(this.darkMode ? DARK_CLASS : LIGHT_CLASS);
   }
 }

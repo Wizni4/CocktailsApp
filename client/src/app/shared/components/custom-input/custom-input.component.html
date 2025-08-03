@@ -1,0 +1,17 @@
+<div class="custom-input">
+  <p-floatlabel variant="on">
+    <input #realInput
+           [id]="id"
+           [name]="name"
+           [type]="type"
+           [value]="value"
+           [disabled]="disabled"
+           pInputText
+           autocomplete="off"
+           [required]="isRequired"
+           [invalid]="isInvalid"
+           [formControl]="control!"/>
+    <label [for]="id">{{ label }}</label>
+    <ng-content *ngIf="isInvalid"></ng-content>
+  </p-floatlabel>
+</div>

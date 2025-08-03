@@ -21,9 +21,6 @@ namespace CocktailsApp.Application.Authentication
 
         public async Task Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
-            if (await _unitOfWork.Set<Domain.UserAggregate.User>().ReadAsync(new UserByUsernameSpecification(request.Username)) is not null)
-                throw new Exception("User already exists.");
-
             var userId = await _authService.SignUpAsync(request);
 
             var user = new UserBuilder()

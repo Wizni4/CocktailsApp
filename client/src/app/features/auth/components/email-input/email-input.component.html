@@ -1,0 +1,12 @@
+<custom-input [label]="label"
+                [id]="name"
+                [name]="name"
+                type="text"
+                required="true">
+  @if (control?.touched && control?.hasError('required')) {
+    <p-message severity="error" size="small" variant="simple">{{ label }} is required.</p-message>
+  }
+  @if (control?.touched && control?.hasError('email')) {
+    <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
+  }
+</custom-input>

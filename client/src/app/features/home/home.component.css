@@ -1,0 +1,14 @@
+.home-main {
+  width: 100%;
+  flex: 1;
+}
+
+.no-clubs__actions {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.no-clubs__button {
+  width: 8rem;
+}

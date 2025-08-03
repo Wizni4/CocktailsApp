@@ -1,0 +1,25 @@
+<div class="auth-container">
+  <main class="auth-main shadow-2">
+    <div class="auth-card">
+      <h2 class="auth-title">Sign up</h2>
+
+      <form [formGroup]="authForm" (ngSubmit)="signUp()">
+        <!-- Username -->
+        <app-username-input></app-username-input>
+
+        <!-- Email -->
+        <app-email-input></app-email-input>
+
+        <!-- Password -->
+        <app-password-input></app-password-input>
+
+        <!-- Sign In Button -->
+        <submit-button label="Sign Up"
+                       [loading]="loading"
+                       [isInvalid]="authForm.invalid"
+                       [errorMessage]="signUpError">
+        </submit-button>
+      </form>
+    </div>
+  </main>
+</div>

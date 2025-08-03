@@ -1,0 +1,21 @@
+:host{
+    display: block;
+    width:100%;
+}
+
+.submit-button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.submit-button .submit-button__error {
+  text-align: center;
+  width: 100%;
+}
+
+::ng-deep p-button.submit-button__button > button.p-button {
+  width: 100%;
+}

@@ -6,6 +6,10 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.User;
+using CocktailsApp.Domain.UserAggregate;
+
+
 /*
  * Framework namespaces
  */
@@ -16,9 +20,15 @@ namespace CocktailsApp.Application.Authentication
 {
     public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
     {
-        public SignUpCommandValidator()
+        public SignUpCommandValidator(IUserRepository userRepository)
         {
-            RuleFor(c => c.Username).ValidString();
+            RuleFor(c => c.Username)
+                .ValidString()
+                .MustAsync(async (userName, _) =>
+                {
+                    var user = await userRepository.ReadAsync(new UserByUsernameSpecification(userName!));
+                    return user is null;
+                }).WithMessage(c => $"User '{c.Username}' already exist.");
 
             RuleFor(c => c.Email)
                 .ValidString()

@@ -1,0 +1,47 @@
+.create-club__main {
+  margin: 2rem auto 2rem auto;
+  background-color: var(--surface-card);
+  border-radius: 2.5%;
+  width: 60rem;
+  padding: 2rem;
+}
+
+.create-club__card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.create-club__title {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.create-club__form {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr; /* two equal columns */
+  gap: 2rem; /* space between columns */
+  align-items: stretch;
+  margin-bottom: 1rem;
+}
+
+.create-club__description-section,
+.create-club__address-section {
+  display: flex;
+  flex-direction: column;
+  height:100%;
+  width: 100%;
+  border: 1px dashed var(--p-inputtext-border-color);
+  border-radius: 2.5%;
+  padding: 1rem 1rem 1rem 1rem;
+}
+
+custom-textarea {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-club__address-section {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}

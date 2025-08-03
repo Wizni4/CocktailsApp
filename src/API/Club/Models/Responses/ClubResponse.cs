@@ -43,6 +43,6 @@ namespace CocktailsApp.API.Club
         /// <summary>
         /// Gets or sets the visibility level of the club (e.g., Public, Private).
         /// </summary>
-        public int Visibility { get; set; }
+        public required string Visibility { get; set; }
     }
 }

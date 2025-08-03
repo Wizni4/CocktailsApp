@@ -1,8 +1,18 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+}
+
 .auth-main {
+  margin: 2rem auto 2rem auto;
   background-color: var(--surface-card);
   border-radius: 2.5%;
   width: auto;
   height: auto;
+  margin-top: 10rem;
 }
 
 .auth-card {
@@ -12,6 +22,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 18rem;
 }
 
 .auth-title.h2 {
@@ -20,19 +31,3 @@
   padding: 0 0 0.5rem 0;
 }
 
-.form-group {
-  width: 15rem;
-  padding: 0.5rem 0 0 0;
-}
-
-.p-floatlabel {
-  height: 2.5rem;
-}
-
-input {
-  height: 100%;
-  width: 100%;
-  border-radius: 5%;
-  padding:0 0 0 1rem;
-  font-size: 8px;
-}

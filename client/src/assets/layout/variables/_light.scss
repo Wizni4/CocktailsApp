@@ -1,8 +1,9 @@
-:root {
+:root[class*='app-light'] {
   --surface-color: var(--p-surface-50);
-  --surface-ground: var(--p-surface-50);
+  --surface-ground: var(--surface-color);
   --surface-card: var(--p-surface-100);
-  --code-background: var(--p-surface-100);
-  --code-color: var(--p-surface-100);
-  --text-color: var(--p-text-color);
+  --p-content-background: var(--surface-card);
+  --text-color: var(--p-primary-800);
+  --p-primary-color: var(--text-color);
+  --p-secondary-color: var(--text-color);
 }

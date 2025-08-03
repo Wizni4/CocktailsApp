@@ -1,0 +1,111 @@
+<main class="home-main">
+  <ng-container *ngIf="(clubs$ | async) as clubs">
+
+    <!-- Not in a club -->
+    <section class="no-clubs" *ngIf="clubs.length === 0">
+      <h2>
+        Welcome to Cocktails App
+        <img src="assets/logo.png"
+            alt="Crying face"
+            style="height: 1.2em;
+           vertical-align: middle;">
+      </h2>
+      <h3>
+        You aren't in a club yet
+        <img src="https://twemoji.maxcdn.com/v/latest/72x72/1f622.png"
+              alt="Crying face"
+              style="height: 1.2em;
+          vertical-align: middle;">
+      </h3>
+      <h4>Wanna join one? Or create your own?</h4>
+      <div class="no-clubs__actions">
+        <p-button styleClass="no-clubs__button" label="Join" severity="info"></p-button>
+        <p-button styleClass="no-clubs__button" label="Create" severity="secondary" routerLink="/clubs/create"></p-button>
+      </div>
+    </section>
+
+    <!-- Main Section -->
+    <div *ngIf="clubs.length >= 0">
+
+      <!-- Search bar -->
+      <search-bar placeholder="Search public clubs or cocktails…"
+                      (search)="onSearch($event)" />
+
+      <!-- Tabs -->
+      <p-tabs [(value)]="activeTabIndex" class="home-tabs shadow-2">
+        <p-tablist>
+          <p-tab value="my">
+            My Clubs
+            <span class="ml-2 p-badge">{{ clubs.length }}</span>
+          </p-tab>
+
+          <p-tab value="discover">Discover Clubs</p-tab>
+
+          <p-tab value="alerts">
+            Low-Stock Alerts
+            <span *ngIf="lowStock.length" class="ml-2 p-badge p-badge-danger">
+              {{ lowStock.length }}
+            </span>
+          </p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+          <!-- My Clubs Panel -->
+          <p-tabpanel value="my">
+            <div class="grid">
+              <ng-container *ngFor="let c of clubs; trackBy: trackById">
+                <div class="col-12 md:col-6 lg:col-4">
+                  <club-card [club]="c" (delete)="deleteClub(c.id)"></club-card>
+                </div>
+              </ng-container>
+
+              <!-- Add-club tile -->
+              <div class="col-12 md:col-6 lg:col-4 flex align-items-center justify-content-center">
+                <button pButton
+                        icon="pi pi-plus"
+                        label="Create Club"
+                        class="p-button-outlined p-button-lg"
+                        routerLink="/clubs/create"></button>
+              </div>
+            </div>
+          </p-tabpanel>
+
+          <!-- Discover Clubs Panel -->
+          <p-tabpanel value="discover">
+            <ng-container *ngIf="discoverLoading; else discoverList">
+              <p-skeleton width="100%"
+                          height="8rem"
+                          styleClass="mb-3"
+                          *ngFor="let i of [1, 2, 3]"></p-skeleton>
+            </ng-container>
+
+            <ng-template #discoverList>
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-4" *ngFor="let c of discoverClubs">
+                  <club-card [club]="c" [discover]="true"></club-card>
+                </div>
+              </div>
+            </ng-template>
+          </p-tabpanel>
+
+          <!-- Low-Stock Alerts Panel -->
+          <p-tabpanel value="alerts">
+            <p-message *ngIf="lowStock.length === 0"
+                       severity="success"
+                       text="All good — your inventory is healthy!"></p-message>
+
+            <p-card *ngFor="let alert of lowStock"
+                    header="{{ alert.clubName }}"
+                    class="mb-3 border-1 border-orange-200">
+              <p>Running low on {{ alert.item }} ({{ alert.remaining }} left).</p>
+              <button pButton
+                      label="View Stock"
+                      class="p-button-text p-button-sm"></button>
+            </p-card>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+
+    </div>
+  </ng-container>
+</main>

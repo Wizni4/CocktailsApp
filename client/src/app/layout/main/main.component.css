@@ -1,8 +1,6 @@
 .app-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  min-height: 85vh;
   padding: 1rem;
-/*  background-color: var(--surface-ground);*/
+  margin-top: 4rem;
+  width: 100%;
 }

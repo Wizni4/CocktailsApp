@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutService } from './layout/layout.service';
-
-const THEME_KEY = 'app-light';
-const DARK_CLASS = 'app-dark';
+import { AuthService } from './features/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +8,4 @@ const DARK_CLASS = 'app-dark';
   imports: [RouterModule],
   template: `<router-outlet></router-outlet>`,
 })
-export class AppComponent {}
+export class AppComponent { }

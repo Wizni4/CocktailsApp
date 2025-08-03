@@ -6,6 +6,7 @@ using AutoMapper;
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.SeedWork;
 /*
  * Domain namespaces
@@ -22,7 +23,8 @@ namespace CocktailsApp.Application.Club
 
         public async Task<ClubDTO> Handle(GetClubByIdQuery request, CancellationToken cancellationToken)
         {
-            var club = await _unitOfWork.Set<DomainClub>().ReadAsync(request.Specification, request.Include);
+            var club = await _unitOfWork.Set<DomainClub>().ReadAsync(
+                new ClubByIdSpecification(request.ClubId));
             return _autoMapper.Map<ClubDTO>(club);
         }
     }

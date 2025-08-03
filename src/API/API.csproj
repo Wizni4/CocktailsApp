@@ -43,7 +43,8 @@
     <Folder Include="Order\Models\" />
     <Folder Include="Stock\Controllers\" />
     <Folder Include="Stock\Models\" />
-    <Folder Include="User\Models\" />
+    <Folder Include="User\Models\Responses\" />
+    <Folder Include="User\Models\Requests\" />
   </ItemGroup>
 
 </Project>

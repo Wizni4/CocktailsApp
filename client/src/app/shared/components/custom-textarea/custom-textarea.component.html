@@ -1,0 +1,17 @@
+<div class="custom-textarea" >
+  <p-floatlabel variant="on">
+    <textarea #realInput
+              [id]="id"
+              [name]="name"
+              [value]="value"
+              [disabled]="disabled"
+              pTextarea
+              autocomplete="off"
+              [required]="required"
+              [formControl]="control!"
+              [ngStyle]="styleObject">
+    </textarea>
+    <label [for]="id">{{ label }}</label>
+    <ng-content *ngIf="isInvalid"></ng-content>
+  </p-floatlabel>
+</div>

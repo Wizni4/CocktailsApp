@@ -1,0 +1,16 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.search-bar__main {
+    display:flex;
+    flex-direction: row;
+    justify-content: left;
+    padding-bottom: 1rem;
+    align-items:center;
+}
+
+.search-bar__logo {
+  padding-right: 0.75rem;
+}
