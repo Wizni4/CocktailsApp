@@ -1,11 +1,13 @@
 ﻿
 using CocktailsApp.Application.SeedWork;
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
+using CocktailsApp.Domain.ClubAggregate;
+
 using FluentValidation;
 using FluentValidation.Validators;
 
 using System;
-using CocktailsApp.Domain.ClubAggregate;
+
+using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 namespace CocktailsApp.Application.Club
 {

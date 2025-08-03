@@ -11,6 +11,7 @@
  */
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
+
 using FluentValidation;
 
 namespace CocktailsApp.Application.Club

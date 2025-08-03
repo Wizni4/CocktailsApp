@@ -10,6 +10,7 @@
  * Framework namespaces
  */
 using CocktailsApp.Application.SeedWork;
+
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 

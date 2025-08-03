@@ -10,7 +10,9 @@
  * Domain namespaces
  */
 using CocktailsApp.Application.SeedWork;
+
 using FluentValidation;
+
 using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 
 

@@ -5,8 +5,10 @@
  * Framework namespaces
  */
 using AutoMapper;
+
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
+
 using Microsoft.Extensions.Options;
 /*
  * Application namespaces

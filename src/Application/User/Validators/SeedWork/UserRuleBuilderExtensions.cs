@@ -9,8 +9,10 @@
  */
 using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.SeedWork;
-using DomainUser = CocktailsApp.Domain.UserAggregate.User;
+
 using FluentValidation;
+
+using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
 namespace CocktailsApp.Application.User
 {

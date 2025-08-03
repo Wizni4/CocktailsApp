@@ -10,7 +10,9 @@
  * Framework namespaces
  */
 using CocktailsApp.Domain.SeedWork;
+
 using FluentValidation;
+
 using MediatR;
 
 namespace CocktailsApp.Application.Club

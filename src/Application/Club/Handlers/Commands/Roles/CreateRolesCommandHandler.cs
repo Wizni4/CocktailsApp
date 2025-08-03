@@ -5,6 +5,7 @@
  * Framework namespaces
  */
 using AutoMapper;
+
 using CocktailsApp.Application.SeedWork;
 
 /*

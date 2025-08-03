@@ -10,6 +10,7 @@
  * Domain namespaces
  */
 using AutoMapper;
+
 using CocktailsApp.Application.SeedWork;
 
 

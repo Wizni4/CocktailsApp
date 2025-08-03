@@ -12,7 +12,9 @@
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.User;
 using CocktailsApp.Domain.ClubAggregate;
+
 using FluentValidation;
+
 using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
 namespace CocktailsApp.Application.Club

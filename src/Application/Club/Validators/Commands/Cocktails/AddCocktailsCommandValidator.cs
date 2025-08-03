@@ -9,12 +9,14 @@
 /*
  * Framework namespaces
  */
+using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Domain.ClubAggregate;
+
+using FluentValidation;
+
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
-using FluentValidation;
-using CocktailsApp.Application.Cocktail;
-using CocktailsApp.Domain.ClubAggregate;
 
 namespace CocktailsApp.Application.Club
 {

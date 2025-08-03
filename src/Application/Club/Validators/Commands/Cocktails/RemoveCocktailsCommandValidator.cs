@@ -10,8 +10,9 @@
  * Framework namespaces
  */
 using CocktailsApp.Application.SeedWork;
-using FluentValidation;
 using CocktailsApp.Domain.ClubAggregate;
+
+using FluentValidation;
 
 namespace CocktailsApp.Application.Club
 {

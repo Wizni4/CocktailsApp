@@ -3,8 +3,9 @@
 // See the LICENSE file in the project root for more information.
 using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.SeedWork;
-using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 using CocktailsApp.Infrastructure.CocktailAggregate;
+
+using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 
 
 namespace CocktailsApp.API.Cocktail

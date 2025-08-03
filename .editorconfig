@@ -369,6 +369,9 @@ dotnet_diagnostic.RS0059.severity = error
 dotnet_diagnostic.RS0060.severity = error
 dotnet_diagnostic.RS0061.severity = error
 
+# Ignore all issue for EF Migrations
+[**/Migrations/*.cs]
+dotnet_analyzer_diagnostic.severity = none
 
 # Configuration for the Tests
 [tests/**]

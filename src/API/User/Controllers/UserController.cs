@@ -2,12 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 using AutoMapper;
+
 using CocktailsApp.API.Club;
 using CocktailsApp.API.Extensions;
 using CocktailsApp.Application.User;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Swashbuckle.AspNetCore.Annotations;
 
 

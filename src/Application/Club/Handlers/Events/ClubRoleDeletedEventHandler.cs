@@ -3,9 +3,12 @@
  */
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
-using DomainClubRole = CocktailsApp.Domain.ClubAggregate.ClubRole;
+
 using MediatR;
+
 using Microsoft.Extensions.Logging;
+
+using DomainClubRole = CocktailsApp.Domain.ClubAggregate.ClubRole;
 /*
 * Framework namespaces
 */

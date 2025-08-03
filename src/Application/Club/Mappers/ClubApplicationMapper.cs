@@ -2,6 +2,7 @@
  * Framework namespaces
  */
 using AutoMapper;
+
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainClubCocktail = CocktailsApp.Domain.ClubAggregate.ClubCocktail;
 using DomainClubMember = CocktailsApp.Domain.ClubAggregate.ClubMember;

@@ -4,6 +4,7 @@
 using CocktailsApp.Application.Club;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Infrastructure.ClubAggregate;
+
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainClubCocktail = CocktailsApp.Domain.ClubAggregate.ClubCocktail;
 using DomainClubMember = CocktailsApp.Domain.ClubAggregate.ClubMember;

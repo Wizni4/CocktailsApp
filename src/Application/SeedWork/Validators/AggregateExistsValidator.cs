@@ -1,6 +1,7 @@
 ﻿
 
 using CocktailsApp.Domain.SeedWork;
+
 using FluentValidation;
 
 namespace CocktailsApp.Application.SeedWork
