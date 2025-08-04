@@ -2,11 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using API.Club.Configurations;
-
 using CocktailsApp.API.Authentication;
-using CocktailsApp.Application.Club;
+using CocktailsApp.API.Club;
 
 namespace CocktailsApp.API.SeedWork
 {

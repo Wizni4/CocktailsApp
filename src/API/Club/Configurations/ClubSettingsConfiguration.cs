@@ -6,7 +6,7 @@ using CocktailsApp.Application.Club;
 
 using Microsoft.Extensions.Options;
 
-namespace API.Club.Configurations
+namespace CocktailsApp.API.Club
 {
     public class ClubSettingsConfiguration(IConfiguration configuration) : IConfigureNamedOptions<ClubSettingsDTO>
     {

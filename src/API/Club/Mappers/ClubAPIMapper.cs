@@ -2,12 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using API.Club.Models.Requests;
-
 using AutoMapper;
-
 using CocktailsApp.API.Extensions;
-using CocktailsApp.API.SeedWork;
 using CocktailsApp.Application.Club;
 using CocktailsApp.Domain.ClubAggregate;
 

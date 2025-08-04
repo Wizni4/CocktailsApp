@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using API.Club.Models.Requests;
 
 using AutoMapper;
 
@@ -16,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-using System.Collections.Generic;
 
 namespace CocktailsApp.API.Club
 {
