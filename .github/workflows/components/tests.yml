@@ -1,0 +1,27 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Setup .NET
+              uses: ./.github/workflows/components/dotnet-core.yml
+
+            - name: Setup dependencies
+              run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+            - name: Test with Coverage
+              run: dotnet test --configuration Debug --collect:"XPlat Code Coverage" 
+
+            - name: Generate Coverage Report
+              run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage -reporttypes:Html
+
+            - name: Upload Coverage Report
+              uses: actions/upload-artifact@v4
+              with:
+                name: coverage-report
+                path: coverage

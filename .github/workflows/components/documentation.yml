@@ -1,0 +1,24 @@
+name: Documentation
+
+on:
+  workflow_call:
+
+jobs:
+    documentation:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Setup .NET
+              uses: ./.github/workflows/components/dotnet-core.yml
+
+            - name: Setup dependencies
+              run: dotnet tool install -g docfx
+
+            - name: Generate Documentation
+              run: docfx docs/docfx.json
+
+            - name: Upload Documentation Report
+              uses: actions/upload-artifact@v4
+              with:
+                name: documentation
+                path: docs/_site

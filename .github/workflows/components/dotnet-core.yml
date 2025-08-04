@@ -1,0 +1,24 @@
+name: Setup .NET Project
+description: Common steps like checkout, dotnet install
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build & pack analyzers
+      run: dotnet pack src/Analyzers/Analyzers.csproj --configuration Release
+
+    - name: Add local NuGet source
+      run: dotnet nuget add source ./nupkgs --name local
+
+    - name: Setup dependencies
+      run: dotnet restore
+
+    

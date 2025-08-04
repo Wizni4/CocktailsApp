@@ -1,0 +1,15 @@
+name: Build
+
+on:
+  workflow_call:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Setup .NET
+              uses: ./.github/workflows/components/dotnet-core.yml
+
+            - name: Build
+              run: dotnet build --configuration Debug --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true 
