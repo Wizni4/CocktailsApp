@@ -34,9 +34,10 @@
             "exclude": [
                 "_site/**"
             ]
-        //},
-        //{
-        //    "files": [ "**/*.swagger.json" ]
+        },
+        {
+            "files": [ "**/*.swagger.json" ],
+            "dest": "swagger"
         }
     ],
     "resource": [

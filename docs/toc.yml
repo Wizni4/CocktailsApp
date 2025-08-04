@@ -2,6 +2,8 @@
   href: ../README.md
 - name: Documentation
   href: api/
+- name: Swagger
+  href: swagger/
 - name: Coverage
   href: coverage
 - name: License
