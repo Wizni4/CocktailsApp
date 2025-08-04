@@ -14,11 +14,12 @@ runs:
 
     - name: Build & pack analyzers
       run: dotnet pack src/Analyzers/Analyzers.csproj --configuration Release
+      shell: bash
 
     - name: Add local NuGet source
       run: dotnet nuget add source ./nupkgs --name local
+      shell: bash
 
     - name: Setup dependencies
       run: dotnet restore
-
-    
+      shell: bash

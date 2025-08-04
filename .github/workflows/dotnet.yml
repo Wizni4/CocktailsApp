@@ -11,19 +11,18 @@ on:
     branches: [ "dev" ]
 
 
-
 jobs:
   lint:
-    uses: ./.github/workflows/components/lint.yml
+    uses: ./.github/workflows/lint.yml
 
   build:
-    uses: ./.github/workflows/components/build.yml 
+    uses: ./.github/workflows/build.yml 
 
   tests:
-    uses: ./.github/workflows/components/tests.yml 
+    uses: ./.github/workflows/tests.yml 
 
   documentation:
-    uses: ./.github/workflows/components/documentation.yml 
+    uses: ./.github/workflows/documentation.yml 
 
   deploy:
     needs: [tests, documentation]
