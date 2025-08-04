@@ -9,7 +9,7 @@ jobs:
 
         steps:
             - name: Setup .NET
-              uses: ./.github/actions/setup-dotnet/action.yml
+              uses: .github/actions/setup-dotnet/action.yml
 
             - name: Setup dependencies
               run: dotnet tool install -g docfx

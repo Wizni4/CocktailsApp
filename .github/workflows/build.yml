@@ -9,7 +9,7 @@ jobs:
 
         steps:
             - name: Setup .NET
-              uses: ./.github/actions/setup-dotnet/action.yml
+              uses: .github/actions/setup-dotnet/action.yml
 
             - name: Build
               run: dotnet build --configuration Debug --no-restore -p:TreatWarningsAsErrors=true -p:EnforceCodeStyleInBuild=true 
