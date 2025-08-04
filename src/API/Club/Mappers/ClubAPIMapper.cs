@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using AutoMapper;
+
 using CocktailsApp.API.Extensions;
 using CocktailsApp.Application.Club;
 using CocktailsApp.Domain.ClubAggregate;
