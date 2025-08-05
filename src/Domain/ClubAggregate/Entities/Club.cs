@@ -52,7 +52,7 @@ namespace CocktailsApp.Domain.ClubAggregate
     /// </item>
     /// </list> 
     /// </remarks>
-    public class Club : AggregateRoot, IAggregateRoot
+    public sealed class Club : AggregateRoot, IAggregateRoot
     {
         /// <summary>
         /// Gets the <see langword="readonly"/> address of the club.

@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 
-namespace CocktailsApp.API.Swagger
+namespace CocktailsApp.API.SeedWork
 {
     public class ClubPermissionSchemaFilter : ISchemaFilter
     {

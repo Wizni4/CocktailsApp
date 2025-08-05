@@ -9,7 +9,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.UserAggregate
 {
-    public class User : AggregateRoot, IAggregateRoot
+    public sealed class User : AggregateRoot, IAggregateRoot
     {
         public new Guid Id { get; }
         private string _username;

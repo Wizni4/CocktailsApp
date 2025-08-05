@@ -9,7 +9,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.OrderAggregate
 {
-    public class OrderItem : Entity
+    public sealed class OrderItem : Entity
     {
         public Guid CocktailId { get; }
         public decimal Quantity { get; }

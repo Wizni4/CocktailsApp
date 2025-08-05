@@ -1,4 +1,4 @@
-﻿namespace CocktailsApp.Domain.Shared.Services
+﻿namespace CocktailsApp.Domain.Shared
 {
     class PermissionService
     {

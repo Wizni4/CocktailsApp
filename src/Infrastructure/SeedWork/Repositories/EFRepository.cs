@@ -76,13 +76,17 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// </summary>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of all entities.</returns>
-        public Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null)
+        public Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null)
         {
             var query = _dbContext.Set<T>().AsQueryable();
 
             // Add include to the query
             if (includes != null)
                 query = query.IncludeMultiples(includes);
+
+            // Add the limit if specified
+            if (limit != null && limit > 0)
+                query = query.Take(limit.Value);
 
             return Task.FromResult(query.AsEnumerable());
         }
@@ -113,7 +117,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="spec">The specification that defines the query criteria.</param>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of matching entities.</returns>
-        public Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null)
+        public Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null)
         {
             if (spec == null)
                 throw new ArgumentNullException(nameof(spec));
@@ -124,7 +128,14 @@ namespace CocktailsApp.Infrastructure.SeedWork
             if (includes != null)
                 query = query.IncludeMultiples(includes);
 
-            return Task.FromResult(query.Where(spec.SpecExpression).AsEnumerable());
+            // apply the filter
+            query = query.Where(spec.SpecExpression);
+
+            // Add the limit if specified (must be after the filter)
+            if (limit != null && limit > 0)
+                query = query.Take(limit.Value);
+
+            return Task.FromResult(query.AsEnumerable());
         }
 
         /// <summary>

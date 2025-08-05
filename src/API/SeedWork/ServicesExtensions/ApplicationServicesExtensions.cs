@@ -5,17 +5,18 @@
  * Application namespaces
  */
 
-using CocktailsApp.API.Auth;
+using CocktailsApp.API.Authentication;
 using CocktailsApp.API.Club;
 using CocktailsApp.API.Cocktail;
+using CocktailsApp.API.Search;
 using CocktailsApp.API.Shared;
 using CocktailsApp.API.User;
 using CocktailsApp.Application.Authentication;
 using CocktailsApp.Application.Club;
 using CocktailsApp.Application.Cocktail;
+using CocktailsApp.Application.Search;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.User;
-using CocktailsApp.Domain.SeedWork;
 
 /*
  * Infrastructure namespaces
@@ -66,6 +67,7 @@ namespace CocktailsApp.API.SeedWork
             // Application mapper
             services.AddAutoMapper(
                 typeof(ClubApplicationMapperProfile),
+                typeof(SearchApplicationMapperProfile),
                 typeof(ApplicationMapperProfile));
 
             // API mapper
@@ -94,6 +96,9 @@ namespace CocktailsApp.API.SeedWork
                 // -- Cocktail
                 cfg.RegisterServicesFromAssembly(typeof(CocktailDTO).Assembly);
 
+                // -- Search
+                cfg.RegisterServicesFromAssembly(typeof(SearchResultDTO).Assembly);
+
                 // -- User
                 cfg.RegisterServicesFromAssembly(typeof(UserDTO).Assembly);
             });
@@ -112,6 +117,9 @@ namespace CocktailsApp.API.SeedWork
             // -- Cocktail
             services.AddValidatorsFromAssembly(typeof(CocktailDTO).Assembly);
 
+            // -- Search
+            services.AddValidatorsFromAssembly(typeof(SearchResultDTO).Assembly);
+
             // -- User
             services.AddValidatorsFromAssembly(typeof(UserDTO).Assembly);
 
@@ -128,6 +136,9 @@ namespace CocktailsApp.API.SeedWork
 
             // -- Cocktail
             services.AddCocktailApplicationServices();
+
+            // -- Search
+            services.AddSearchApplicationServices();
 
             // -- User
             services.AddUserApplicationServices();

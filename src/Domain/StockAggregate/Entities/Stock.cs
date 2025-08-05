@@ -9,7 +9,7 @@ using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Domain.StockAggregate
 {
-    public class Stock : AggregateRoot, IAggregateRoot
+    public sealed class Stock : AggregateRoot, IAggregateRoot
     {
         public Ingredient Ingredient { get; }
         public decimal Quantity { get { return _stockTransactions.Sum(st => st.Quantity * (int)st.TransactionType); } }

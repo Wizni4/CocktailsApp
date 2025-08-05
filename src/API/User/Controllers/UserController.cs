@@ -4,7 +4,7 @@
 using AutoMapper;
 
 using CocktailsApp.API.Club;
-using CocktailsApp.API.Extensions;
+using CocktailsApp.API.SeedWork;
 using CocktailsApp.Application.User;
 
 using MediatR;

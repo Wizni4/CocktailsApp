@@ -11,7 +11,7 @@ namespace CocktailsApp.Domain.ClubAggregate
     /// <summary>
     /// Represents a role within a <see cref="Club"/>, which can have associated permissions.
     /// </summary>
-    public class ClubRole : Entity
+    public sealed class ClubRole : Entity
     {
         /// <summary>
         /// Gets the name of the role.

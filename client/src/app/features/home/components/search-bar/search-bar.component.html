@@ -1,9 +1,26 @@
 <!-- search-bar.component.html -->
 <div class="search-bar__main">
-  <span class="search-bar__logo"><i class="pi pi-search"></i></span>
-  <input pInputText
-         type="text"
-         [placeholder]="placeholder"
-         (input)="onChange($event)"
-         class="w-full" />
-</div>
+  <div class="search-bar__container">
+    <span class="search-bar__logo"><i class="pi pi-search"></i></span>
+    <span class="search-bar__loading" *ngIf="loading"><i class="pi pi-spin pi-spinner text-info"></i></span>
+      <input pInputText
+             type="text"
+             [placeholder]="placeholder"
+             (input)="onChange($event)"
+             class="search-bar__input" />
+  </div>
+      <p-table [value]="searchResults" *ngIf="searchResults.length > 0" class="search-bar__result-table">
+        <ng-template #header>
+          <tr>
+            <th>Type</th>
+            <th>Name</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-searchResult>
+          <tr>
+            <td>{{ searchResult.type }}</td>
+            <td>{{ searchResult.name }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+  </div>

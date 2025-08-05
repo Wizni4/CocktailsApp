@@ -13,6 +13,6 @@ namespace CocktailsApp.Application.Club
 {
     public interface IClubService : IService
     {
-        Task<ClubLimitInfo> GetClubLimitInfoAsync(Guid userId);
+        Task<ClubLimitInfoDTO> GetClubLimitInfoAsync(Guid userId);
     }
 }

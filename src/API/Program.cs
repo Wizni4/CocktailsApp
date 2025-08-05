@@ -5,7 +5,6 @@ using Hellang.Middleware.ProblemDetails;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // -- Base services

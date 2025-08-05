@@ -9,7 +9,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.StockAggregate
 {
-    public class StockTransaction : Entity
+    public sealed class StockTransaction : Entity
     {
         public DateTime Date { get; }
         public string Description { get; }

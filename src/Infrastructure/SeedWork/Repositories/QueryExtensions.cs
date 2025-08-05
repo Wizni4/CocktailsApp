@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CocktailsApp.Infrastructure.SeedWork
 {
-    public static class QueryExtension
+    public static class QueryExtensions
     {
         public static IQueryable<T> IncludeMultiples<T>(this IQueryable<T> query, Func<IIncludable<T>, IIncludable> includes) where T : Entity, IAggregateRoot
         {

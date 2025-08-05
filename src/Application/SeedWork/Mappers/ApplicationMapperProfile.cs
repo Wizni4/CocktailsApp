@@ -6,7 +6,8 @@
  */
 using AutoMapper;
 
-using CocktailsApp.Application.Club;
+using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
+using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.Shared;
 using CocktailsApp.Application.User;
@@ -24,10 +25,8 @@ namespace CocktailsApp.Application.SeedWork
         public ApplicationMapperProfile()
         {
             // Cocktail
-            CreateMap<CocktailsApp.Domain.CocktailAggregate.Cocktail, CocktailDTO>();
+            CreateMap<DomainCocktail, CocktailDTO>();
             CreateMap<CocktailIngredient, CocktailIngredientDTO>();
-
-            
 
             // Shared
             CreateMap<Address, AddressDTO>();
@@ -35,7 +34,7 @@ namespace CocktailsApp.Application.SeedWork
             CreateMap<Ingredient, IngredientDTO>();
 
             // User
-            CreateMap<CocktailsApp.Domain.UserAggregate.User, UserDTO>();
+            CreateMap<DomainUser, UserDTO>();
         }
     }
 }

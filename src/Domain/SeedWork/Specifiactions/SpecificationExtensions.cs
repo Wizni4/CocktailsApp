@@ -48,7 +48,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// <returns>A new specification that represents the negation of the inner specification.</returns>
         public static ISpecification<T> Negate<T>(this ISpecification<T> inner)
         {
-            return new Negated<T>(inner);
+            return new Negate<T>(inner);
         }
     }
 }

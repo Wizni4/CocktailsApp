@@ -10,7 +10,7 @@ using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Domain.CocktailAggregate
 {
-    public class CocktailIngredient : Entity
+    public sealed class CocktailIngredient : Entity
     {
         public Ingredient Ingredient { get; }
         public decimal Quantity { get => _quantity; }

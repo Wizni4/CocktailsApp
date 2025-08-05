@@ -17,7 +17,7 @@ namespace CocktailsApp.Application.Club
     /// </summary>
     /// <param name="unitOfWork">The unit of work used for data access and persistence.</param>
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
-    public class RemoveMemberCommandHandler(
+    public class RemoveMembersCommandHandler(
         IUnitOfWork unitOfWork,
         IClubRepository clubRepository,
         IMapper autoMapper

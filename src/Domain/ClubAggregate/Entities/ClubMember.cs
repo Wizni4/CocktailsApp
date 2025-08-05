@@ -14,7 +14,7 @@ namespace CocktailsApp.Domain.ClubAggregate
     /// <summary>
     /// Represents a meber associated of a <see cref="Club"/>.
     /// </summary>
-    public class ClubMember : Entity
+    public sealed class ClubMember : Entity
     {
         /// <summary>
         /// Gets the <see langword="readonly"/> list of <see cref="ClubRole"/> of the <see cref="ClubMember"/>.

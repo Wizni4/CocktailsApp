@@ -9,7 +9,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.OrderAggregate
 {
-    public class Order : AggregateRoot, IAggregateRoot
+    public sealed class Order : AggregateRoot, IAggregateRoot
     {
         public Guid CustomerId { get; }
         public Guid ClubId { get; }

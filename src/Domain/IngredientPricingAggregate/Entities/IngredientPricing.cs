@@ -10,7 +10,7 @@ using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
-    public class IngredientPricing : AggregateRoot, IAggregateRoot
+    public sealed class IngredientPricing : AggregateRoot, IAggregateRoot
     {
         public decimal Cost { get; private set; }
         public Ingredient Ingredient { get; private set; }

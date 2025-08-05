@@ -18,16 +18,14 @@ using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 namespace CocktailsApp.Application.Club
 {
     public class ClubService(
-        IMapper automapper,
         IOptions<ClubSettingsDTO> clubSettings,
         IUnitOfWork unitOfWork
     ) : IClubService
     {
-        private readonly IMapper _automapper = automapper;
         private readonly IOptions<ClubSettingsDTO> _clubSettings = clubSettings;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<ClubLimitInfo> GetClubLimitInfoAsync(Guid userId)
+        public async Task<ClubLimitInfoDTO> GetClubLimitInfoAsync(Guid userId)
         {
             // Get number of club owned by the user
             var ownedClubs = (await _unitOfWork.Set<DomainClub>().ReadRangeAsync(new ClubByOwnerIdSpecification(userId))).Count();
@@ -35,7 +33,7 @@ namespace CocktailsApp.Application.Club
             // Get the max number of owned clubs
             var maxOwnedClubs = _clubSettings.Value.MaxOwnedClubs;
 
-            return new ClubLimitInfo(
+            return new ClubLimitInfoDTO(
                 ownedClubs,
                 maxOwnedClubs,
                 ownedClubs < maxOwnedClubs);

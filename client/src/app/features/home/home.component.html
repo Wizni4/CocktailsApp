@@ -15,8 +15,7 @@
     <div *ngIf="clubs.length >= 0" class="home">
 
       <!-- Search bar -->
-      <search-bar placeholder="Search public clubs or cocktails…"
-                  (search)="onSearch($event)" />
+      <search-bar placeholder="Search public clubs or cocktails…"/>
 
       <!-- Clubs Cards -->
       <app-clubs-cards [clubs]="clubs"></app-clubs-cards>

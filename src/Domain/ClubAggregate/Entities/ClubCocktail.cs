@@ -12,7 +12,7 @@ namespace CocktailsApp.Domain.ClubAggregate
     /// <summary>
     /// Represents a cocktail associated to a <see cref="Club"/>.
     /// </summary>
-    public class ClubCocktail : Entity
+    public sealed class ClubCocktail : Entity
     {
         /// <summary>
         /// Gets the unique identifier of the cocktail.

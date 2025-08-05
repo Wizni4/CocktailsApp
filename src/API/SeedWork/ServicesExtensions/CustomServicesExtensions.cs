@@ -10,7 +10,6 @@
  */
 using Amazon.CognitoIdentityProvider.Model;
 
-using CocktailsApp.API.Swagger;
 /*
  * Infrastructure namespaces
  */

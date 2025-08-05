@@ -11,7 +11,7 @@ using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Domain.CocktailAggregate
 {
-    public class Cocktail : AggregateRoot, IAggregateRoot
+    public sealed class Cocktail : AggregateRoot, IAggregateRoot
     {
         public string Description { get => _description; }
         private string _description = null!;

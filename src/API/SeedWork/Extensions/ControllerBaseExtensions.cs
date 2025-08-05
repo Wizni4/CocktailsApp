@@ -2,16 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Azure.Core;
-
-using CocktailsApp.Domain.ClubAggregate;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Security.Claims;
 
-namespace CocktailsApp.API.Extensions
+namespace CocktailsApp.API.SeedWork
 {
     public static class ControllerBaseExtensions
     {

@@ -12,7 +12,7 @@ namespace CocktailsApp.Domain.Shared
     /// Represents an immutable address value object composed of standard address components.
     /// Inherits from <see cref="ValueObject"/> to support equality based on property values rather than reference.
     /// </summary>
-    public class Address : ValueObject
+    public sealed class Address : ValueObject
     {
         /// <summary>
         /// Gets the name of the street (e.g., "Main Street").

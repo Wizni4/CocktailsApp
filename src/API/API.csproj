@@ -8,6 +8,8 @@
 	<GenerateDocumentationFile>false</GenerateDocumentationFile>
 	<UserSecretsId>b19058a8-ca17-4dbf-afbf-d58a3521827d</UserSecretsId>
 	<Configurations>Debug;Release;LOCAL;LOCAL-COGNITO</Configurations>
+    <AssemblyName>CocktailsApp.API</AssemblyName>
+    <RootNamespace>CocktailsApp.API</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

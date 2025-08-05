@@ -1,20 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { UserService } from '../user/user.service';
 import { Club } from '../club/models/club.model';
 import { Observable } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
-import { TableModule } from 'primeng/table';
-import { CardModule } from 'primeng/card';
-import { MessageModule } from 'primeng/message';
-import { TabsModule } from 'primeng/tabs';
-import { BadgeModule } from 'primeng/badge';
-import { OverlayBadgeModule } from 'primeng/overlaybadge';
-import { SkeletonModule } from 'primeng/skeleton';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { EmptyStateComponent} from './components/empty-state/empty-state.component';
 import { ClubsCardsComponent } from './components/clubs-cards/clubs-cards.component';
+import { SearchResult } from '../../shared/models/search-result.model';
 
 
 @Component({
@@ -23,50 +15,24 @@ import { ClubsCardsComponent } from './components/clubs-cards/clubs-cards.compon
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   imports: [
-    BadgeModule,
-    OverlayBadgeModule,
-    CardModule,
     CommonModule,
-    ButtonModule,
-    RouterModule,
-    TableModule,
-    MessageModule,
     ClubsCardsComponent,
-    TabsModule,
-    SkeletonModule,
     SearchBarComponent,
     EmptyStateComponent,
  ]
 })
 export class HomeComponent {
   clubs$!: Observable<Club[]>;
-  discoverClubs: Club[] = [];
+  searchResults: SearchResult[] = [];
   lowStock: any[] = [];
-  discoverLoading = false;
+  searchLoading = false;
   activeTabIndex = 0;
-  constructor(private userService: UserService, public router: Router) {
-    
+  constructor(
+    private userService: UserService) {
   }
   ngOnInit(): void {
     this.clubs$ = this.userService.getUserClubs();
     this.clubs$.subscribe(
-      clubs => console.log(clubs)
     )
-  }
-
-  onSearch(query: string) {
-    this.discoverLoading = true;
-    //this.clubsSvc.searchPublic(query).subscribe((data) => {
-    //  this.discoverClubs = data;
-    //  this.discoverLoading = false;
-    //});
-  }
-
-  trackById = (_: number, c: Club) => c.id;
-
-  deleteClub(id: string) {
-    // optimistic update
-    //this.myClubs = this.myClubs.filter((c) => c.id !== id);
-    //this.clubsSvc.deleteClub(id).subscribe();
   }
 }

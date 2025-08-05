@@ -14,7 +14,7 @@ namespace CocktailsApp.Domain.SeedWork
     /// <remarks>
     /// <see cref="Id"/> can be <see langword="override"/>.
     /// </remarks>
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
         /// <summary>
         /// Unmutable <see cref="Entity"/> identity.

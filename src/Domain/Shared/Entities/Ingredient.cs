@@ -9,7 +9,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.Shared
 {
-    public class Ingredient : ValueObject
+    public sealed class Ingredient : ValueObject
     {
         public string Name { get; }
         public UnitOfMeasure BaseUnit { get; }

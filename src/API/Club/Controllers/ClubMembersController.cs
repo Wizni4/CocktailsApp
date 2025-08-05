@@ -5,7 +5,7 @@
 
 using AutoMapper;
 
-using CocktailsApp.API.Extensions;
+using CocktailsApp.API.SeedWork;
 using CocktailsApp.Application.Club;
 
 using MediatR;

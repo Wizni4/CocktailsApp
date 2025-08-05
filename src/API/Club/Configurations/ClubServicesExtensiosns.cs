@@ -13,7 +13,7 @@ using DomainClubRole = CocktailsApp.Domain.ClubAggregate.ClubRole;
 
 namespace CocktailsApp.API.Club
 {
-    public static class CocktailServicesExtensiosns
+    public static class ClubServicesExtensiosns
     {
         public static IServiceCollection AddClubRepositories(this IServiceCollection services)
         {

@@ -17,7 +17,7 @@ namespace CocktailsApp.Domain.SeedWork
     /// 
     /// This class is useful when you want to specify the condition that an object must not satisfy a given specification.
     /// </summary>
-    public class Negated<T>(ISpecification<T> inner) : Specification<T>
+    public class Negate<T>(ISpecification<T> inner) : Specification<T>
     {
         private readonly ISpecification<T> _inner = inner;
 

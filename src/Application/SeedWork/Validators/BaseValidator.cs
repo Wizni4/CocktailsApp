@@ -15,7 +15,7 @@ using FluentValidation;
 
 using MediatR;
 
-namespace CocktailsApp.Application.Club
+namespace CocktailsApp.Application.SeedWork
 {
     public abstract class BaseValidator<TRequest> : AbstractValidator<TRequest> where TRequest : IBaseRequest
     {

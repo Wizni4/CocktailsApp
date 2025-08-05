@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
 	<AnalysisLevel>latest</AnalysisLevel>
 	<Configurations>Debug;Release;LOCAL;LOCAL-COGNITO</Configurations>
+    <AssemblyName>CocktailsApp.Domain</AssemblyName>
+    <RootNamespace>CocktailsApp.Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,10 +20,5 @@
       <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
           <_Parameter1>Domain.Tests</_Parameter1>
       </AssemblyAttribute>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClubAggregate\Services\" />
-    <Folder Include="StockAggregate\Services\" />
   </ItemGroup>
 </Project>

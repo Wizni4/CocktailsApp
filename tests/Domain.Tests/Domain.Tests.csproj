@@ -8,6 +8,7 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <Configurations>Debug;Release;LOCAL;LOCAL-COGNITO</Configurations>
+      <RootNamespace>CocktailsApp.Domain.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\API\API.csproj" />
+    <ProjectReference Include="..\..\src\Application\Application.csproj" />
     <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
