@@ -42,7 +42,7 @@ namespace CocktailsApp.Architecture.Tests.DesignRules.Domain
             Assert.True(result1.IsSuccessful,
                 "The following builders do not inherit IBuilder:\n" + string.Join("\n", result1?.FailingTypeNames ?? Enumerable.Empty<string>()));
 
-            Assert.True(result1.IsSuccessful,
+            Assert.True(result2.IsSuccessful,
                 "The following classes inherit IBuilder but their names do not end with 'Builder':\n" + string.Join("\n", result1?.FailingTypeNames ?? Enumerable.Empty<string>()));
         }
     }
