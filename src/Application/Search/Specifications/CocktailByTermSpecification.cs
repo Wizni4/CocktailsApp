@@ -14,6 +14,6 @@ namespace CocktailsApp.Application.Search
     {
         private readonly string _term = term;
 
-        public override Expression<Func<DomainCocktail, bool>> SpecExpression => cocktail => cocktail.Name.Contains(term);
+        public override Expression<Func<DomainCocktail, bool>> SpecExpression => cocktail => cocktail.Name.Contains(_term);
     }
 }
