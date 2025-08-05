@@ -33,7 +33,7 @@ namespace CocktailsApp.Application.Club
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
 
             // Update Address
-            if (request.Address != null) 
+            if (request.Address != null)
                 club!.UpdateAddress(_autoMapper.Map<DomainAddress>(request.Address), request.ActorId);
 
             // Update Name

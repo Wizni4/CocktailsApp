@@ -26,7 +26,7 @@ namespace CocktailsApp.Application.SeedWork
     /// </summary>
     /// <typeparam name="TCommand">The type of command or query to handle.</typeparam>
     /// <typeparam name="TResult">The type of result returned by the handler, which must be an <see cref="EntityDTO"/>.</typeparam>
-    public interface IHandler<TCommand, TResult>: IRequestHandler<TCommand, TResult> where TCommand : IRequest<TResult>
+    public interface IHandler<TCommand, TResult> : IRequestHandler<TCommand, TResult> where TCommand : IRequest<TResult>
     {
     }
 }

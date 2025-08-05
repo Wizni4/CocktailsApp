@@ -41,7 +41,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
 
         public Cocktail Build()
         {
-            if(_cocktail == null)
+            if (_cocktail == null)
                 throw new InvalidOperationException("Cocktail must have a name and description.");
 
             return _cocktail;

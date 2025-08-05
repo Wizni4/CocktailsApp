@@ -77,14 +77,15 @@ namespace CocktailsApp.API.SeedWork
                 typeof(CocktailAPIMapperProfile),
                 typeof(SharedAPIMapperProfile),
                 typeof(UserAPIMapperProfile));
-                
+
             return services;
         }
 
         public static IServiceCollection AddMediatR(this IServiceCollection services, IConfiguration configuration)
         {
             var licenceKey = configuration["LuckyPenny:LicenseKey"];
-            services.AddMediatR(cfg => {
+            services.AddMediatR(cfg =>
+            {
                 cfg.LicenseKey = licenceKey;
 
                 // -- Auth
@@ -102,7 +103,7 @@ namespace CocktailsApp.API.SeedWork
                 // -- User
                 cfg.RegisterServicesFromAssembly(typeof(UserDTO).Assembly);
             });
-    
+
             return services;
         }
 

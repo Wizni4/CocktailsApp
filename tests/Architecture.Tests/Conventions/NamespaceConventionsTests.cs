@@ -65,7 +65,7 @@ namespace CocktailsApp.Architecture.Tests.Conventions
                     .GetTypes()
                     .FirstOrDefault(t => Regex.Replace(t.Name, "`.*", "") == typeName);
 
-                if(matchingType == null)
+                if (matchingType == null)
                 {
                     errors.Add($"{typeName}: no class match this file name.");
                     continue;

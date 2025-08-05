@@ -59,6 +59,6 @@ namespace CocktailsApp.Application.Club
                 club!.Roles.Where(clubRoles => request.Roles.Any(updatedRoles => new ClubRoleByIdSpecification(updatedRoles.Id).SpecExpression.Compile()(clubRoles))));
         }
 
-        
+
     }
 }

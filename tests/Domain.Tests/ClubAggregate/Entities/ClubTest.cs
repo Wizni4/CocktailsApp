@@ -238,7 +238,8 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                     NUnit.Framework.Assert.That(newMember.UpdateDate.Kind, Is.EqualTo(DateTimeKind.Utc));
                     NUnit.Framework.Assert.That(newMember.UpdateDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
                 });
-            };
+            }
+            ;
             // Act & Assert
             RunPermissionScenarios(
                 permission,
@@ -338,7 +339,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
 
         [Test, TestCaseSource(nameof(PermissionTestCases))]
         public void AddRoleToMember_PermissionScenarios(string scenario, bool shouldSucceed)
-        {    
+        {
             // Create role
             var roleName = "Test role";
             _club.CreateRole(roleName, _owner.Id);
@@ -349,7 +350,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var action = (Guid actorId) => _club.AddRoleToMember(_member.Id, role.Id, actorId);
 
             // Assert on success (has permissions)
-            var assert = () => Assert.That(_member.Roles.Any(r => r.Name == roleName), Is.True);           
+            var assert = () => Assert.That(_member.Roles.Any(r => r.Name == roleName), Is.True);
 
             // Act & Assert
             RunPermissionScenarios(
@@ -426,7 +427,8 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                     NUnit.Framework.Assert.That(newRole.CreationDate.Kind, Is.EqualTo(DateTimeKind.Utc));
                     NUnit.Framework.Assert.That(newRole.CreationDate, Is.LessThanOrEqualTo(DateTime.UtcNow));
                 });
-            };
+            }
+            ;
 
             // Act & Assert
             RunPermissionScenarios<ClubRole>(

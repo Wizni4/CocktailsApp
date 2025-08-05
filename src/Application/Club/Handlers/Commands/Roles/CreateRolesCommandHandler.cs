@@ -31,13 +31,13 @@ namespace CocktailsApp.Application.Club
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Roles));
 
             // Create roles (delegated to the domain)
-            foreach(var newRole in request.NewRoles)
+            foreach (var newRole in request.NewRoles)
             {
                 var role = club!.CreateRole(newRole.Name, request.ActorId);
 
                 // Add permissions if specified
                 if (newRole.Permissions is not null)
-                    foreach(var permission in newRole.Permissions)
+                    foreach (var permission in newRole.Permissions)
                         club.AddPermissionToRole(role.Id, permission, request.ActorId);
             }
 

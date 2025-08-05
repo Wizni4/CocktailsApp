@@ -34,8 +34,8 @@ namespace CocktailsApp.Application.Club
                 var clubMember = club!.AddMember(newMember.UserId, request.ActorId);
 
                 // Add roles to member
-                if(newMember.RoleIds is not null)
-                    foreach(var roleId in newMember.RoleIds)
+                if (newMember.RoleIds is not null)
+                    foreach (var roleId in newMember.RoleIds)
                         club.AddRoleToMember(clubMember.Id, roleId, request.ActorId);
             }
 

@@ -14,14 +14,14 @@ namespace CocktailsApp.API.SeedWork
         {
             if (builder.Environment.IsDevelopment())
             {
-                 builder.Services.ConfigureOptions<CognitoJwtBearerConfiguration>();
-                 builder.Services.ConfigureOptions<ClubSettingsConfiguration>();
-                 builder.Services.ConfigureOptions<SearchSettingsConfiguration>();
-                 builder.Services.AddLocalDbContext(builder.Configuration);
-                 builder.Services.AddCognitoAuthServices(builder.Configuration);
+                builder.Services.ConfigureOptions<CognitoJwtBearerConfiguration>();
+                builder.Services.ConfigureOptions<ClubSettingsConfiguration>();
+                builder.Services.ConfigureOptions<SearchSettingsConfiguration>();
+                builder.Services.AddLocalDbContext(builder.Configuration);
+                builder.Services.AddCognitoAuthServices(builder.Configuration);
             }
 
             return builder;
-        }       
+        }
     }
 }

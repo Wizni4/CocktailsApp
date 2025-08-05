@@ -18,7 +18,7 @@ namespace CocktailsApp.Domain.UserAggregate
         public string Email { get { return _email; } }
         private string? _password;
         public string? Password { get { return _password; } }
-        internal User(Guid id, string? username, string? email, string? password): this(id,username, email)
+        internal User(Guid id, string? username, string? email, string? password) : this(id, username, email)
         {
             _password = password;
         }

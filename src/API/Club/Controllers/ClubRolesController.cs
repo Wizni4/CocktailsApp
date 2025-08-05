@@ -33,7 +33,7 @@ namespace CocktailsApp.API.Club
             var userId = this.GetUserId();
             var newRoles = _autoMapper.Map<IEnumerable<CreateRoleModel>>(request);
             var command = new CreateRolesCommand(clubId, newRoles, userId);
-            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>> (await _mediator.Send(command));
+            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(await _mediator.Send(command));
             return Created(
                 uri: $"/api/clubs/{clubId}/roles",
                 value: response
@@ -46,7 +46,7 @@ namespace CocktailsApp.API.Club
         {
             var userId = this.GetUserId();
             var command = new DeleteRolesCommand(clubId, request, userId);
-            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>> (await _mediator.Send(command));
+            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(await _mediator.Send(command));
             return Ok(response);
         }
 

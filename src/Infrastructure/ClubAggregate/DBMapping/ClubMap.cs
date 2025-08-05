@@ -43,7 +43,7 @@ namespace CocktailsApp.Infrastructure.ClubAggregate
                 a.Property(a => a.Street).IsRequired();
                 a.Property(a => a.StreetNumber).IsRequired();
                 a.Property(a => a.City).IsRequired();
-                a.Property(a => a.PostalCode).IsRequired();  
+                a.Property(a => a.PostalCode).IsRequired();
                 a.Property(a => a.State).IsRequired();
                 a.Property(a => a.Country).IsRequired();
             });

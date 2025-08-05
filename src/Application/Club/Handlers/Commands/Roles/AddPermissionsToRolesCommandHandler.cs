@@ -48,7 +48,7 @@ namespace CocktailsApp.Application.Club
 
             // Delegate the permission-adding logic to the club aggregate.
             foreach (var role in request.Roles)
-                foreach(var permission in role.Permissions)
+                foreach (var permission in role.Permissions)
                     club!.AddPermissionToRole(role.Id, permission, request.ActorId);
 
             // Persist the changes.

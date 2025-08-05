@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-namespace CocktailsApp.API.SeedWork 
+namespace CocktailsApp.API.SeedWork
 {
     public static class EnumExtensions
     {

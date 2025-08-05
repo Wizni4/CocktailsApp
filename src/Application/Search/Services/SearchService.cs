@@ -5,11 +5,14 @@
  * Application namespaces
  */
 using AutoMapper;
+
 using CocktailsApp.Application.SeedWork;
+
+using Microsoft.Extensions.Options;
+
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 using DomainUser = CocktailsApp.Domain.UserAggregate.User;
-using Microsoft.Extensions.Options;
 /*
  * Framework namespaces
  */

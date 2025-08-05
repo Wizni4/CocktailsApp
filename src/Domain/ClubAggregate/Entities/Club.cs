@@ -184,7 +184,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             _members.Add(owner);
 
             // Create a new Owner role
-            var ownerRole = new ClubRole("Owner", true);     
+            var ownerRole = new ClubRole("Owner", true);
 
             // Add the owner role to both: club & owner (member)
             owner.AddRole(ownerRole);
@@ -785,7 +785,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             // - He's the owner of club
             return (member.HasPermission(permission) ||
                     this.IsOwner(member));
-                
+
         }
 
         /// <summary>

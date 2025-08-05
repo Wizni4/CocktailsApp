@@ -9,7 +9,7 @@ namespace CocktailsApp.API.User
 {
     public class UserAPIMapperProfile : Profile
     {
-       public UserAPIMapperProfile()
+        public UserAPIMapperProfile()
         {
         }
     }

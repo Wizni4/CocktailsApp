@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace CocktailsApp.Application.SeedWork
 {
-    public class AggregateExistsValidator<TAggregateRoot> : AbstractValidator<Guid> where TAggregateRoot: AggregateRoot
+    public class AggregateExistsValidator<TAggregateRoot> : AbstractValidator<Guid> where TAggregateRoot : AggregateRoot
     {
         public AggregateExistsValidator(IRepository<TAggregateRoot> repository)
         {

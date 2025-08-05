@@ -100,6 +100,6 @@ namespace CocktailsApp.Infrastructure.SeedWork
             modelBuilder.Entity<User>(new UserMap().Configure);
 
             return modelBuilder;
-        }        
+        }
     }
 }

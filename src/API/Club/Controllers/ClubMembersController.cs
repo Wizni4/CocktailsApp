@@ -33,7 +33,7 @@ namespace CocktailsApp.API.Club
         public async Task<ActionResult<IEnumerable<ClubMemberResponse>>> AddMembers(Guid clubId, [FromBody] IEnumerable<AddMemberRequest> request)
         {
             var userId = this.GetUserId();
-            var newMembers = _autoMapper.Map<IEnumerable<AddMemberModel>>(request); 
+            var newMembers = _autoMapper.Map<IEnumerable<AddMemberModel>>(request);
 
             // Define the command
             var command = new AddMembersCommand(
@@ -43,7 +43,7 @@ namespace CocktailsApp.API.Club
             );
 
             // get the response
-            var response = _autoMapper.Map<IEnumerable<ClubMemberResponse>> (await _mediator.Send(command));
+            var response = _autoMapper.Map<IEnumerable<ClubMemberResponse>>(await _mediator.Send(command));
 
             // Return the updated club
             return Created(

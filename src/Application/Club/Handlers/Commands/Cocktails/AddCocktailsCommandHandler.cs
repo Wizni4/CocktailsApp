@@ -44,7 +44,7 @@ namespace CocktailsApp.Application.Club
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, c => c.Include(c => c.Cocktails));
 
             // Delegate addition logic to the domain layer.
-            foreach(var cocktailId in request.CocktailIds)
+            foreach (var cocktailId in request.CocktailIds)
                 club!.AddCocktail(cocktailId, request.ActorId);
 
             // Persist changes to the database.

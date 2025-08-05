@@ -4,6 +4,7 @@
 
 
 using AutoMapper;
+
 using CocktailsApp.Application.Search;
 
 namespace CocktailsApp.API.Search

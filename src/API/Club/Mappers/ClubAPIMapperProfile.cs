@@ -17,11 +17,11 @@ namespace CocktailsApp.API.Club
             // Request
             CreateMap<AddMemberRequest, AddMemberModel>();
             CreateMap<CreateRoleRequest, CreateRoleModel>()
-                .ForMember(dest => dest.Permissions, 
+                .ForMember(dest => dest.Permissions,
                 opt => opt.MapFrom(src => (src.Permissions ?? Enumerable.Empty<string>())
                                             .Select(p => p.ToEnum<ClubPermissionType>()).AsEnumerable()));
             CreateMap<MemberRolesUpdateRequest, MemberRolesUpdateModel>();
-                
+
             CreateMap<RolePermissionsUpdateRequest, RolePermissionsUpdateModel>()
                 .ForMember(dest => dest.Permissions,
                 opt => opt.MapFrom(src => src.Permissions.Select(p => p.ToEnum<ClubPermissionType>())));

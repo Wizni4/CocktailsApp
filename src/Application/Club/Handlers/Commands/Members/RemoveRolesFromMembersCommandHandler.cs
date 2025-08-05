@@ -60,6 +60,6 @@ namespace CocktailsApp.Application.Club
                 club!.Members.Where(clubMember => request.Members.Any(updatedMember => new ClubMemberByIdSpecification(updatedMember.Id).SpecExpression.Compile()(clubMember))));
         }
 
-        
+
     }
 }

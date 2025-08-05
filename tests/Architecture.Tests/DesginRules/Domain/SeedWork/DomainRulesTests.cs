@@ -1,5 +1,7 @@
 ﻿using CocktailsApp.Architecture.Tests.DesignRules.SeedWork;
+
 using NetArchTest.Rules;
+
 using System.Reflection;
 
 

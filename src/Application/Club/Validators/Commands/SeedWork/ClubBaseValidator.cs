@@ -26,7 +26,7 @@ namespace CocktailsApp.Application.Club
                 .ValidGuid()
                 .IsClubExists(clubRepository);
 
-            if(requiredPermissions != null) 
+            if (requiredPermissions != null)
                 RuleFor(c => c)
                     .HasPermissions(
                         clubRepository,

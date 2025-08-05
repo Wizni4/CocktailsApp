@@ -6,7 +6,7 @@ namespace CocktailsApp.Architecture.Tests.DesignRules.Domain
     [TestFixture]
     public class AggregatesRulesTests : DomainRulesTests
     {
-        private PredicateList Aggregates {  get; set; }
+        private PredicateList Aggregates { get; set; }
 
         [SetUp]
         public override void Setup()

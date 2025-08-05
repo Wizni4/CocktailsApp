@@ -3,7 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using CocktailsApp.Domain.SeedWork;
+
 using System.Linq.Expressions;
+
 using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
 namespace CocktailsApp.Application.Search

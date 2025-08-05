@@ -16,6 +16,6 @@ namespace CocktailsApp.Application.Order
 {
     public class ProcessedOrderEventHandler
     {
- 
+
     }
 }

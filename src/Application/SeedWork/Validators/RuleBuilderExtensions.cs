@@ -31,7 +31,7 @@ namespace CocktailsApp.Application.SeedWork
             return ruleBuilder.SetValidator(new ListValidator<T, TProperty>());
         }
 
-        public static IRuleBuilder<T, AddressDTO> ValidAddress<T>(this IRuleBuilder<T, AddressDTO> ruleBuilder) 
+        public static IRuleBuilder<T, AddressDTO> ValidAddress<T>(this IRuleBuilder<T, AddressDTO> ruleBuilder)
         {
             return ruleBuilder.SetValidator(new AddressValidator());
         }

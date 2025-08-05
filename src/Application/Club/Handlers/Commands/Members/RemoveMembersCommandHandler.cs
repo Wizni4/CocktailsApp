@@ -43,7 +43,7 @@ namespace CocktailsApp.Application.Club
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members));
 
             // Delegate the removal to the domain
-            foreach ( var memberId in request.MemberIds)
+            foreach (var memberId in request.MemberIds)
                 club!.RemoveMember(memberId, request.ActorId);
 
             // Persist the changes.

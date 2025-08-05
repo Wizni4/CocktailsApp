@@ -2,7 +2,9 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.SeedWork;
+
 using System.Linq.Expressions;
+
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 /*
  * Framework namespaces

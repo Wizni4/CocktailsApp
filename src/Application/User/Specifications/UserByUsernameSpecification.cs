@@ -2,7 +2,9 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.SeedWork;
+
 using System.Linq.Expressions;
+
 using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 /*
  * Framework namespaces

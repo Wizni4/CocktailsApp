@@ -7,7 +7,7 @@ using CocktailsApp.Infrastructure.SeedWork;
 using Microsoft.Extensions.Options;
 
 namespace CocktailsApp.Infrastructure.Authentication
-{ 
+{
     public class CognitoAuthService(
         IAmazonCognitoIdentityProvider cognitoClient,
         IOptions<CognitoSettings> options

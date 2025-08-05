@@ -3,7 +3,7 @@
  */
 using CocktailsApp.Application.SeedWork;
 
-using DomainIngredientPricing =  CocktailsApp.Domain.IngredientPricingAggregate.IngredientPricing;
+using DomainIngredientPricing = CocktailsApp.Domain.IngredientPricingAggregate.IngredientPricing;
 
 /*
  * Framework namespaces

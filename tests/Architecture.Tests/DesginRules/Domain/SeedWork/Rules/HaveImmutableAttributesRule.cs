@@ -11,7 +11,7 @@ namespace CocktailsApp.Architecture.Tests.DesignRules.Domain
         };
 
         public HaveImmutableAttributesRule()
-            : base(type => 
+            : base(type =>
                 type.Fields
                     .All(f => !f.IsPublic || f.IsInitOnly) &&
                 type.Properties

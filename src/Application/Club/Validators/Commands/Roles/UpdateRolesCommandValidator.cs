@@ -88,7 +88,7 @@ namespace CocktailsApp.Application.Club
                                     $"The role: '{clubRole.Name}' already has the following permissions:\n- {string.Join("\n- ", alreadyExistingPermissions.ToString())}");
                         }
                     }
-                        
+
                 });
         }
     }

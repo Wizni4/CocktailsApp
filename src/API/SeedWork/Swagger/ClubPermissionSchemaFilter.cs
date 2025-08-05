@@ -16,7 +16,7 @@ namespace CocktailsApp.API.SeedWork
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            
+
         }
     }
 }

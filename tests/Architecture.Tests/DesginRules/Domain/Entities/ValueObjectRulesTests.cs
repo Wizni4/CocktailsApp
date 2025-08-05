@@ -4,7 +4,7 @@
 namespace CocktailsApp.Architecture.Tests.DesignRules.Domain
 {
     [TestFixture]
-    public class ValueObjectRulesTests: DomainRulesTests
+    public class ValueObjectRulesTests : DomainRulesTests
     {
         private PredicateList ValueObjects { get; set; }
 

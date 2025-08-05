@@ -17,7 +17,7 @@ namespace CocktailsApp.Application.Club
     /// Data Transfer Object (DTO) representing a member of a club
     /// Inherits from <see cref="EntityDTO"/> to include common entity identification.
     /// </summary>
-    public class ClubMemberDTO: EntityDTO
+    public class ClubMemberDTO : EntityDTO
     {
         /// <summary>
         /// Gets or sets the list of roles assigned to the club member.

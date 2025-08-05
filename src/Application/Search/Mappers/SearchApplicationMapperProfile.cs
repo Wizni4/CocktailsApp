@@ -4,9 +4,9 @@
 
 using AutoMapper;
 
-using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
+using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
 namespace CocktailsApp.Application.Search
 {

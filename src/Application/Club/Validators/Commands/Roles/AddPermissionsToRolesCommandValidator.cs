@@ -66,7 +66,7 @@ namespace CocktailsApp.Application.Club
 
                         }
                     }
-                        
+
                 });
         }
     }

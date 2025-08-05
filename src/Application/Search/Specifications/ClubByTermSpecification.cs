@@ -1,7 +1,9 @@
-﻿using CocktailsApp.Domain.SeedWork;
+﻿using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.SeedWork;
+
 using System.Linq.Expressions;
+
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
-using CocktailsApp.Domain.ClubAggregate;
 
 namespace CocktailsApp.Application.Search
 {
@@ -9,7 +11,7 @@ namespace CocktailsApp.Application.Search
     {
         private readonly Guid _userId = userId;
         private readonly string _term = term;
-        public override Expression<Func<DomainClub, bool>> SpecExpression 
+        public override Expression<Func<DomainClub, bool>> SpecExpression
         {
             get
             {
@@ -17,6 +19,6 @@ namespace CocktailsApp.Application.Search
                                (club.Visibility == ClubVisibility.Public ||
                                 club.Members.Any(m => m.UserId == _userId));
             }
-        } 
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace CocktailsApp.Application.Club
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Roles));
 
             // Update each specified roles
-            foreach(var updatedRole in request.Roles)
+            foreach (var updatedRole in request.Roles)
             {
                 // Update name if specified
                 if (updatedRole.Name is not null)
@@ -62,7 +62,7 @@ namespace CocktailsApp.Application.Club
                         .Where(newPermission => !currentRole!.Permissions.Any(p => new ClubPermissionByTypeSpecification(newPermission).SpecExpression.Compile()(p)));
 
                     // Add permissions if specified
-                    if(permissionsToAdd.Any())
+                    if (permissionsToAdd.Any())
                         foreach (var addedPermission in permissionsToAdd)
                             club!.AddPermissionToRole(updatedRole.Id, addedPermission, request.ActorId);
 
@@ -75,7 +75,7 @@ namespace CocktailsApp.Application.Club
                     if (permissionsToRemove.Any())
                         foreach (var removedPermission in permissionsToRemove)
                             club!.RemovePermissionFromRole(updatedRole.Id, removedPermission, request.ActorId);
-                }     
+                }
             }
 
             // Persist the changes.

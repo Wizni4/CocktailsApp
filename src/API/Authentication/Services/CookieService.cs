@@ -17,12 +17,12 @@ namespace CocktailsApp.API.Authentication
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.None,
-            Path="/"
+            Path = "/"
         };
 
         public void SetRefreshTokenCookie(string? refreshToken)
         {
-            if(refreshToken == null)
+            if (refreshToken == null)
                 throw new UnauthorizedAccessException("Unauthorized");
 
             var options = _defaultCookieOptions;

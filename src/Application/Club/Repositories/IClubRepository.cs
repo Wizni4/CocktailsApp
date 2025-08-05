@@ -23,7 +23,7 @@ namespace CocktailsApp.Application.Club
     /// It serves as a contract for implementing data access logic related to clubs.
     /// </para>
     /// </remarks>
-    public interface IClubRepository: IRepository<DomainClub>
+    public interface IClubRepository : IRepository<DomainClub>
     {
         Task<DomainClub?> GetClubBydIdAsync(Guid clubId, Func<IIncludable<DomainClub>, IIncludable>? includes = null);
     }

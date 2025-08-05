@@ -5,6 +5,6 @@
         public Guid Id { get; }
 
         public DateTime CreationDate { get; }
-        public DateTime UpdateDate { get;  }
+        public DateTime UpdateDate { get; }
     }
 }

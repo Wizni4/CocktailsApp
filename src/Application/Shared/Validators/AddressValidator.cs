@@ -32,7 +32,7 @@ namespace CocktailsApp.Application.Shared
                     RuleFor(a => a.Street).ValidString();
                     RuleFor(a => a.StreetNumber).ValidString();
                 });
-            
+
         }
     }
 }

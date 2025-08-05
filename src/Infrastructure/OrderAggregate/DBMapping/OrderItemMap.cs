@@ -38,7 +38,7 @@ namespace CocktailsApp.Infrastructure.OrderAggregate
             builder.HasOne<Cocktail>()
                 .WithMany()
                 .HasForeignKey(oi => oi.CocktailId);
-           
+
         }
     }
 }

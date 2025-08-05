@@ -63,7 +63,7 @@ namespace CocktailsApp.Application.Club
                             .Any(m => new ClubMemberByIdSpecification(m.Id).SpecExpression.Compile()(cm)));
 
                         // Check if the members already have the specified roles
-                        foreach(var clubMember in foundMembers)
+                        foreach (var clubMember in foundMembers)
                         {
                             var requestedRoles = command.Members
                                 .FirstOrDefault(m => m.Id == clubMember.Id)?.RoleIds;

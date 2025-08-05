@@ -40,7 +40,7 @@ namespace CocktailsApp.Application.Club
                         command.ClubId,
                         opt => opt.Include(c => c.Roles));
 
-                    if(club != null)
+                    if (club != null)
                     {
                         var alreadyExistingNames = command.NewRoles
                         .Select(c => c.Name)
