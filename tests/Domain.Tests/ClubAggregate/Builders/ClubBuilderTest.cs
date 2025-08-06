@@ -98,7 +98,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                     .WithName(_name)
                     .Build());
 
-            Assert.That(exception.Message, Does.Contain("UserId cannot be null."));
+            Assert.That(exception.Message, Does.Contain("User creating entity must be specified"));
         }
 
         [Test]

@@ -330,7 +330,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var exception = Assert.Throws<ArgumentException>(() =>
                 _club.AddPermissionToRole(_role.Id, permission, _owner.Id));
 
-            Assert.That(exception.Message, Is.EqualTo("The role already has the permission."));
+            Assert.That(exception.Message, Is.EqualTo("The role 'Test Role' already has the permission 'RemoveRoleFromMember'."));
         }
 
         #endregion
@@ -729,11 +729,11 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void RemovePermissionFromRole_RoleDoesNotHaveThePermission_ThrowKeyNotFoundException()
         {
             // Act & Assert
-            var exception = Assert.Throws<KeyNotFoundException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
                 _club.RemovePermissionFromRole(_role.Id, ClubPermissionType.AddCocktail, _owner.Id));
 
             // Assert
-            Assert.That(exception.Message, Is.EqualTo("Permission 'AddCocktail' was not found in the 'Test Role' role."));
+            Assert.That(exception.Message, Is.EqualTo("The role 'Test Role' does not have the permission 'AddCocktail'."));
         }
 
         [Test]

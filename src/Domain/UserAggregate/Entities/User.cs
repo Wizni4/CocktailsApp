@@ -11,7 +11,7 @@ namespace CocktailsApp.Domain.UserAggregate
 {
     public sealed class User : AggregateRoot, IAggregateRoot
     {
-        public Guid Id { get => _id; }
+        public override Guid Id { get => _id; }
         private readonly Guid _id;
         public string Username { get { return _username; } }
         private string _username;
