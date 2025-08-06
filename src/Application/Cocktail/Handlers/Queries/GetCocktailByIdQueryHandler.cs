@@ -26,7 +26,7 @@ namespace CocktailsApp.Application.Cocktail
                 opt => opt.Include(c => c.Ingredients));
 
             var ingredients = await _unitOfWork.Set<DomainIngredient>().ReadAsync(
-                new IngredientByIdsSpecification(cocktail.Ingredients.Select(i => i.IngredientId)));
+                new IngredientByIdsSpecification(cocktail!.Ingredients.Select(i => i.IngredientId)));
 
             return _autoMapper.Map<CocktailDTO>(cocktail, opt =>
             {
