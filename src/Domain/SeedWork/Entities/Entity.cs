@@ -20,8 +20,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// Unmutable <see cref="Entity"/> identity.
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public virtual Guid Id { get => _id; }
-        private protected readonly Guid _id;
+        public virtual Guid Id { get ; }
         public Guid CreatedBy { get => _createdBy; }
         private protected Guid _createdBy;
 
@@ -47,7 +46,7 @@ namespace CocktailsApp.Domain.SeedWork
                 throw new ArgumentException("User creating entity must be specified");
 
             _createdBy = createdBy;
-            _id = Guid.NewGuid();
+            Id = Guid.NewGuid();
             _creationDate = DateTime.UtcNow;
             _updateDate = _creationDate;
         }
