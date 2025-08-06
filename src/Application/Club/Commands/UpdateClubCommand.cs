@@ -12,6 +12,8 @@ using CocktailsApp.Application.Shared;
  */
 using CocktailsApp.Domain.ClubAggregate;
 
+using MediatR;
+
 
 namespace CocktailsApp.Application.Club
 {
@@ -22,5 +24,5 @@ namespace CocktailsApp.Application.Club
         string? Description,
         ClubVisibility? Visibility,
         Guid ActorId
-    ) : ClubCommand<ClubDTO>(ClubId, ActorId);
+    ) : ClubCommand<Unit>(ClubId, ActorId);
 }

@@ -140,9 +140,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </remarks>
         public ClubVisibility Visibility { get; private set; }
 
-#pragma warning disable CS8618
-        private Club() { } // <----- EF forced me
-#pragma warning restore CS8618
+        private Club() { }
 
         /// <summary>
         /// Creates a new instance of a <see cref="Club"/>.
@@ -175,16 +173,16 @@ namespace CocktailsApp.Domain.ClubAggregate
             string? name,
             Guid ownerId,
             ClubVisibility visibility
-        )
+        ) : base(ownerId)
         {
             // Create a new Club member that will be the owner of the club.
-            var owner = new ClubMember(ownerId);
+            var owner = new ClubMember(ownerId, ownerId);
 
             // Add the Owner as a Member of the club
             _members.Add(owner);
 
             // Create a new Owner role
-            var ownerRole = new ClubRole("Owner", true);
+            var ownerRole = new ClubRole("Owner", ownerId, true);
 
             // Add the owner role to both: club & owner (member)
             owner.AddRole(ownerRole);
@@ -224,7 +222,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             if (_cocktails.Any(cc => cc.CocktailId == cocktailId))
                 throw new ArgumentException("This cocktail is already in the club.");
 
-            var cocktail = new ClubCocktail(cocktailId);
+            var cocktail = new ClubCocktail(cocktailId, actorId);
             _cocktails.Add(cocktail);
             Touch();
             return cocktail;
@@ -255,7 +253,7 @@ namespace CocktailsApp.Domain.ClubAggregate
                 throw new ArgumentException("This user is already a member of the club.");
 
             // Create and add a new member to the club.
-            var member = new ClubMember(userId);
+            var member = new ClubMember(userId, actorId);
             _members.Add(member);
             Touch();
             return member;
@@ -358,7 +356,7 @@ namespace CocktailsApp.Domain.ClubAggregate
             if (_roles.Any(g => g.Name == roleName))
                 throw new ArgumentException("This role name already exists.");
 
-            var role = new ClubRole(roleName);
+            var role = new ClubRole(roleName, actorId);
 
             _roles.Add(role);
             Touch();

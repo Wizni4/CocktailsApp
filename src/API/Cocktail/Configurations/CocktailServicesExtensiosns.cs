@@ -23,6 +23,7 @@ namespace CocktailsApp.API.Cocktail
         public static IServiceCollection AddCocktailApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<ICocktailService, CocktailService>();
+            services.AddScoped<ICocktailsSearchService, CocktailSearchService>();
             return services;
         }
     }

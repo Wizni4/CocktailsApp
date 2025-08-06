@@ -17,33 +17,40 @@ namespace CocktailsApp.Domain.Shared
         /// <summary>
         /// Gets the name of the street (e.g., "Main Street").
         /// </summary>
-        public string Street { get; }
+        public string Street { get => _street; }
+        private readonly string _street = null!;
 
         /// <summary>
         /// Gets the number of the street (e.g., "42B").
         /// </summary>
-        public string StreetNumber { get; }
+        public string StreetNumber { get => _streetNumber; }
+        private readonly string _streetNumber = null!;
 
         /// <summary>
         /// Gets the name of the city (e.g., "Paris").
         /// </summary>
-        public string City { get; }
+        public string City { get => _city; }
+        private readonly string _city = null!;
 
         /// <summary>
         /// Gets the postal or ZIP code (e.g., "75001").
         /// </summary>
-        public string PostalCode { get; }
+        public string PostalCode { get => _postalCode; }
+        private readonly string _postalCode = null!;
 
         /// <summary>
         /// Gets the state or province (e.g., "Île-de-France").
         /// </summary>
-        public string State { get; }
+        public string State { get => _state; }
+        private readonly string _state = null!;
 
         /// <summary>
         /// Gets the country name (e.g., "France").
         /// </summary>
-        public string Country { get; }
+        public string Country { get => _country; }
+        private readonly string _country = null!;
 
+        private Address() { }
         /// <summary>
         /// Initializes a new instance of the <see cref="Address"/> class with the specified components.
         /// This constructor is internal to enforce controlled creation via factory methods or entities.
@@ -56,12 +63,12 @@ namespace CocktailsApp.Domain.Shared
         /// <param name="country">The country name.</param>
         internal Address(string street, string streetNumber, string city, string postalCode, string state, string country)
         {
-            Street = street;
-            StreetNumber = streetNumber;
-            City = city;
-            PostalCode = postalCode;
-            State = state;
-            Country = country;
+            _street = street;
+            _streetNumber = streetNumber;
+            _city = city;
+            _postalCode = postalCode;
+            _state = state;
+            _country = country;
         }
     }
 }

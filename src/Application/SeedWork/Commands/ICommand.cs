@@ -13,14 +13,10 @@ using MediatR;
 
 namespace CocktailsApp.Application.SeedWork
 {
-    public interface ICommand : IRequest
-    {
-    }
     /// <summary>
     /// Marker interface representing a command in the application.
     /// Commands typically represent actions or intents to change state.
     /// </summary>
-    public interface ICommand<TResult> : IRequest<TResult>
-    {
-    }
+    public interface ICommand<TResult> : IRequest<TResult>;
+
 }

@@ -1,0 +1,6 @@
+<main class="create-cocktail__main">
+  <ng-container *ngIf="(ingredients$ | async) as ingredients">
+    <app-ingredients [ingredients]="ingredients"></app-ingredients>
+  </ng-container>
+
+</main>

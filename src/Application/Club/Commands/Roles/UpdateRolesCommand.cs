@@ -11,13 +11,15 @@ using CocktailsApp.Application.SeedWork;
  */
 using CocktailsApp.Domain.ClubAggregate;
 
+using MediatR;
+
 namespace CocktailsApp.Application.Club
 {
     public record UpdateRolesCommand(
         Guid ClubId,
         IEnumerable<UpdateRoleModel> Roles,
         Guid ActorId
-    ) : ClubCommand<IEnumerable<ClubRoleDTO>>(ClubId, ActorId);
+    ) : ClubCommand<Unit>(ClubId, ActorId);
 
     public class UpdateRoleModel
     {

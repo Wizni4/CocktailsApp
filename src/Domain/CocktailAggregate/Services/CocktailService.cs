@@ -44,8 +44,8 @@ namespace CocktailsApp.Domain.CocktailAggregate
         private IngredientPricing GetIngredientPricing(List<IngredientPricing> ingredientPricings, CocktailIngredient cocktailIngredient)
         {
             // Get the pricing info for the ingredient
-            var ingredientPricing = ingredientPricings.FirstOrDefault(i => new CocktailIngredientByIngredientSpecification(i.Ingredient).SpecExpression.Compile()(cocktailIngredient))
-                        ?? throw new ArgumentException($"There is no pricing available for ingredient '{cocktailIngredient.Ingredient.Name}'.");
+            var ingredientPricing = ingredientPricings.FirstOrDefault(i => new CocktailIngredientByIngredientSpecification(i.IngredientId).SpecExpression.Compile()(cocktailIngredient))
+                        ?? throw new ArgumentException($"There is no pricing available for ingredient '{cocktailIngredient.IngredientId}'.");
 
             return ingredientPricing;
         }

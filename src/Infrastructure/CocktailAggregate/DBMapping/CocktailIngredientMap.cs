@@ -1,7 +1,12 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.IngredientAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
+
 
 /*
 * Framework namespaces
@@ -15,30 +20,28 @@ namespace CocktailsApp.Infrastructure.CocktailAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="CocktailIngredient"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class CocktailIngredientMap : IEntityTypeConfiguration<CocktailIngredient>
+    public class CocktailIngredientMap : EntityMap<CocktailIngredient>
     {
         /// <summary>
         /// Configures the entity of type <see cref="Cocktail"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="Cocktail"/> entity</param>
-        public void Configure(EntityTypeBuilder<CocktailIngredient> builder)
+        public override void Configure(EntityTypeBuilder<CocktailIngredient> builder)
         {
-            // PK
-            builder.HasKey(ci => ci.Id);
+            base.Configure(builder);
 
             // Properties
-            builder.Property(ci => ci.Quantity);
-            builder.Property(ci => ci.CreationDate);
-            builder.Property(ci => ci.UpdateDate);
+            builder.Property(ci => ci.Quantity)
+                .HasPrecision(18, 4)
+                .IsRequired();
 
-            // Value objects
-            builder.ComplexProperty(ci => ci.Ingredient, a =>
-            {
-                a.IsRequired();
-
-                a.Property(i => i.Name).IsRequired();
-                a.Property(i => i.BaseUnit).IsRequired();
-            });
+            // FK
+            // -- Ingredient
+            builder.HasOne<Ingredient>()
+                .WithMany()
+                .HasForeignKey(ci => ci.IngredientId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

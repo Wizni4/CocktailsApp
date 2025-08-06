@@ -11,10 +11,10 @@ using System.Linq.Expressions;
 
 namespace CocktailsApp.Domain.CocktailAggregate
 {
-    public class CocktailIngredientByIngredientSpecification(Ingredient ingredient) : Specification<CocktailIngredient>
+    public class CocktailIngredientByIngredientSpecification(Guid ingredientId) : Specification<CocktailIngredient>
     {
-        private readonly Ingredient _ingredient = ingredient;
+        private readonly Guid _ingredientId = ingredientId;
 
-        public override Expression<Func<CocktailIngredient, bool>> SpecExpression => ci => ci.Ingredient == _ingredient;
+        public override Expression<Func<CocktailIngredient, bool>> SpecExpression => ci => ci.IngredientId == _ingredientId;
     }
 }

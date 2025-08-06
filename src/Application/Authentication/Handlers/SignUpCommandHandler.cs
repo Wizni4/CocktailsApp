@@ -8,18 +8,20 @@
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
 using CocktailsApp.Domain.UserAggregate;
+
+using MediatR;
 /*
  * Framework namespaces
  */
 
 namespace CocktailsApp.Application.Authentication
 {
-    public class SignUpCommandHandler(IAuthService authService, IUnitOfWork unitOfWork) : ICommandHandler<SignUpCommand>
+    public class SignUpCommandHandler(IAuthService authService, IUnitOfWork unitOfWork) : ICommandHandler<SignUpCommand, Unit>
     {
         private readonly IAuthService _authService = authService;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task Handle(SignUpCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
             var userId = await _authService.SignUpAsync(request);
 
@@ -31,6 +33,7 @@ namespace CocktailsApp.Application.Authentication
 
             _unitOfWork.Set<Domain.UserAggregate.User>().Create(user);
             await _unitOfWork.SaveChangesAsync();
+            return Unit.Value;
         }
     }
 }

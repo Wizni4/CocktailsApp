@@ -43,7 +43,7 @@ namespace CocktailsApp.Application.Club
         /// <summary>
         /// Gets or sets the list of members belonging to the club.
         /// </summary>
-        public List<ClubMemberDTO> Members { get; set; } = [];
+        public List<ClubRoleDTO> Members { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the list of roles available within the club.

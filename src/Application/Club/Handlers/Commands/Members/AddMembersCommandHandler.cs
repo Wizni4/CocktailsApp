@@ -15,15 +15,13 @@ namespace CocktailsApp.Application.Club
 {
     public class AddMembersCommandHandler(
         IUnitOfWork unitOfWork,
-        IClubRepository clubRepository,
-        IMapper autoMapper
-    ) : ICommandHandler<AddMembersCommand, IEnumerable<ClubMemberDTO>>
+        IClubRepository clubRepository
+    ) : ICommandHandler<AddMembersCommand, IEnumerable<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
-        public async Task<IEnumerable<ClubMemberDTO>> Handle(AddMembersCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Guid>> Handle(AddMembersCommand request, CancellationToken cancellationToken)
         {
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members));
 
@@ -42,7 +40,7 @@ namespace CocktailsApp.Application.Club
             // Persit data in DB
             _clubRepository.Update(club!);
             await _unitOfWork.SaveChangesAsync();
-            return _autoMapper.Map<IEnumerable<ClubMemberDTO>>(club!.Members);
+            return club!.Members.Select(m => m.Id);
         }
     }
 }

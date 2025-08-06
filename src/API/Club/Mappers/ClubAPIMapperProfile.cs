@@ -33,7 +33,7 @@ namespace CocktailsApp.API.Club
             // Response
             CreateMap<ClubDTO, ClubResponse>();
             CreateMap<ClubCocktailDTO, ClubCocktailResponse>();
-            CreateMap<ClubMemberDTO, ClubMemberResponse>();
+            CreateMap<ClubRoleDTO, ClubMemberResponse>();
             CreateMap<ClubRoleDTO, ClubRoleResponse>()
                 .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.Permissions.Select(p => p.ToString())));
         }

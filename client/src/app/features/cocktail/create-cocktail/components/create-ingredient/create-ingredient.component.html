@@ -1,0 +1,39 @@
+<main class="create-ingredient__main">
+  <form [formGroup]="ingredientForm" class="create-ingredient__form">
+    <!-- Name -->
+    <custom-input label="Name"
+                  id="name"
+                  name="name"
+                  required="true">
+    </custom-input>
+
+    <!-- Type -->
+    <custom-input label="Type"
+                  id="type"
+                  name="type"
+                  required="true">
+    </custom-input>
+
+    <!-- Is Alcoholic-->
+    <custom-input label ="Is Alcoholic ?"
+                  id="isAlcoholic"
+                  name="isAlcoholic"
+                  required="true">
+    </custom-input>
+
+    <!-- Allergen -->
+    <custom-input label ="Allergens"
+                  id="allergens"
+                  name="allergens"
+                  required="false">
+    </custom-input>
+
+    <!-- Submi -->
+    <submit-button label="Submit"
+                   [loading]="loading"
+                   [isInvalid]="ingredientForm.invalid"
+                   [errorMessage]="errMessage">
+
+</form>
+
+</main>

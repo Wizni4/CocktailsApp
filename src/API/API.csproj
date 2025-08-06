@@ -90,8 +90,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cocktail\Controllers\" />
-    <Folder Include="Cocktail\Models\" />
     <Folder Include="Order\Controllers\" />
     <Folder Include="Order\Models\" />
     <Folder Include="Stock\Controllers\" />

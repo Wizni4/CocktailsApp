@@ -45,7 +45,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="name"/> is <see langword="null"/> or <see langword="empty"/>).
         /// </exception>
-        internal ClubRole(string name, bool isOwnerRole = false)
+        internal ClubRole(string name, Guid createdBy, bool isOwnerRole = false) : base(createdBy)
         {
             IsOwnerRole = isOwnerRole;
             UpdateName(name);
@@ -60,13 +60,15 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </exception>
         internal void AddPermission(ClubPermissionType permission)
         {
+            var newPermission = new ClubPermission(permission);
+
             // Ensure the role doesn't already have this permission.
-            if (_permissions.Any(p => p.Permission == permission))
-                throw new ArgumentException("The role already has the permission.");
+            if (_permissions.Contains(newPermission))
+                throw new ArgumentException($"The role '{Name}' already has the permission '{permission.ToString()}'.");
 
             // Give the permission to the role.
             // FYI: As Permission is a ValueObject, instanciating a new Permission will not create new entry in the database.
-            _permissions.Add(new ClubPermission(permission));
+            _permissions.Add(newPermission);
             Touch();
         }
 
@@ -76,6 +78,11 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <param name="permission">The <see cref="ClubPermissionType"/> to remove from the role.</param>
         internal void RemovePermission(ClubPermissionType permission)
         {
+            var newPermission = new ClubPermission(permission);
+
+            if (!_permissions.Contains(newPermission))
+                throw new ArgumentException($"The role '{Name}' does not have the permission '{permission.ToString()}'.");
+
             _permissions.Remove(GetPermission(permission));
             Touch();
         }

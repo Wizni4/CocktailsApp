@@ -26,7 +26,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="cocktailId"/> is <see cref="Guid.Empty"/>.
         /// </exception>
-        internal ClubCocktail(Guid cocktailId)
+        internal ClubCocktail(Guid cocktailId, Guid createdBy) : base(createdBy)
         {
             if (cocktailId == Guid.Empty)
                 throw new ArgumentException("CocktailId cannot be null.");

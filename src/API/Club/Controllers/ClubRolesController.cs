@@ -31,9 +31,19 @@ namespace CocktailsApp.API.Club
         public async Task<ActionResult<IEnumerable<ClubRoleResponse>>> CreateRoles(Guid clubId, [FromBody] IEnumerable<CreateRoleRequest> request)
         {
             var userId = this.GetUserId();
+
+            // Create and add new role to a club
             var newRoles = _autoMapper.Map<IEnumerable<CreateRoleModel>>(request);
             var command = new CreateRolesCommand(clubId, newRoles, userId);
-            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(await _mediator.Send(command));
+            var roleIds = await _mediator.Send(command);
+
+            // Query the newly added/created roles
+            var query = new GetClubRolesByIdsQuery(clubId, roleIds);
+            var roleDTOs = await _mediator.Send(query);
+
+            // Map DTOs to response
+            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(roleDTOs);
+
             return Created(
                 uri: $"/api/clubs/{clubId}/roles",
                 value: response
@@ -41,23 +51,45 @@ namespace CocktailsApp.API.Club
         }
 
         [HttpDelete(Name = "DeleteRoles")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [SwaggerOperation(Summary = "Delete roles from a club.")]
         public async Task<ActionResult<IEnumerable<ClubRoleResponse>>> DeleteRole(Guid clubId, [FromBody] IEnumerable<Guid> request)
         {
             var userId = this.GetUserId();
+
+            // Remove specified roles from a club
             var command = new DeleteRolesCommand(clubId, request, userId);
-            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(await _mediator.Send(command));
+            await _mediator.Send(command);
+
+            // Query remaining roles
+            var query = new GetClubRolesQuery(clubId);
+            var clubRoleDTOs = await _mediator.Send(query);
+
+            // Map DTOs to response
+            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(clubRoleDTOs);
+
             return Ok(response);
         }
 
         [HttpPatch(Name = "UpdateRoles")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [SwaggerOperation(Summary = "Update a role from a club.")]
         public async Task<ActionResult<IEnumerable<ClubRoleResponse>>> UpdateRole(Guid clubId, [FromBody] IEnumerable<UpdateRoleRequest> request)
         {
             var userId = this.GetUserId();
+
+            // Update specified roles
             var updatedRoles = _autoMapper.Map<IEnumerable<UpdateRoleModel>>(request);
             var command = new UpdateRolesCommand(clubId, updatedRoles, userId);
-            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(await _mediator.Send(command));
+            await _mediator.Send(command);
+
+            // Query updated roles
+            var query = new GetClubRolesQuery(clubId);
+            var clubRoleDTOs = await _mediator.Send(query);
+
+            // Map DTOs to response
+            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(clubRoleDTOs);
+
             return Ok(response);
         }
 
@@ -67,10 +99,20 @@ namespace CocktailsApp.API.Club
         public async Task<ActionResult<IEnumerable<ClubRoleResponse>>> AddPermissionsToRoles(Guid clubId, [FromBody] IEnumerable<RolePermissionsUpdateRequest> request)
         {
             var userId = this.GetUserId();
+
+            // Add permissions to specified roles
             var updatedRoles = _autoMapper.Map<IEnumerable<RolePermissionsUpdateModel>>(request);
             var command = new AddPermissionsToRolesCommand(clubId, updatedRoles, userId);
-            var clubDTO = await _mediator.Send(command);
-            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(clubDTO);
+            await _mediator.Send(command);
+
+
+            // Query updated roles
+            var query = new GetClubRolesByIdsQuery(clubId, updatedRoles.Select(r => r.Id));
+            var roleDTOs = await _mediator.Send(query);
+
+            // Map DTOs to response
+            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(roleDTOs);
+
             return Created(
                 uri: $"/api/clubs/{clubId}/roles/permissions",
                 value: response
@@ -84,9 +126,19 @@ namespace CocktailsApp.API.Club
         public async Task<ActionResult<IEnumerable<ClubRoleResponse>>> RemovePermissionsToRoles(Guid clubId, [FromBody] IEnumerable<RolePermissionsUpdateRequest> request)
         {
             var userId = this.GetUserId();
+
+            // Remove specified permissions from specified roles
             var updatedRoles = _autoMapper.Map<IEnumerable<RolePermissionsUpdateModel>>(request);
             var command = new RemovePermissionsFromRolesCommand(clubId, updatedRoles, userId);
-            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(await _mediator.Send(command));
+            await _mediator.Send(command);
+
+            // Query updated roles
+            var query = new GetClubRolesByIdsQuery(clubId, updatedRoles.Select(r => r.Id));
+            var roleDTOs = await _mediator.Send(query);
+
+            // Map DTOs to response
+            var response = _autoMapper.Map<IEnumerable<ClubRoleResponse>>(roleDTOs);
+
             return Created(
                 uri: $"/api/clubs/{clubId}/roles/permissions",
                 value: response

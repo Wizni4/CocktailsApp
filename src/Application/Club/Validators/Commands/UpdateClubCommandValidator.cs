@@ -16,7 +16,7 @@ using FluentValidation;
 
 namespace CocktailsApp.Application.Club
 {
-    public class UpdateClubCommandValidator : ClubBaseValidator<UpdateClubCommand>
+    public class UpdateClubCommandValidator : ClubCommandValidator<UpdateClubCommand>
     {
         public UpdateClubCommandValidator(IClubRepository clubRepository)
             : base(clubRepository, [

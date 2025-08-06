@@ -13,18 +13,25 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
     public class IngredientPricingBuilder : IBuilder<IngredientPricing>
     {
         private decimal _cost;
-        private Ingredient? _ingredient;
+        private Guid _creatorId;
+        private Guid _ingredientId;
         private decimal _price;
 
-        public IngredientPricingBuilder WithIngredient(Ingredient ingredient)
+        public IngredientPricingBuilder WithIngredient(Guid ingredientId)
         {
-            _ingredient = ingredient;
+            _ingredientId = ingredientId;
             return this;
         }
 
         public IngredientPricingBuilder WithCost(decimal cost)
         {
             _cost = cost;
+            return this;
+        }
+
+        public IngredientPricingBuilder WithCreatorId(Guid creatorId)
+        {
+            _creatorId = creatorId;
             return this;
         }
 
@@ -36,7 +43,7 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
 
         public IngredientPricing Build()
         {
-            return new IngredientPricing(_ingredient, _cost, _price);
+            return new IngredientPricing(_ingredientId, _cost, _price, _creatorId);
         }
     }
 }

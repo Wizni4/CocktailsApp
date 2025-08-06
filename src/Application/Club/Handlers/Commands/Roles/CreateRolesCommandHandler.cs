@@ -17,15 +17,13 @@ namespace CocktailsApp.Application.Club
 {
     public class CreateRolesCommandHandler(
         IUnitOfWork unitOfWork,
-        IClubRepository clubRepository,
-        IMapper autoMapper
-    ) : ICommandHandler<CreateRolesCommand, IEnumerable<ClubRoleDTO>>
+        IClubRepository clubRepository
+    ) : ICommandHandler<CreateRolesCommand, IEnumerable<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
-        public async Task<IEnumerable<ClubRoleDTO>> Handle(CreateRolesCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Guid>> Handle(CreateRolesCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Roles));
@@ -46,7 +44,7 @@ namespace CocktailsApp.Application.Club
             await _unitOfWork.SaveChangesAsync();
 
             // Return the updated club as a DTO.
-            return _autoMapper.Map<IEnumerable<ClubRoleDTO>>(club!.Roles);
+            return club!.Roles.Select(x => x.Id);
         }
     }
 }

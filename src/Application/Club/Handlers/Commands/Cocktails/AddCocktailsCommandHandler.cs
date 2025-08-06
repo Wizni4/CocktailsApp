@@ -21,12 +21,10 @@ namespace CocktailsApp.Application.Club
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public class AddCocktailsCommandHandler(
         IUnitOfWork unitOfWork,
-        IClubRepository clubRepository,
-        IMapper autoMapper
-    ) : ICommandHandler<AddCocktailsCommand, IEnumerable<ClubCocktailDTO>>
+        IClubRepository clubRepository
+    ) : ICommandHandler<AddCocktailsCommand, IEnumerable<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
@@ -38,7 +36,7 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown if either the specified club or cocktail could not be found.
         /// </exception>
-        public async Task<IEnumerable<ClubCocktailDTO>> Handle(AddCocktailsCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Guid>> Handle(AddCocktailsCommand request, CancellationToken cancellationToken)
         {
             // Get the club from the database, including related entities.
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, c => c.Include(c => c.Cocktails));
@@ -52,7 +50,7 @@ namespace CocktailsApp.Application.Club
             await _unitOfWork.SaveChangesAsync();
 
             // Return the updated club as a DTO.
-            return _autoMapper.Map<IEnumerable<ClubCocktailDTO>>(club!.Cocktails);
+            return club!.Cocktails.Select(c => c.Id);
         }
     }
 }

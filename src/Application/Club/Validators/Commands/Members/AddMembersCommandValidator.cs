@@ -19,7 +19,7 @@ using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
 namespace CocktailsApp.Application.Club
 {
-    public class AddMembersCommandValidator : ClubBaseValidator<AddMembersCommand>
+    public class AddMembersCommandValidator : ClubCommandValidator<AddMembersCommand>
     {
         public AddMembersCommandValidator(
             IUnitOfWork unitOfWork,

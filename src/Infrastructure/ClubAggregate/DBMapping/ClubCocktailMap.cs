@@ -4,6 +4,8 @@
 using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.CocktailAggregate;
 using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 
 /*
 * Framework namespaces
@@ -17,25 +19,22 @@ namespace CocktailsApp.Infrastructure.ClubAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="ClubCocktail"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class ClubCocktailMap : IEntityTypeConfiguration<ClubCocktail>
+    public class ClubCocktailMap : EntityMap<ClubCocktail>
     {
         /// <summary>
         /// Configures the entity of type <see cref="ClubCocktail"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="ClubCocktail"/> entity</param>
-        public void Configure(EntityTypeBuilder<ClubCocktail> builder)
+        public override void Configure(EntityTypeBuilder<ClubCocktail> builder)
         {
-            // PK
-            builder.HasKey(cc => cc.Id);
-
-            // Properties
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            base.Configure(builder);
 
             // FK
+            // -- Cocktail
             builder.HasOne<Cocktail>()
                 .WithMany()
-                .HasForeignKey(cc => cc.CocktailId);
+                .HasForeignKey(cc => cc.CocktailId)
+                .IsRequired();
         }
     }
 }

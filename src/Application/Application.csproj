@@ -22,9 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Club\Validators\Queries\" />
-    <Folder Include="Cocktail\Handlers\" />
-    <Folder Include="Cocktail\Queries\" />
     <Folder Include="User\Commands\" />
   </ItemGroup>
 

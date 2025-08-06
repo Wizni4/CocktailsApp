@@ -11,33 +11,35 @@ namespace CocktailsApp.Domain.StockAggregate
 {
     public sealed class Stock : AggregateRoot, IAggregateRoot
     {
-        public Ingredient Ingredient { get; }
-        public decimal Quantity { get { return _stockTransactions.Sum(st => st.Quantity * (int)st.TransactionType); } }
+        public Guid ClubId { get => _clubId; }
+        private readonly Guid _clubId;
+        public Guid IngredientId { get => _ingredientId; }
+        private readonly Guid _ingredientId;
+        public decimal Quantity { get => _stockTransactions.Sum(st => st.Quantity * (int)st.TransactionType); }
         private readonly List<StockTransaction> _stockTransactions = [];
-        public IReadOnlyCollection<StockTransaction> StockTransactions { get { return _stockTransactions.AsReadOnly(); } }
-        public string Unit { get; }
-
-#pragma warning disable CS8618
-        private Stock() { } // <----- EF forced me
-#pragma warning restore CS8618
-
-        internal Stock(Ingredient ingredient, string unit)
+        public IReadOnlyCollection<StockTransaction> StockTransactions { get => _stockTransactions.AsReadOnly(); }
+        public UnitOfMeasure Unit { get => _unit; }
+        private readonly UnitOfMeasure _unit;
+        private Stock() { }
+        internal Stock(Guid clubId, Guid ingredientId, UnitOfMeasure unit, Guid createdBy) : base(createdBy)
         {
-            Ingredient = ingredient;
-            Unit = unit;
+            _clubId = clubId;
+            _ingredientId = ingredientId;
+            _unit = unit;
         }
 
-        public void AddTransaction(decimal quantity, string description, StockTransactionType transactionType)
+        public void AddTransaction(decimal quantity, string description, StockTransactionType transactionType, Guid createdBy)
         {
             if (transactionType == StockTransactionType.Debit && Quantity < quantity)
                 throw new ArgumentException("Quantity debit exceed remaining quantity", nameof(quantity));
 
-            var transaction = new StockTransaction(quantity, description, transactionType);
+            var transaction = new StockTransaction(quantity, description, transactionType, createdBy);
             _stockTransactions.Add(transaction);
+            Touch();
 
             // Check if stock quantity is now zero and raise an event if true
             if (Quantity == 0)
-                AddDomainEvent(new IngredientOutOfStock(Id, Ingredient));
+                AddDomainEvent(new IngredientOutOfStock(Id, IngredientId));
         }
     }
 }

@@ -13,7 +13,7 @@ namespace CocktailsApp.API.Search
     {
         public SearchAPIMapperProfile()
         {
-            CreateMap<SearchResultDTO, SearchResponse>()
+            CreateMap<GlobalSearchResultDTO, SearchResponse>()
                 .ForMember(s => s.Type, opt => opt.MapFrom(s => s.Type.Name));
         }
     }

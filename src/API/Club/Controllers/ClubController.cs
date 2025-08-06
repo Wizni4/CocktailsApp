@@ -34,6 +34,8 @@ namespace CocktailsApp.API.Club
         public async Task<ActionResult<ClubResponse>> Create([FromBody] CreateClubRequest request)
         {
             var userId = this.GetUserId();
+
+            // Create the club using a command
             var command = new CreateClubCommand(
                 new AddressDTO()
                 {
@@ -47,8 +49,17 @@ namespace CocktailsApp.API.Club
                 request.Description,
                 request.Name,
                 userId,
-                (ClubVisibility)request.Visibility);
-            var response = _autoMapper.Map<ClubResponse>(await _mediator.Send(command));
+                (ClubVisibility)request.Visibility
+            );
+            var clubId = await _mediator.Send(command);
+
+            // Query the newly created club
+            var query = new GetClubByIdQuery(clubId);
+            var clubDTO = await _mediator.Send(command);
+
+            // Convert the DTO to response model
+            var response = _autoMapper.Map<ClubResponse>(clubDTO);
+
             return Created(
                 uri: $"/api/clubs/{response.Id}",
                 value: response
@@ -71,9 +82,20 @@ namespace CocktailsApp.API.Club
         [SwaggerOperation(Summary = "Retrieve a club thanks to its Id")]
         public async Task<ActionResult<ClubResponse>> GetClubById(Guid clubId)
         {
-            var command = new GetClubByIdQuery(clubId);
-            var clubDTO = await _mediator.Send(command);
+            var query = new GetClubByIdQuery(clubId);
+            var clubDTO = await _mediator.Send(query);
             var response = _autoMapper.Map<ClubResponse>(clubDTO);
+            return Ok(response);
+        }
+
+        [HttpGet("search", Name = "SearchClub")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Search a club matching a term.")]
+        public async Task<ActionResult<IEnumerable<ClubResponse>>> SearchClub(string term)
+        {
+            var userId = this.GetUserId();
+            var query = new SearchClubQuery(term, userId);
+            var response = _autoMapper.Map<IEnumerable<ClubResponse>>(await _mediator.Send(query));
             return Ok(response);
         }
 
@@ -83,6 +105,8 @@ namespace CocktailsApp.API.Club
         public async Task<ActionResult<ClubResponse>> UpdateClub(Guid clubId, [FromBody] UpdateClubRequest request)
         {
             var userId = this.GetUserId();
+
+            // Prepare the update club command
             var addressDTO = _autoMapper.Map<AddressDTO>(request.Address);
             var visibility = request.Visibility is null
                 ? (ClubVisibility?)null
@@ -96,8 +120,16 @@ namespace CocktailsApp.API.Club
                 visibility,
                 userId
                 );
+            // Launch the command
+            await _mediator.Send(command);
 
-            var response = _autoMapper.Map<ClubResponse>(await _mediator.Send(command));
+            // Query the updated club
+            var query = GetClubById(clubId);
+            var clubDTO = _mediator.Send(query);
+
+            // Map DTO to response
+            var response = _autoMapper.Map<ClubResponse>(clubDTO);
+
             return Ok(response);
         }
     }

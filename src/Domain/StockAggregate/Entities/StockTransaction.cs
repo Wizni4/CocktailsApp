@@ -16,7 +16,11 @@ namespace CocktailsApp.Domain.StockAggregate
         public decimal Quantity { get; }
         public StockTransactionType TransactionType { get; }
 
-        internal StockTransaction(decimal quantity, string description, StockTransactionType transactionType)
+        internal StockTransaction(
+            decimal quantity,
+            string description,
+            StockTransactionType transactionType,
+            Guid createdBy) : base(createdBy)
         {
             Quantity = quantity;
             Description = description;

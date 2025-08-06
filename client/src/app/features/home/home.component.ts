@@ -32,7 +32,7 @@ export class HomeComponent {
   }
   ngOnInit(): void {
     this.clubs$ = this.userService.getUserClubs();
-    this.clubs$.subscribe(
+      this.clubs$.subscribe(
     )
   }
 }

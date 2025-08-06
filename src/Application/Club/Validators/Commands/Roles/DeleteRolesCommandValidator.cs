@@ -19,7 +19,7 @@ namespace CocktailsApp.Application.Club
     /// <summary>
     /// Validates the <see cref="DeleteRolesCommand"/> to ensure all required identifiers are provided and valid.
     /// </summary>
-    public class DeleteRolesCommandValidator : ClubBaseValidator<DeleteRolesCommand>
+    public class DeleteRolesCommandValidator : ClubCommandValidator<DeleteRolesCommand>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteRolesCommandValidator"/> class.

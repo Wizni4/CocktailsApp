@@ -3,6 +3,8 @@
  */
 using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 
 
 /*
@@ -17,20 +19,15 @@ namespace CocktailsApp.Infrastructure.ClubAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="ClubMember"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class ClubMemberMap : IEntityTypeConfiguration<ClubMember>
+    public class ClubMemberMap : EntityMap<ClubMember>
     {
         /// <summary>
         /// Configures the entity of type <see cref="ClubMember"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="ClubMember"/> entity</param>
-        public void Configure(EntityTypeBuilder<ClubMember> builder)
+        public override void Configure(EntityTypeBuilder<ClubMember> builder)
         {
-            // PK
-            builder.HasKey(cm => cm.Id);
-
-            // Properties
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            base.Configure(builder);
 
             // FK
             // - ClubRole (Many-to-Many)
@@ -56,7 +53,8 @@ namespace CocktailsApp.Infrastructure.ClubAggregate
             // - USer
             builder.HasOne<User>()
                 .WithMany()
-                .HasForeignKey(cm => cm.UserId);
+                .HasForeignKey(cm => cm.UserId)
+                .IsRequired();
 
         }
     }

@@ -2,6 +2,8 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 
 /*
 * Framework namespaces
@@ -15,22 +17,21 @@ namespace CocktailsApp.Infrastructure.UserAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="User"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class UserMap : IEntityTypeConfiguration<User>
+    public class UserMap : EntityMap<User>
     {
         /// <summary>
         /// Configures the entity of type <see cref="User"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the User entity.</param>
-        public void Configure(EntityTypeBuilder<User> builder)
+        public override void Configure(EntityTypeBuilder<User> builder)
         {
-            // PK
-            builder.HasKey(u => u.Id);
+            base.Configure(builder);
 
             // Properties
-            builder.Property(u => u.Username);
-            builder.Property(u => u.Email);
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            builder.Property(u => u.Username)
+                .IsRequired();
+            builder.Property(u => u.Email)
+                .IsRequired();
 #if LOCAL
             builder.Property(u => u.Password);
 #else

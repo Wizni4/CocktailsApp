@@ -17,7 +17,7 @@ namespace CocktailsApp.Application.Club
         Guid ClubId,
         IEnumerable<CreateRoleModel> NewRoles,
         Guid ActorId
-    ) : ClubCommand<IEnumerable<ClubRoleDTO>>(ClubId, ActorId);
+    ) : ClubCommand<IEnumerable<Guid>>(ClubId, ActorId);
 
     public class CreateRoleModel
     {

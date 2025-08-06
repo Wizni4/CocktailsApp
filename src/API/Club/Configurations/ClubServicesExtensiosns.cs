@@ -26,6 +26,7 @@ namespace CocktailsApp.API.Club
         public static IServiceCollection AddClubApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IClubService, ClubService>();
+            services.AddScoped<IClubSearchService, ClubSearchService>();
             return services;
         }
     }

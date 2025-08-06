@@ -2,8 +2,8 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.CocktailAggregate;
-using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 
 /*
 * Framework namespaces
@@ -17,23 +17,24 @@ namespace CocktailsApp.Infrastructure.ClubAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="Club"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class ClubMap : IEntityTypeConfiguration<Club>
+    public class ClubMap : EntityMap<Club>
     {
         /// <summary>
         /// Configures the entity of type <see cref="Club"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="Club"/> entity</param>
-        public void Configure(EntityTypeBuilder<Club> builder)
+        public override void Configure(EntityTypeBuilder<Club> builder)
         {
-            // PK
-            builder.HasKey(c => c.Id);
+            base.Configure(builder);
 
             // Properties
-            builder.Property(c => c.Description);
-            builder.Property(c => c.Name);
-            builder.Property(c => c.Visibility);
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            builder.Property(c => c.Description)
+                .IsRequired();
+            builder.Property(c => c.Name)
+                .IsRequired();
+            builder.Property(c => c.Visibility)
+                .HasConversion<string>()
+                .IsRequired();
 
             // Value objects
             builder.ComplexProperty(c => c.Address, a =>

@@ -13,11 +13,11 @@ namespace CocktailsApp.Domain.StockAggregate
     public class IngredientOutOfStock : DomainEvent
     {
         public Guid StockId { get; }
-        public Ingredient Ingredient { get; }
-        internal IngredientOutOfStock(Guid stockId, Ingredient ingredient)
+        public Guid IngredientId { get; }
+        internal IngredientOutOfStock(Guid stockId, Guid ingredientId)
         {
             StockId = stockId;
-            Ingredient = ingredient;
+            IngredientId = ingredientId;
         }
     }
 }

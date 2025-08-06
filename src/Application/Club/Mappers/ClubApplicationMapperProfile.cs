@@ -23,7 +23,7 @@ namespace CocktailsApp.Application.Club
             // Domain to DTO
             CreateMap<DomainClub, ClubDTO>();
             CreateMap<DomainClubCocktail, ClubCocktailDTO>();
-            CreateMap<DomainClubMember, ClubMemberDTO>();
+            CreateMap<DomainClubMember, ClubRoleDTO>();
             CreateMap<DomainClubRole, ClubRoleDTO>()
                 .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.Permissions.Select(p => p.Permission)));
         }

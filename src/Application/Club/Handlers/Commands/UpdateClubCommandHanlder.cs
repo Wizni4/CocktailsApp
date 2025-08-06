@@ -7,8 +7,10 @@
 using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
+
+using MediatR;
+
+
 /*
  * Application namespaces
  */
@@ -21,13 +23,13 @@ namespace CocktailsApp.Application.Club
         IUnitOfWork unitOfWork,
         IClubRepository clubRepository,
         IMapper autoMapper
-    ) : ICommandHandler<UpdateClubCommand, ClubDTO>
+    ) : ICommandHandler<UpdateClubCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
-        public async Task<ClubDTO> Handle(UpdateClubCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateClubCommand request, CancellationToken cancellationToken)
         {
             // Get the club from the db
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
@@ -53,7 +55,7 @@ namespace CocktailsApp.Application.Club
             await _unitOfWork.SaveChangesAsync();
 
             // Return the updated club as a DTO.
-            return _autoMapper.Map<ClubDTO>(club);
+            return Unit.Value;
         }
     }
 }

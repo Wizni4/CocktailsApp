@@ -4,6 +4,8 @@
 using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.OrderAggregate;
 using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 /*
 * Framework namespaces
 */
@@ -16,33 +18,35 @@ namespace CocktailsApp.Infrastructure.OrderAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="Order"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class OrderMap : IEntityTypeConfiguration<Order>
+    public class OrderMap : EntityMap<Order>
     {
         /// <summary>
         /// Configures the entity of type <see cref="Order"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="Order"/> entity</param>
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public override void Configure(EntityTypeBuilder<Order> builder)
         {
-            // PK
-            builder.HasKey(o => o.Id);
+            base.Configure(builder);
 
             // Properties
-            builder.Property(o => o.OrderDate);
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            builder.Property(o => o.OrderDate)
+                .IsRequired();
+
+            // Value Object
+            builder.OwnsMany(o => o.Items);
 
             // FK
             // -- User
-            builder.HasOne<User>().WithMany().HasForeignKey(o => o.CustomerId);
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(o => o.CustomerId)
+                .IsRequired();
 
             // -- Club
-            builder.HasOne<Club>().WithMany().HasForeignKey(o => o.ClubId);
-
-            // -- OrderItem
-            builder.HasMany(o => o.Items)
-                .WithOne()
-                .HasForeignKey("OrderId")
+            builder.HasOne<Club>()
+                .WithMany()
+                .HasForeignKey(o => o.ClubId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

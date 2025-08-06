@@ -9,6 +9,8 @@ using AutoMapper;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
 
+using MediatR;
+
 /*
  * Application namespaces
  */
@@ -22,12 +24,10 @@ namespace CocktailsApp.Application.Club
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public class RemoveRolesFromMembersCommandHandler(
         IUnitOfWork unitOfWork,
-        IClubRepository clubRepository,
-        IMapper autoMapper
-    ) : ICommandHandler<RemoveRolesFromMembersCommand, IEnumerable<ClubMemberDTO>>
+        IClubRepository clubRepository
+    ) : ICommandHandler<RemoveRolesFromMembersCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown if the specified club does not exist.
         /// </exception>
-        public async Task<IEnumerable<ClubMemberDTO>> Handle(RemoveRolesFromMembersCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveRolesFromMembersCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members)
@@ -56,8 +56,7 @@ namespace CocktailsApp.Application.Club
             await _unitOfWork.SaveChangesAsync();
 
             // Return the updated members as a DTO.
-            return _autoMapper.Map<IEnumerable<ClubMemberDTO>>(
-                club!.Members.Where(clubMember => request.Members.Any(updatedMember => new ClubMemberByIdSpecification(updatedMember.Id).SpecExpression.Compile()(clubMember))));
+            return Unit.Value;
         }
 
 

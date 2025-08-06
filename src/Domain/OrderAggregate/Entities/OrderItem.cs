@@ -9,15 +9,17 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Domain.OrderAggregate
 {
-    public sealed class OrderItem : Entity
+    public sealed class OrderItem : ValueObject
     {
-        public Guid CocktailId { get; }
-        public decimal Quantity { get; }
-
+        public Guid CocktailId { get => _cocktailId; }
+        private readonly Guid _cocktailId;
+        public decimal Quantity { get => _quantity; }
+        private readonly decimal _quantity;
+        private OrderItem() { }
         internal OrderItem(Guid cocktailId, decimal quantity)
         {
-            CocktailId = cocktailId;
-            Quantity = quantity;
+            _cocktailId = cocktailId;
+            _quantity = quantity;
         }
     }
 }

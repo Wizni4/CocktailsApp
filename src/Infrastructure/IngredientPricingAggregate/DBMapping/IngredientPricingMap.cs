@@ -1,7 +1,10 @@
 ﻿/*
  * Domain namespaces
  */
+using CocktailsApp.Domain.IngredientAggregate;
 using CocktailsApp.Domain.IngredientPricingAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 
 /*
 * Framework namespaces
@@ -15,31 +18,30 @@ namespace CocktailsApp.Infrastructure.IngredientPricingAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="IngredientPricing"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class IngredientPricingMap : IEntityTypeConfiguration<IngredientPricing>
+    public class IngredientPricingMap : EntityMap<IngredientPricing>
     {
         /// <summary>
         /// Configures the entity of type <see cref="IngredientPricing"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="IngredientPricing"/> entity</param>
-        public void Configure(EntityTypeBuilder<IngredientPricing> builder)
+        public override void Configure(EntityTypeBuilder<IngredientPricing> builder)
         {
-            // PK
-            builder.HasKey(ip => ip.Id);
+            base.Configure(builder);
 
             // Propeties
-            builder.Property(ip => ip.Cost).HasPrecision(18, 4);
-            builder.Property(ip => ip.Price).HasPrecision(18, 4);
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            builder.Property(ip => ip.Cost)
+                .HasPrecision(18, 4)
+                .IsRequired();
+            builder.Property(ip => ip.Price)
+                .HasPrecision(18, 4)
+                .IsRequired();
 
-            // Value object
-            builder.ComplexProperty(ip => ip.Ingredient, a =>
-            {
-                a.IsRequired();
-
-                a.Property(i => i.Name).IsRequired();
-                a.Property(i => i.BaseUnit).IsRequired();
-            });
+            // FK
+            // -- Ingredient
+            builder.HasOne<Ingredient>()
+                .WithMany()
+                .HasForeignKey(ip => ip.IngredientId)
+                .IsRequired();
         }
     }
 }

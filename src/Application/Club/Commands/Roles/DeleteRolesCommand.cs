@@ -10,6 +10,8 @@ using CocktailsApp.Application.SeedWork;
  */
 using CocktailsApp.Domain.ClubAggregate;
 
+using MediatR;
+
 
 namespace CocktailsApp.Application.Club
 {
@@ -27,5 +29,5 @@ namespace CocktailsApp.Application.Club
         Guid ClubId,
         IEnumerable<Guid> RoleIds,
         Guid ActorId
-    ) : ClubCommand<IEnumerable<ClubRoleDTO>>(ClubId, ActorId);
+    ) : ClubCommand<Unit>(ClubId, ActorId);
 }

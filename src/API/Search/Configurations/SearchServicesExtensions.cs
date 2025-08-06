@@ -10,7 +10,7 @@ namespace CocktailsApp.API.Search
 
         public static IServiceCollection AddSearchApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<Application.Search.ISearchService, SearchService>();
+            services.AddScoped<IGlobalSearchService, GlobalSearchService>();
             return services;
         }
     }

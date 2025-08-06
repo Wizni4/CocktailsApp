@@ -16,7 +16,7 @@ using FluentValidation;
 
 namespace CocktailsApp.Application.Club
 {
-    public class CreateRolesCommandValidator : ClubBaseValidator<CreateRolesCommand>
+    public class CreateRolesCommandValidator : ClubCommandValidator<CreateRolesCommand>
     {
         public CreateRolesCommandValidator(IClubRepository clubRepository)
             : base(clubRepository, [ClubPermissionType.CreateRole, ClubPermissionType.AddPermissionToRole])

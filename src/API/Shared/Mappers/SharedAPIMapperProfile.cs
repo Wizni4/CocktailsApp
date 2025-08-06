@@ -16,8 +16,6 @@ namespace CocktailsApp.API.Shared
             // Shared
             CreateMap<Address, AddressDTO>();
             CreateMap<AddressDTO, Address>();
-
-
         }
     }
 }

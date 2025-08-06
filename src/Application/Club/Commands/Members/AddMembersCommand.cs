@@ -14,7 +14,7 @@ namespace CocktailsApp.Application.Club
         Guid ClubId,
         IEnumerable<AddMemberModel> NewMembers,
         Guid ActorId
-    ) : ClubCommand<IEnumerable<ClubMemberDTO>>(ClubId, ActorId);
+    ) : ClubCommand<IEnumerable<Guid>>(ClubId, ActorId);
 
     public class AddMemberModel
     {

@@ -18,6 +18,5 @@ namespace CocktailsApp.Application.Club
         Guid ClubId { get; }
         Guid ActorId { get; }
     }
-    public record ClubCommand(Guid ClubId, Guid ActorId) : ICommand, IClubCommand;
     public record ClubCommand<T>(Guid ClubId, Guid ActorId) : ICommand<T>, IClubCommand;
 }

@@ -7,6 +7,9 @@
 using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
+
+using MediatR;
+
 /*
  * Application namespaces
  */
@@ -23,7 +26,7 @@ namespace CocktailsApp.Application.Club
         IUnitOfWork unitOfWork,
         IClubRepository clubRepository,
         IMapper autoMapper
-    ) : ICommandHandler<DeleteClubCommand>
+    ) : ICommandHandler<DeleteClubCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
@@ -39,7 +42,7 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown if the specified club does not exist.
         /// </exception>
-        public async Task Handle(DeleteClubCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteClubCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
@@ -52,6 +55,7 @@ namespace CocktailsApp.Application.Club
 
             // Persist the changes.
             await _unitOfWork.SaveChangesAsync();
+            return Unit.Value;
         }
     }
 }

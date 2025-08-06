@@ -33,7 +33,7 @@ namespace CocktailsApp.API.Search
         public async Task<ActionResult<IEnumerable<SearchResponse>>> Search(string term)
         {
             var userId = this.GetUserId();
-            var query = new SearchQuery(term, userId);
+            var query = new GlobalSearchQuery(term, userId);
             var response = await _mediator.Send(query);
             return Ok(_automapper.Map<IEnumerable<SearchResponse>>(response));
         }

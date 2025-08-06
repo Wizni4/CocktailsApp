@@ -28,7 +28,7 @@ namespace CocktailsApp.Application.Club
     public class CreateClubCommandHandler(
         IUnitOfWork unitOfWork,
         IMapper autoMapper
-    ) : ICommandHandler<CreateClubCommand, ClubDTO>
+    ) : ICommandHandler<CreateClubCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
@@ -43,7 +43,7 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown when the ownerId from the <paramref name="request"/> is not found in the db.
         /// </exception>
-        public async Task<ClubDTO> Handle(CreateClubCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateClubCommand request, CancellationToken cancellationToken)
         {
             var club = new ClubBuilder()
                 .WithAddress(_autoMapper.Map<Address>(request.Address))
@@ -55,7 +55,7 @@ namespace CocktailsApp.Application.Club
 
             _unitOfWork.Set<DomainClub>().Create(club);
             await _unitOfWork.SaveChangesAsync();
-            return _autoMapper.Map<ClubDTO>(club);
+            return club.Id;
         }
     }
 }

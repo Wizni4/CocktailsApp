@@ -8,9 +8,6 @@
 /*
  * Framework namespaces
  */
-
-using CocktailsApp.Domain.SeedWork;
-
 using MediatR;
 
 namespace CocktailsApp.Application.SeedWork

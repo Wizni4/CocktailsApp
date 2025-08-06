@@ -13,8 +13,8 @@ namespace CocktailsApp.Application.SeedWork
             RuleFor(id => id)
                 .MustAsync(async (id, _) =>
                 {
-                    var club = await repository.ReadAsync(new ByIdSpecification<TAggregateRoot>(id));
-                    return club is not null;
+                    var aggregate = await repository.ReadAsync(new ByIdSpecification<TAggregateRoot>(id));
+                    return aggregate is not null;
                 }).WithMessage(id => $"{typeof(TAggregateRoot).Name} id: '{id}' was not found.");
         }
     }

@@ -19,7 +19,7 @@ namespace CocktailsApp.Application.Club
     /// <summary>
     /// Validates the <see cref="UpdateRolesCommand"/> to ensure all required identifiers are provided and valid.
     /// </summary>
-    public class UpdateRolesCommandValidator : ClubBaseValidator<UpdateRolesCommand>
+    public class UpdateRolesCommandValidator : ClubCommandValidator<UpdateRolesCommand>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateRolesCommandValidator"/> class.

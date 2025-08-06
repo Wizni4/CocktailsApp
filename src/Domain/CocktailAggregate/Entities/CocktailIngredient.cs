@@ -12,20 +12,22 @@ namespace CocktailsApp.Domain.CocktailAggregate
 {
     public sealed class CocktailIngredient : Entity
     {
-        public Ingredient Ingredient { get; }
+        public Guid IngredientId { get; }
         public decimal Quantity { get => _quantity; }
         private decimal _quantity;
-
-#pragma warning disable CS8618
-        private CocktailIngredient() { } // <----- EF forced me
-#pragma warning restore CS8618
-        internal CocktailIngredient(Ingredient? ingredient, decimal quantity)
+        public UnitOfMeasure Unit { get => _unit; }
+        private UnitOfMeasure _unit;
+        private CocktailIngredient() { }
+        internal CocktailIngredient(
+            Guid ingredientId,
+            decimal quantity,
+            UnitOfMeasure unit,
+            Guid createdBy
+        ) : base(createdBy)
         {
-            if (ingredient is null)
-                throw new ArgumentException("Ingredient connot be null.");
-
-            Ingredient = ingredient;
+            IngredientId = ingredientId;
             UpdateQuantity(quantity);
+            UpdateUnit(unit);
         }
 
         internal void UpdateQuantity(decimal quantity)
@@ -34,6 +36,12 @@ namespace CocktailsApp.Domain.CocktailAggregate
                 throw new ArgumentException("Quantity must be strictly positive.");
 
             _quantity = quantity;
+            Touch();
+        }
+
+        internal void UpdateUnit(UnitOfMeasure unit)
+        {
+            _unit = unit;
             Touch();
         }
     }

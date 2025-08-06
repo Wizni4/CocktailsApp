@@ -7,12 +7,14 @@
 */
 using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.IngredientAggregate;
 using CocktailsApp.Domain.IngredientPricingAggregate;
 using CocktailsApp.Domain.OrderAggregate;
 using CocktailsApp.Domain.StockAggregate;
 using CocktailsApp.Domain.UserAggregate;
 using CocktailsApp.Infrastructure.ClubAggregate;
 using CocktailsApp.Infrastructure.CocktailAggregate;
+using CocktailsApp.Infrastructure.IngredientAggregate;
 using CocktailsApp.Infrastructure.IngredientPricingAggregate;
 using CocktailsApp.Infrastructure.OrderAggregate;
 using CocktailsApp.Infrastructure.StockAggregate;
@@ -46,6 +48,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
 
             modelBuilder.MapClubAggregate()
                 .MapCocktailAggregate()
+                .MapIngredient()
                 .MapIngredientPricingAggregate()
                 .MapOrderAggregate()
                 .MapStockAggregate()
@@ -68,6 +71,14 @@ namespace CocktailsApp.Infrastructure.SeedWork
         public static ModelBuilder MapCocktailAggregate(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cocktail>(new CocktailMap().Configure);
+            modelBuilder.Entity<CocktailIngredient>(new CocktailIngredientMap().Configure);
+
+            return modelBuilder;
+        }
+
+        public static ModelBuilder MapIngredient(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Ingredient>(new IngredientMap().Configure);
 
             return modelBuilder;
         }
@@ -81,8 +92,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
 
         public static ModelBuilder MapOrderAggregate(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>(new OrderMap().Configure)
-                .Entity<OrderItem>(new OrderItemMap().Configure);
+            modelBuilder.Entity<Order>(new OrderMap().Configure);
 
             return modelBuilder;
         }

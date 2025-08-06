@@ -6,6 +6,7 @@ using AutoMapper;
 
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
+using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
 using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
 namespace CocktailsApp.Application.Search
@@ -14,11 +15,13 @@ namespace CocktailsApp.Application.Search
     {
         public SearchApplicationMapperProfile()
         {
-            CreateMap<DomainClub, SearchResultDTO>()
+            CreateMap<DomainClub, GlobalSearchResultDTO>()
                 .ForMember(s => s.Type, opt => opt.MapFrom(c => c.GetType()));
-            CreateMap<DomainCocktail, SearchResultDTO>()
+            CreateMap<DomainCocktail, GlobalSearchResultDTO>()
                 .ForMember(s => s.Type, opt => opt.MapFrom(c => c.GetType()));
-            CreateMap<DomainUser, SearchResultDTO>()
+            CreateMap<DomainIngredient, GlobalSearchResultDTO>()
+                .ForMember(s => s.Type, opt => opt.MapFrom(c => c.GetType()));
+            CreateMap<DomainUser, GlobalSearchResultDTO>()
                 .ForMember(s => s.Type, opt => opt.MapFrom(c => c.GetType()))
                 .ForMember(s => s.Name, opt => opt.MapFrom(c => c.Username));
         }

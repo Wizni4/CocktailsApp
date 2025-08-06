@@ -10,6 +10,8 @@ using CocktailsApp.Application.SeedWork;
  */
 using CocktailsApp.Domain.ClubAggregate;
 
+using MediatR;
+
 
 namespace CocktailsApp.Application.Club
 {
@@ -25,5 +27,5 @@ namespace CocktailsApp.Application.Club
     public record DeleteClubCommand(
         Guid ClubId,
         Guid ActorId
-    ) : ClubCommand(ClubId, ActorId);
+    ) : ClubCommand<Unit>(ClubId, ActorId);
 }

@@ -6,7 +6,7 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Application.Shared;
+using CocktailsApp.Domain.Shared;
 
 /*
  * Framework namespaces
@@ -15,8 +15,15 @@ using CocktailsApp.Application.Shared;
 namespace CocktailsApp.Application.Cocktail
 {
     public record CreateCocktailCommand(
-        string Descripotion,
+        string? Description,
+        List<IngredientModel> Ingredients,
         string Name,
-        List<IngredientDTO> Ingredients
-   ) : ICommand<CocktailDTO>;
+        Guid CreatorId
+   ) : ICommand<Guid>;
+
+    public record IngredientModel(
+        Guid Id,
+        decimal Quantity,
+        UnitOfMeasure Unit
+    );
 }

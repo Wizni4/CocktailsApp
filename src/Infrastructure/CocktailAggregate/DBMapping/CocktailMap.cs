@@ -2,6 +2,9 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Domain.IngredientAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 
 /*
 * Framework namespaces
@@ -15,24 +18,28 @@ namespace CocktailsApp.Infrastructure.CocktailAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="Cocktail"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class CocktailMap : IEntityTypeConfiguration<Cocktail>
+    public class CocktailMap : EntityMap<Cocktail>
     {
         /// <summary>
         /// Configures the entity of type <see cref="Cocktail"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="Cocktail"/> entity</param>
-        public void Configure(EntityTypeBuilder<Cocktail> builder)
+        public override void Configure(EntityTypeBuilder<Cocktail> builder)
         {
-            // PK
-            builder.HasKey(c => c.Id);
+            base.Configure(builder);
 
             // Properties
-            builder.Property(c => c.Name);
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            builder.Property(c => c.Description);
+            builder.Property(c => c.Name)
+                .IsRequired();
 
-            // Value objects
-            builder.OwnsMany(c => c.Ingredients);
+            // FK
+            // -- CocktailIngredient
+            builder.HasMany(c => c.Ingredients)
+                .WithOne()
+                .HasForeignKey("CocktailId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.SeedWork;
 using CocktailsApp.Domain.Shared;
 
@@ -13,30 +12,29 @@ namespace CocktailsApp.Domain.CocktailAggregate
 {
     public sealed class Cocktail : AggregateRoot, IAggregateRoot
     {
-        public string Description { get => _description; }
-        private string _description = null!;
+        public string? Description { get => _description; }
+        private string? _description = null;
         private readonly List<CocktailIngredient> _ingredients = [];
         public IReadOnlyCollection<CocktailIngredient> Ingredients { get { return _ingredients.AsReadOnly(); } }
         public string Name { get => _name; }
         private string _name = null!;
-
-#pragma warning disable CS8618
-        private Cocktail() { } // <----- EF forced me
-#pragma warning restore CS8618
-
-        internal Cocktail(string name, string description)
+        private Cocktail() { }
+        internal Cocktail(string name, string? description, Guid createdBy) : base(createdBy)
         {
-            UpdateDescription(description);
+            if (description != null)
+                UpdateDescription(description);
+
             UpdateName(name);
         }
 
-        public void AddIngredient(Ingredient ingredient, decimal quantity)
+        public void AddIngredient(Guid ingredientId, decimal quantity, Guid createdBy)
         {
-            if (_ingredients.Any(ci => new CocktailIngredientByIngredientSpecification(ingredient).SpecExpression.Compile()(ci)))
-                throw new ArgumentException($"Ingredient '{ingredient.Name}' is already in the cocktail.");
+            if (_ingredients.Any(ci => new CocktailIngredientByIngredientSpecification(ingredientId).SpecExpression.Compile()(ci)))
+                throw new ArgumentException($"Ingredient '{ingredientId}' is already in the cocktail.");
 
             var newCocktailIngredient = new CocktailIngredientBuilder()
-                .WithIngredient(ingredient)
+                .WithCreatorId(createdBy)
+                .WithIngredient(ingredientId)
                 .WithQuantity(quantity)
                 .Build();
 
@@ -51,17 +49,24 @@ namespace CocktailsApp.Domain.CocktailAggregate
             Touch();
         }
 
-        public void RemoveIngredient(Ingredient ingredient)
+        public void RemoveIngredient(Guid ingredientId)
         {
-            var cocktailIngredient = GetIngredient(ingredient);
+            var cocktailIngredient = GetIngredient(ingredientId);
             _ingredients.Remove(cocktailIngredient);
             Touch();
         }
 
-        public void UpdateIngredientQuantity(Ingredient ingredient, decimal newQuantity)
+        public void UpdateIngredientQuantity(Guid ingredientId, decimal newQuantity)
         {
-            var cocktailIngredient = GetIngredient(ingredient);
+            var cocktailIngredient = GetIngredient(ingredientId);
             cocktailIngredient.UpdateQuantity(newQuantity);
+            Touch();
+        }
+
+        public void UpdateIngredientUnit(Guid ingredientId, UnitOfMeasure newUnit)
+        {
+            var cocktailIngredient = GetIngredient(ingredientId);
+            cocktailIngredient.UpdateUnit(newUnit);
             Touch();
         }
 
@@ -83,10 +88,10 @@ namespace CocktailsApp.Domain.CocktailAggregate
             Touch();
         }
 
-        private CocktailIngredient GetIngredient(Ingredient ingredient)
+        private CocktailIngredient GetIngredient(Guid ingredientId)
         {
-            var coctailIngredient = _ingredients.FirstOrDefault(ci => new CocktailIngredientByIngredientSpecification(ingredient).SpecExpression.Compile()(ci))
-                ?? throw new ArgumentException($"Ingredient '{ingredient.Name}' is not part of the cocktail.");
+            var coctailIngredient = _ingredients.FirstOrDefault(ci => new CocktailIngredientByIngredientSpecification(ingredientId).SpecExpression.Compile()(ci))
+                ?? throw new ArgumentException($"Ingredient '{ingredientId}' is not part of the cocktail.");
 
             return coctailIngredient;
         }

@@ -44,7 +44,8 @@ namespace CocktailsApp.Architecture.Tests.Conventions
                 // Skip AssemblyInfo or other non-type files
                 if (relativePath.Contains("AssemblyInfo") ||
                     relativePath.Contains("AssemblyAttributes") ||
-                    relativePath.Contains("obj/"))
+                    relativePath.Contains("obj/") ||
+                    relativePath.Contains("Migrations"))
                     continue;
 
                 var firstFolder = relativePath.Split('/').FirstOrDefault();

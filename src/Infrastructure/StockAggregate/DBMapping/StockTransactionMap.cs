@@ -1,10 +1,9 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.CocktailAggregate;
 using CocktailsApp.Domain.StockAggregate;
-using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
+
 
 /*
 * Framework namespaces
@@ -18,24 +17,27 @@ namespace CocktailsApp.Infrastructure.StockAggregate
     /// <summary>
     /// Represents the configuration for the <see cref="StockTransaction"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class StockTransactionMap : IEntityTypeConfiguration<StockTransaction>
+    public class StockTransactionMap : EntityMap<StockTransaction>
     {
         /// <summary>
         /// Configures the entity of type <see cref="StockTransaction"/>
         /// </summary>
         /// <param name="builder">The entity type builder used to configure the <see cref="StockTransaction"/> entity</param>
-        public void Configure(EntityTypeBuilder<StockTransaction> builder)
+        public override void Configure(EntityTypeBuilder<StockTransaction> builder)
         {
-            // PK
-            builder.HasKey(st => st.Id);
+            base.Configure(builder);
 
             // Properties
-            builder.Property(st => st.Date);
-            builder.Property(st => st.Description);
-            builder.Property(st => st.Quantity).HasPrecision(18, 4);
-            builder.Property(st => st.TransactionType);
-            builder.Property(cc => cc.CreationDate);
-            builder.Property(cc => cc.UpdateDate);
+            builder.Property(st => st.Date)
+                .IsRequired();
+            builder.Property(st => st.Description)
+                .IsRequired();
+            builder.Property(st => st.Quantity)
+                .HasPrecision(18, 4)
+                .IsRequired();
+            builder.Property(st => st.TransactionType)
+                .HasConversion<string>()
+                .IsRequired();
         }
     }
 }

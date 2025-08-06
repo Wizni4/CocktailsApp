@@ -8,6 +8,8 @@ using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
 
+using MediatR;
+
 /*
  * Application namespaces
  */
@@ -21,12 +23,10 @@ namespace CocktailsApp.Application.Club
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public class DeleteRolesCommandHandler(
         IUnitOfWork unitOfWork,
-        IClubRepository clubRepository,
-        IMapper autoMapper
-    ) : ICommandHandler<DeleteRolesCommand, IEnumerable<ClubRoleDTO>>
+        IClubRepository clubRepository
+    ) : ICommandHandler<DeleteRolesCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace CocktailsApp.Application.Club
         /// <exception cref="KeyNotFoundException">
         /// Thrown if the specified club does not exist.
         /// </exception>
-        public async Task<IEnumerable<ClubRoleDTO>> Handle(DeleteRolesCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteRolesCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
             var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Roles));
@@ -53,7 +53,7 @@ namespace CocktailsApp.Application.Club
             await _unitOfWork.SaveChangesAsync();
 
             // Return the updated club as a DTO.
-            return _autoMapper.Map<IEnumerable<ClubRoleDTO>>(club!.Roles);
+            return Unit.Value;
         }
     }
 }

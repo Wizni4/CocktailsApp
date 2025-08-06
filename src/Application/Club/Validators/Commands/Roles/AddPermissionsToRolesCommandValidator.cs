@@ -20,7 +20,7 @@ namespace CocktailsApp.Application.Club
     /// <summary>
     /// Validates the <see cref="AddPermissionsToRolesCommand"/> to ensure all required identifiers are provided and valid.
     /// </summary>
-    public class AddPermissionsToRolesCommandValidator : ClubBaseValidator<AddPermissionsToRolesCommand>
+    public class AddPermissionsToRolesCommandValidator : ClubCommandValidator<AddPermissionsToRolesCommand>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddPermissionsToRolesCommandValidator"/> class.

@@ -12,21 +12,19 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
     public sealed class IngredientPricing : AggregateRoot, IAggregateRoot
     {
-        public decimal Cost { get; private set; }
-        public Ingredient Ingredient { get; private set; }
-        public decimal Price { get; private set; }
+        public decimal Cost { get => _cost; }
+        private decimal _cost;
+        public Guid IngredientId { get => _ingredientId; }
+        private readonly Guid _ingredientId;
+        public decimal Price { get => _price; }
+        private decimal _price;
         public decimal Margin { get { return Cost - Price; } }
-#pragma warning disable CS8618
-        private IngredientPricing() { } // <----- EF forced me
-#pragma warning restore CS8618
-        internal IngredientPricing(Ingredient? ingredient, decimal cost, decimal price)
+        private IngredientPricing() { }
+        internal IngredientPricing(Guid ingredientId, decimal cost, decimal price, Guid createdBy) : base(createdBy)
         {
-            if (ingredient is null)
-                throw new ArgumentException("Ingredient cannot be null", nameof(ingredient));
-
             UpdateCost(cost);
             UpdatePrice(price);
-            Ingredient = ingredient;
+            _ingredientId = ingredientId;
         }
 
         public void UpdatePrice(decimal newPrice)
@@ -38,8 +36,8 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
                 throw new ArgumentException("Price can't be lower than Cost", nameof(newPrice));
 
             var oldPrice = Price;
-            Price = newPrice;
-            AddDomainEvent(new IngredientPricingUpdatedEvent(Ingredient, oldPrice, newPrice));
+            _price = newPrice;
+            AddDomainEvent(new IngredientPricingUpdatedEvent(IngredientId, oldPrice, newPrice));
         }
 
         public void UpdateCost(decimal newCost)
@@ -48,8 +46,8 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
                 throw new ArgumentException("Cost must be greater or equals to 0", nameof(newCost));
 
             var oldCost = Price;
-            Cost = newCost;
-            AddDomainEvent(new IngredientCostingUpdatedEvent(Ingredient, oldCost, newCost));
+            _cost = newCost;
+            AddDomainEvent(new IngredientCostingUpdatedEvent(IngredientId, oldCost, newCost));
         }
     }
 }

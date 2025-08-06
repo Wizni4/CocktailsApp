@@ -12,12 +12,12 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
 {
     public class IngredientCostingUpdatedEvent : DomainEvent
     {
-        public Ingredient Ingredient { get; }
+        public Guid IngredientId { get; }
         public decimal OldCost { get; }
         public decimal NewCost { get; }
-        internal IngredientCostingUpdatedEvent(Ingredient ingredient, decimal oldCost, decimal newCost)
+        internal IngredientCostingUpdatedEvent(Guid ingredientId, decimal oldCost, decimal newCost)
         {
-            Ingredient = ingredient;
+            IngredientId = ingredientId;
             OldCost = oldCost;
             NewCost = newCost;
         }
