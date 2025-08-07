@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CocktailsApp.API.Shared.Controllers
+namespace CocktailsApp.API.Shared
 {
     [Route("api/shared/units")]
     [Tags("Shared")]
