@@ -20,7 +20,7 @@ namespace CocktailsApp.Domain.SeedWork
         /// Unmutable <see cref="Entity"/> identity.
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public virtual Guid Id { get ; }
+        public virtual Guid Id { get; }
         public Guid CreatedBy { get => _createdBy; }
         private protected Guid _createdBy;
 

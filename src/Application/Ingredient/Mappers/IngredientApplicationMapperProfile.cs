@@ -4,8 +4,8 @@
 
 using AutoMapper;
 
-using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
 using DomainAllergen = CocktailsApp.Domain.IngredientAggregate.Allergen;
+using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
 
 
 namespace CocktailsApp.Application.Ingredient

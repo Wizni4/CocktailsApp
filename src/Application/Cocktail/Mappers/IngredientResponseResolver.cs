@@ -11,19 +11,19 @@ using DomainCocktailIngredient = CocktailsApp.Domain.CocktailAggregate.CocktailI
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public class IngredientResponseResolver : IValueResolver<DomainCocktailIngredient, CocktailIngredientDTO, IngredientDTO?>
+    public class IngredientResponseResolver : IValueResolver<DomainCocktailIngredient, CocktailIngredientDTO, IngredientDTO>
     {
-        public IngredientDTO? Resolve(
+        public IngredientDTO Resolve(
             DomainCocktailIngredient source,
             CocktailIngredientDTO destination,
-            IngredientDTO? destMember,
+            IngredientDTO destMember,
             ResolutionContext context)
         {
             if (context.Items.TryGetValue("Ingredients", out var ingredientObj)
                 && ingredientObj is List<IngredientDTO> ingredients)
                 return ingredients.First(i => i.Id == source.IngredientId);
 
-            return null;
+            return null!;
         }
     }
 }
