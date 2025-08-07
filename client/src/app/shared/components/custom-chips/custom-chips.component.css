@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.custom-chip {
+  height: auto;
+  padding: 0 0 1.5rem 0;
+  align-items: center;
+  width: 100%;
+}
+
+/* Chip list layout */
+.custom-chip p-chip {
+  display: inline-flex;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--surface-card) !important;
+  border-radius: 16px;
+  padding: 0 0.75rem;
+  height: 2rem;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-color);
+  box-shadow: var(--card-shadow);
+}
+
+/* Optional: container for chips if you want them in rows */
+.custom-chip .chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}

@@ -1,6 +1,190 @@
-<main class="create-cocktail__main">
-  <ng-container *ngIf="(ingredients$ | async) as ingredients">
-    <app-ingredients [ingredients]="ingredients"></app-ingredients>
-  </ng-container>
+<main class="create-cocktail__main shadow-2">
+  <div class="create-cocktail__card">
+    <h2>Create a New Cocktail</h2>
+    <form [formGroup]="createCocktailForm" (ngSubmit)="createCocktail()">
+      <!-- 🍸 Cocktail Info -->
+      <div class="cocktail-form">
 
+        <!-- Cocktail Name -->
+        <custom-input label="Name"
+                      id="name"
+                      name="name"
+                      required="true">
+        </custom-input>
+
+        <!-- description -->
+        <custom-textarea label="Description"
+                         id="description"
+                         name="description"
+                         maxHeight="100%"
+                         required="false"></custom-textarea>
+      </div>
+
+      <div class="ingredient-lists">
+        <!-- 📦 Available Ingredients -->
+        <div class="available-ingredients">
+          <h3>Available Ingredients</h3>
+          <p-table [value]="availableIngredients"
+                   scrollable="true"
+                   scrollHeight="20rem"
+                   size="small">
+            <ng-template #header>
+              <tr>
+                <th>
+                  Name
+                  <p-columnFilter type="text" field="name" display="menu"/>
+                </th>
+                <th>
+                  Type
+                  <p-columnFilter type="text" field="type" display="menu" />
+                </th>
+                <th>
+                  Allergens
+                  <p-columnFilter type="text" field="allergens" display="menu" />
+                </th>
+                <th></th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-ingredient>
+              <tr>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.type }}</td>
+                <td>{{ ingredient.allergens }}</td>
+                <td><button pButton
+                            icon="pi pi-plus"
+                            (click)="addIngredient(ingredient)"
+                            severity="contrast">
+                  Add
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <button pButton icon="pi pi-plus-circle"
+                  label="Add New Ingredient"
+                  class="p-button-text"
+                  (click)="showAddIngredientForm = true"></button>
+        </div>
+
+        <!-- 🧾 Selected Ingredients -->
+        <div class="selected-ingredients">
+          <h3>Selected Ingredients</h3>
+          <div formArrayName="ingredients">
+            <ng-container *ngIf="(unitsOfMeasure$ | async) as unitsOfMeasure">
+              <p-table [value]="ingredientsFormArray.controls"
+                       scrollable="true"
+                       scrollHeight="20rem"
+                       size="small"
+                       *ngIf="ingredientsFormArray.controls.length > 0; else noSelected">
+                <ng-template #header>
+                  <tr>
+                    <th>
+                      Name
+                      <p-columnFilter type="text" field="name" display="menu" />
+                    </th>
+                    <th>
+                      Type
+                      <p-columnFilter type="text" field="type" display="menu" />
+                    </th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-ingredient let-i="rowIndex">
+                  <tr [formGroupName]="i">
+                    <td>{{ ingredient.value.name }}</td>
+                    <td>{{ ingredient.value.type }}</td>
+                    <td>
+                      <!-- Ingredient Quantity -->
+                      <custom-input label="Quantity"
+                                    id="quantity"
+                                    name="quantity"
+                                    type="number"
+                                    required="true">
+                      </custom-input>
+                    </td>
+                    <td>
+                      <!-- Ingredient Unit -->
+
+                      <custom-dropdown label="Unit"
+                                       id="unit"
+                                       name="unit"
+                                       type="number"
+                                       [items]="unitsOfMeasure"
+                                       [appendTo]="'body'">
+                      </custom-dropdown>
+
+                    </td>
+                    <td>
+                      <button pButton icon="pi pi-trash"
+                              class="p-button-danger p-button-sm"
+                              (click)="removeIngredient(ingredient)">
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </ng-container>
+
+            <ng-template #noSelected>
+              <p>No ingredients added yet.</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <!-- ✅ Create Cocktail -->
+      <!-- Submit Button -->
+      <submit-button label="Create"
+                     [loading]="loading"
+                     [isInvalid]="createCocktailForm.invalid"
+                     [errorMessage]="errMessage">
+      </submit-button>
+    </form>
+
+    <!-- ➕ Add Ingredient Modal -->
+    <p-dialog class="add-ingredient__dialog" header="Add Ingredient" [(visible)]="showAddIngredientForm" [modal]="true" [closable]="true">
+      <div class="p-fluid">
+        <form [formGroup]="createIngredientForm" (ngSubmit)="createIngredient()">
+
+          <!-- Ingredient Name -->
+          <custom-input label="Name"
+                        id="name"
+                        name="name"
+                        required="true">
+          </custom-input>
+
+          <!-- Cocktail Type -->
+          <ng-container *ngIf="(ingredientTypes$ | async) as ingredientTypes">
+            <custom-dropdown label="Type"
+                             id="type"
+                             name="type"
+                             required="true"
+                             [items]="ingredientTypes">
+            </custom-dropdown>
+          </ng-container>
+
+          <!-- Is alcoholic -->
+          <custom-dropdown label="Is Alcoholic ?"
+                           id="isAlcoholic"
+                           name="isAlcoholic"
+                           required="true"
+                           [items]="['true', 'false']">
+          </custom-dropdown>
+
+          <!-- Allergens -->
+          <custom-chips label="Allergens"
+                        id="allergens"
+                        name="allergens">
+          </custom-chips>
+
+          <submit-button label="Create"
+                         [loading]="loading"
+                         [isInvalid]="createIngredientForm.invalid"
+                         [errorMessage]="errMessage">
+          </submit-button>
+        </form>
+      </div>
+    </p-dialog>
+  </div>
 </main>

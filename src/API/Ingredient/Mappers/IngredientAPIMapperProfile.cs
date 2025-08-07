@@ -16,7 +16,8 @@ namespace CocktailsApp.API.Ingredient
         public IngredientAPIMapperProfile()
         {
             CreateMap<IngredientDTO, IngredientResponse>()
-                .ForMember(i => i.Type, opt => opt.MapFrom(iDTO => iDTO.Type.ToString()));
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()))
+                .ForMember(dest => dest.Allergens, opt => opt.MapFrom(src => src.Allergens.Select(a => a.Name)));
         }
     }
 }

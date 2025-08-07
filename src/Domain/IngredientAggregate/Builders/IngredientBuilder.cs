@@ -48,6 +48,8 @@ namespace CocktailsApp.Domain.IngredientAggregate
         }
         public Ingredient Build()
         {
+            TryCreateIngredient();
+
             if (_ingredient == null)
                 throw new ArgumentException("The name, type and creator id must be specified");
 

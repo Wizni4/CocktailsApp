@@ -5,6 +5,7 @@
 using AutoMapper;
 
 using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
+using DomainAllergen = CocktailsApp.Domain.IngredientAggregate.Allergen;
 
 
 namespace CocktailsApp.Application.Ingredient
@@ -14,6 +15,7 @@ namespace CocktailsApp.Application.Ingredient
         public IngredientApplicationMapperProfile()
         {
             CreateMap<DomainIngredient, IngredientDTO>();
+            CreateMap<DomainAllergen, AllergenDTO>();
         }
     }
 }

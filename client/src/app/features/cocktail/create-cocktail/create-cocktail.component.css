@@ -1,0 +1,64 @@
+.create-cocktail__main {
+  margin: 2rem auto 2rem auto;
+  background-color: var(--surface-card);
+  border-radius: 2.5%;
+  width: 80rem;
+  padding: 2rem;
+}
+
+.create-cocktail__card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+.cocktail-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  border: 1px dashed var(--p-inputtext-border-color);
+  border-radius: 2.5%;
+  padding: 1rem 1rem 1rem 1rem;
+}
+
+.ingredient-lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* two equal columns */
+  gap: 2rem; /* space between columns */
+  align-items: stretch;
+}
+
+available-ingredients,
+.selected-ingredients {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  color: var(--text-color) !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  font-weight: 100 !important;
+  color: var(--text-color) !important;
+}
+
+:host ::ng-deep .add-ingredient__dialog .p-dialog {
+  background-color: var(--surface-card);
+}
+
+:host ::ng-deep p-table .submit-button,
+:host ::ng-deep p-table .custom-dropdown,
+:host ::ng-deep p-table .custom-input {
+  padding: 0 !important;
+  height: 2rem;
+  width: 5rem;
+}

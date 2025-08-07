@@ -1,0 +1,16 @@
+<div class="custom-chip">
+  <custom-input [label]="label"
+                [id]="id"
+                [name]="''"
+                [type]="type"
+                [required]="required"
+                (keydown)="onKeyDown($event)">
+  </custom-input>
+  <div class="chip-list">
+    <p-chip *ngFor="let chip of isArray(control?.value) ? control?.value : []"
+            [label]="chip"
+            (remove)="removeChip(chip)"
+            removable="true">
+    </p-chip>
+  </div>
+</div>

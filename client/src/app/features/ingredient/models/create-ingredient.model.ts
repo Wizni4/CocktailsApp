@@ -1,5 +1,4 @@
-export interface Ingredient {
-  id: string;
+export interface CreateIngredientRequest {
   allergens: string[];
   name: string;
   type: string;

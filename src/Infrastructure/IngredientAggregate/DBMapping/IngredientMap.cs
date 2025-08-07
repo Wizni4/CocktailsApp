@@ -40,7 +40,10 @@ namespace CocktailsApp.Infrastructure.IngredientAggregate
                 .IsRequired();
 
             // Value object
-            builder.OwnsMany(i => i.Allergens);
+            builder.OwnsMany(i => i.Allergens, opt =>
+            {
+                opt.Property(a => a.Name);
+            });
         }
 
     }

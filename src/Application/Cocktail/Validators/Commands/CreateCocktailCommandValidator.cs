@@ -8,6 +8,7 @@ using CocktailsApp.Application.User;
 
 using FluentValidation;
 
+using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
 using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
@@ -40,7 +41,12 @@ namespace CocktailsApp.Application.Cocktail
                         .ValidEnum();
                 });
             RuleFor(c => c.Name)
-                .ValidString();
+                .ValidString()
+                .MustAsync(async (name, _) =>
+                {
+                    var cocktail = await unitOfWork.Set<DomainCocktail>().ReadAsync(new CocktailByNameSpecification(name!));
+                    return cocktail is null;
+                }).WithMessage(c => $"Cocktail: '{c.Name}' already exists.");
         }
     }
 }

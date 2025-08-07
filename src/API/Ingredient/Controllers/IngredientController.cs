@@ -5,12 +5,7 @@
 using AutoMapper;
 
 using CocktailsApp.API.SeedWork;
-
-using CocktailsApp.Application.Club;
 using CocktailsApp.Application.Ingredient;
-using CocktailsApp.Application.Shared;
-
-using CocktailsApp.Domain.ClubAggregate;
 using CocktailsApp.Domain.IngredientAggregate;
 
 using MediatR;
@@ -19,8 +14,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
-
-using System.Collections.Generic;
 
 
 namespace CocktailsApp.API.Ingredient

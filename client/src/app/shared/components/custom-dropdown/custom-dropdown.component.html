@@ -1,0 +1,15 @@
+<div class="custom-dropdown">
+  <p-floatlabel variant="on">
+    <p-autocomplete [inputId]="id"
+                    [name]="name"
+                    [suggestions]="filteredItems"
+                    (completeMethod)="onSearch($event)"
+                    [disabled]="disabled"
+                    [required]="isRequired"
+                    [formControl]="control!"
+                    [dropdown]="true"
+                    [appendTo]="appendTo"/>
+    <label [for]="id">{{ label }}</label>
+    <ng-content *ngIf="isInvalid"></ng-content>
+  </p-floatlabel>
+</div>

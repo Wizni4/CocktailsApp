@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CreateClubRequest } from '../models/create-club.model';
@@ -23,7 +23,8 @@ import { CustomTextAreaInput } from '../../../shared/components/custom-textarea/
     SubmitButtonComponent
  ],
   templateUrl: './create-club.component.html',
-  styleUrls: ['./create-club.component.css']
+  styleUrls: ['./create-club.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateClubComponent {
   createClubForm: FormGroup;

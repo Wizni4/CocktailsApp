@@ -57,7 +57,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
         private void TryCreateCocktail()
         {
             // Create Cocktail instance as soon as we have both required fields
-            if (!string.IsNullOrWhiteSpace(_name))
+            if (!string.IsNullOrWhiteSpace(_name) && _cocktail == null)
                 _cocktail = new Cocktail(_name, _description, _creatorId);
         }
 
