@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CocktailsApp.API.Ingredient.Controllers
+namespace CocktailsApp.API.Ingredient
 {
     [Route("api/ingredients/types")]
     [Tags("Ingredient - Type")]
