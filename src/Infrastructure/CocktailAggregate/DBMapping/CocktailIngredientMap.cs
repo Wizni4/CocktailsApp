@@ -34,6 +34,9 @@ namespace CocktailsApp.Infrastructure.CocktailAggregate
             builder.Property(ci => ci.Quantity)
                 .HasPrecision(18, 4)
                 .IsRequired();
+            builder.Property(ci => ci.Unit)
+                .HasConversion<string>()
+                .IsRequired();
 
             // FK
             // -- Ingredient

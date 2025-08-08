@@ -13,6 +13,7 @@ namespace CocktailsApp.Domain.IngredientAggregate
         Garnish,
         Syrup,
         Mixer,
-        Bitters
+        Bitters,
+        Ice
     }
 }

@@ -2,6 +2,8 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.SeedWork;
+
+using System.Security;
 /*
  * Framework namespaces
  */
@@ -28,6 +30,9 @@ namespace CocktailsApp.Domain.IngredientAggregate
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Ingredient name cannot be null or empty");
+
+            if (!Enum.IsDefined(type))
+                throw new ArgumentException("Type is invalid.");
 
             _name = name;
             _type = type;

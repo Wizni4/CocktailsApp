@@ -4,7 +4,7 @@
 
 using CocktailsApp.API.Authentication;
 using CocktailsApp.API.Club;
-using CocktailsApp.API.Search;
+using CocktailsApp.API.Shared;
 
 namespace CocktailsApp.API.SeedWork
 {
@@ -17,6 +17,7 @@ namespace CocktailsApp.API.SeedWork
                 builder.Services.ConfigureOptions<CognitoJwtBearerConfiguration>();
                 builder.Services.ConfigureOptions<ClubSettingsConfiguration>();
                 builder.Services.ConfigureOptions<SearchSettingsConfiguration>();
+                builder.Services.ConfigureOptions<ImageSettingsConfiguration>();
                 builder.Services.AddLocalDbContext(builder.Configuration);
                 builder.Services.AddCognitoAuthServices(builder.Configuration);
             }

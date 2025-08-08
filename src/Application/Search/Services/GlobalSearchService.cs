@@ -10,6 +10,7 @@ using CocktailsApp.Application.Club;
 using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.Ingredient;
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.Shared;
 using CocktailsApp.Application.User;
 
 using Microsoft.Extensions.Options;

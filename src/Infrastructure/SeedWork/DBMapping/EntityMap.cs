@@ -25,6 +25,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
                 .IsRequired();
             builder.Property(e => e.CreatedBy)
                 .IsRequired();
+            builder.Property(e => e.ImageId);
         }
     }
 }

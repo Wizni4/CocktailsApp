@@ -25,7 +25,11 @@ namespace CocktailsApp.Application.Cocktail
                 .WithName(request.Name);
 
             foreach (var ingredient in request.Ingredients)
-                cocktailBuilder.AddIngredient(ingredient.Id, ingredient.Quantity);
+                cocktailBuilder.AddIngredient(
+                    ingredient.Id,
+                    ingredient.Quantity,
+                    ingredient.Unit
+                );
 
             var cocktail = cocktailBuilder.Build();
 

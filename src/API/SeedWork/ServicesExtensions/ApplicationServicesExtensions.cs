@@ -160,6 +160,9 @@ namespace CocktailsApp.API.SeedWork
             // -- Search
             services.AddSearchApplicationServices();
 
+            // -- Shared
+            services.AddSharedApplicationServices();
+
             // -- User
             services.AddUserApplicationServices();
 

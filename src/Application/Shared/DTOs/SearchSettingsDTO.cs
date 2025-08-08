@@ -13,7 +13,7 @@ using CocktailsApp.Domain.SeedWork;
  */
 
 
-namespace CocktailsApp.Application.SeedWork
+namespace CocktailsApp.Application.Shared
 {
     public class SearchSettingsDTO
     {

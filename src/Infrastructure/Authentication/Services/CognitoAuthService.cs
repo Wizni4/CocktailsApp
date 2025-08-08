@@ -2,7 +2,6 @@
 using Amazon.CognitoIdentityProvider.Model;
 
 using CocktailsApp.Application.Authentication;
-using CocktailsApp.Infrastructure.SeedWork;
 
 using Microsoft.Extensions.Options;
 

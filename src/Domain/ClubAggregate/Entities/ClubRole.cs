@@ -62,6 +62,9 @@ namespace CocktailsApp.Domain.ClubAggregate
         {
             var newPermission = new ClubPermission(permission);
 
+            if (!Enum.IsDefined(permission))
+                throw new ArgumentException("Permission is invalid.");
+
             // Ensure the role doesn't already have this permission.
             if (_permissions.Contains(newPermission))
                 throw new ArgumentException($"The role '{Name}' already has the permission '{permission.ToString()}'.");
@@ -79,6 +82,9 @@ namespace CocktailsApp.Domain.ClubAggregate
         internal void RemovePermission(ClubPermissionType permission)
         {
             var newPermission = new ClubPermission(permission);
+
+            if (!Enum.IsDefined(permission))
+                throw new ArgumentException("Permission is invalid.");
 
             if (!_permissions.Contains(newPermission))
                 throw new ArgumentException($"The role '{Name}' does not have the permission '{permission.ToString()}'.");

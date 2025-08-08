@@ -41,6 +41,9 @@ namespace CocktailsApp.Domain.CocktailAggregate
 
         internal void UpdateUnit(UnitOfMeasure unit)
         {
+            if (!Enum.IsDefined(unit))
+                throw new ArgumentException("Unit is invalid.");
+
             _unit = unit;
             Touch();
         }

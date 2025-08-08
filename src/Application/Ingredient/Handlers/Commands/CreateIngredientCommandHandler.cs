@@ -5,6 +5,7 @@
 using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.Shared;
 using CocktailsApp.Domain.IngredientAggregate;
 
 using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
@@ -12,13 +13,11 @@ using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
 namespace CocktailsApp.Application.Ingredient
 {
     public class CreateIngredientCommandHandler(
-        IMapper autoMapper,
         IUnitOfWork unitOfWork
-    ) : ICommandHandler<CreateIngredientCommand, IngredientDTO>
+    ) : ICommandHandler<CreateIngredientCommand, Guid>
     {
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        public async Task<IngredientDTO> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {
             var ingredientBuilder = new IngredientBuilder()
                 .WithCreatorId(request.CreatorId)
@@ -37,7 +36,7 @@ namespace CocktailsApp.Application.Ingredient
             _unitOfWork.Set<DomainIngredient>().Create(ingredient);
             await _unitOfWork.SaveChangesAsync();
 
-            return _autoMapper.Map<IngredientDTO>(ingredient);
+            return ingredient.Id;
         }
     }
 }

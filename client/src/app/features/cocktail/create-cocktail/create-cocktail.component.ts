@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Ingredient } from '../../ingredient/models/ingredient.model';
 import { IngredientService } from '../../ingredient/services/ingredient.service';
@@ -18,6 +18,7 @@ import { CustomChipsComponent } from '../../../shared/components/custom-chips/cu
 import { CustomDropdownComponent } from '../../../shared/components/custom-dropdown/custom-dropdown.component';
 import { UnitService } from '../../../shared/services/unit.service';
 import { TableModule } from 'primeng/table';
+import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-create-cocktail',
@@ -36,17 +37,21 @@ import { TableModule } from 'primeng/table';
     SubmitButtonComponent,
     ReactiveFormsModule,
     TableModule,
+    FileUploadModule,
   ],
   templateUrl: './create-cocktail.component.html',
   styleUrl: './create-cocktail.component.css'
 })
 export class CreateCocktailComponent {
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
+
   createCocktailForm: FormGroup;
   createIngredientForm: FormGroup;
 
   ingredients$ = new BehaviorSubject<Ingredient[]>([]);
-
   ingredientTypes$ = new Observable<string[]>();
+  uploadedImage: File | null = null;
+
   unitsOfMeasure$ = new Observable<string[]>();
   createCocktailRequest: CreateCocktailRequest = {} as CreateCocktailRequest;
   createIngredientRequest: CreateIngredientRequest = {} as CreateIngredientRequest;
@@ -71,7 +76,7 @@ export class CreateCocktailComponent {
       name: ['', Validators.required],
       type: ['', Validators.required],
       isAlcoholic: ['', Validators.required],
-      allergens: this.fb.control<string[] | null>(null)
+      allergens: this.fb.control<string[] | null>(null),
     })
   }
 
@@ -107,6 +112,7 @@ export class CreateCocktailComponent {
       id: [ingredient.id],
       name: [ingredient.name],
       type: [ingredient.type],
+      imageUrl: [ingredient.imageUrl],
       quantity: [0, Validators.required],
       unit: ['', Validators.required]
     });
@@ -131,15 +137,33 @@ export class CreateCocktailComponent {
       return;
     }
 
+    // Create ingredient
     var rawForm = this.createIngredientForm.value
     this.createIngredientRequest = {
       ...rawForm,
       isAlcoholic: rawForm.isAlcoholic === "true",
+      image: this.uploadedImage,
     };
     this.ingredientService.createIngredient(this.createIngredientRequest).subscribe({
       next: newIngredient => {
+        // Upload image
+        if (this.uploadedImage != null) {
+          const formData = new FormData()
+          formData.append('image', this.uploadedImage!)
+          this.ingredientService.uploadImage(newIngredient.id, formData).subscribe(
+            imageUrl => newIngredient.imageUrl = imageUrl,
+           );
+        }
+
+        // Update ingredient list
         const currentIngredients = this.ingredients$.getValue();
         this.ingredients$.next([...currentIngredients, newIngredient]);
+
+        // ✅ Reset form and state
+        this.createIngredientForm.reset();
+        this.uploadedImage = null;
+        this.fileUpload.clear();
+
         this.showAddIngredientForm = false;
         this.loading = false;
       },
@@ -148,7 +172,6 @@ export class CreateCocktailComponent {
         this.loading = false;
       },
     });
-    this.showAddIngredientForm = false;
   }
 
   createCocktail() {
@@ -161,7 +184,6 @@ export class CreateCocktailComponent {
       return;
     }
     this.createCocktailRequest = this.createCocktailForm.value;
-    console.log(this.createCocktailRequest)
     this.cocktailService.createCocktail(this.createCocktailRequest).subscribe({
       next: () => {
         this.loading = false;
@@ -171,5 +193,12 @@ export class CreateCocktailComponent {
         this.loading = false;
       },
     });
+  }
+
+  onImageSelected(event: any): void {
+    const file = event.files?.[0];
+    if (file) {
+      this.uploadedImage = file;
+    }
   }
 }

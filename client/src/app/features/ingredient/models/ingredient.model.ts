@@ -4,4 +4,5 @@ export interface Ingredient {
   name: string;
   type: string;
   isAlcoholic: boolean;
+  imageUrl: string;
 }

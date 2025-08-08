@@ -14,7 +14,7 @@ namespace CocktailsApp.Domain.IngredientAggregate
         private Ingredient? _ingredient;
         private bool _isAlcoholic = false;
         private string? _name = null;
-        private IngredientType? _type = null;
+        private IngredientType _type = (IngredientType)9999;
 
         public IngredientBuilder AddAllergen(string name)
         {
@@ -51,7 +51,7 @@ namespace CocktailsApp.Domain.IngredientAggregate
             TryCreateIngredient();
 
             if (_ingredient == null)
-                throw new ArgumentException("The name, type and creator id must be specified");
+                throw new ArgumentException("The name and creator id must be specified");
 
             return _ingredient;
         }
@@ -62,7 +62,7 @@ namespace CocktailsApp.Domain.IngredientAggregate
             if (
                 !string.IsNullOrWhiteSpace(_name) &&
                 _creatorId != Guid.Empty &&
-                _type != null &&
+                Enum.IsDefined(_type) &&
                 _ingredient == null)
                 _ingredient = new Ingredient(_name, (IngredientType)_type, _isAlcoholic, _creatorId);
         }

@@ -47,7 +47,12 @@
             </ng-template>
             <ng-template #body let-ingredient>
               <tr>
-                <td>{{ ingredient.name }}</td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <img [src]="ingredient.imageUrl" style="vertical-align: middle; height:1.5rem;" />
+                    <span>{{ ingredient.name }}</span>
+                  </div>
+                </td>
                 <td>{{ ingredient.type }}</td>
                 <td>{{ ingredient.allergens }}</td>
                 <td><button pButton
@@ -93,7 +98,12 @@
                 </ng-template>
                 <ng-template #body let-ingredient let-i="rowIndex">
                   <tr [formGroupName]="i">
-                    <td>{{ ingredient.value.name }}</td>
+                    <td>
+                      <div class="flex items-center gap-2">
+                        <img [src]="ingredient.value.imageUrl" style="vertical-align: middle; height:1.5rem;" />
+                        <span>{{ ingredient.value.name }}</span>
+                      </div>
+                    </td>
                     <td>{{ ingredient.value.type }}</td>
                     <td>
                       <!-- Ingredient Quantity -->
@@ -177,6 +187,17 @@
                         id="allergens"
                         name="allergens">
           </custom-chips>
+
+          <p-fileupload #fileUpload
+                        [multiple]="false"
+                        [showUploadButton]="false"
+                        [showCancelButton]="false"
+                        (onSelect)="onImageSelected($event)"
+                        accept="image/*">
+            <ng-template #empty>
+                <div>Drag and drop files to here to upload.</div>
+            </ng-template>
+          </p-fileupload>
 
           <submit-button label="Create"
                          [loading]="loading"

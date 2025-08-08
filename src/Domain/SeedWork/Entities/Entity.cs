@@ -35,6 +35,9 @@ namespace CocktailsApp.Domain.SeedWork
         public DateTime UpdateDate { get => _updateDate; }
         private DateTime _updateDate;
 
+        public string? ImageId { get => _imageId; }
+        public string? _imageId = null;
+
         private protected Entity() { }
 
         /// <summary>
@@ -49,6 +52,12 @@ namespace CocktailsApp.Domain.SeedWork
             Id = Guid.NewGuid();
             _creationDate = DateTime.UtcNow;
             _updateDate = _creationDate;
+        }
+
+        public void UpdateImage(string imageId)
+        {
+            _imageId = imageId;
+            Touch();
         }
 
         /// <summary>

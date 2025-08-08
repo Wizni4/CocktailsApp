@@ -685,6 +685,10 @@ namespace CocktailsApp.Domain.ClubAggregate
             // Check the user's permissions:
             // Raise an exception if the user doesn't have permission to perform the action.
             ValidateMemberPermission(actorId, ClubPermissionType.ChangeVisibility);
+
+            if (!Enum.IsDefined(visibility))
+                throw new ArgumentException("Visibility is invalid");
+
             Visibility = visibility;
             Touch();
         }

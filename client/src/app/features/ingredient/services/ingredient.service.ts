@@ -22,4 +22,8 @@ export class IngredientService {
   public createIngredient(ingredient: CreateIngredientRequest): Observable<Ingredient> {
     return this.apiService.withBody(ingredient).post<Ingredient>("ingredients")
   }
+
+  public uploadImage(ingredientId: string, formData: FormData): Observable<string> {
+    return this.apiService.withFormData(formData).post<string>(`ingredients/${ingredientId}/image`)
+  }
 }

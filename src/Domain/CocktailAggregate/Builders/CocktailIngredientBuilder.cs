@@ -15,7 +15,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
         private Guid _ingredientId;
         private Guid _creatorId;
         private decimal _quantity = 0;
-        private UnitOfMeasure _unit;
+        private UnitOfMeasure _unit = (UnitOfMeasure)9999;
 
         public CocktailIngredientBuilder WithCreatorId(Guid creatorId)
         {

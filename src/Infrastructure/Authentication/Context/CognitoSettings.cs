@@ -1,5 +1,5 @@
 ﻿
-namespace CocktailsApp.Infrastructure.SeedWork
+namespace CocktailsApp.Infrastructure.Authentication
 {
     public class CognitoSettings
     {

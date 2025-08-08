@@ -3,4 +3,5 @@ export interface CreateIngredientRequest {
   name: string;
   type: string;
   isAlcoholic: boolean;
+  image: string;
 }

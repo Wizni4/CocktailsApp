@@ -5,6 +5,7 @@
 using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.Shared;
 
 using Microsoft.Extensions.Options;
 

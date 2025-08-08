@@ -5,6 +5,8 @@
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.IngredientAggregate;
 
+using MediatR;
+
 namespace CocktailsApp.Application.Ingredient
 {
     public record CreateIngredientCommand(
@@ -13,5 +15,5 @@ namespace CocktailsApp.Application.Ingredient
         IngredientType Type,
         bool? IsAlcoholic,
         Guid CreatorId
-    ) : ICommand<IngredientDTO>;
+    ) : ICommand<Guid>;
 }

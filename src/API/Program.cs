@@ -46,6 +46,8 @@ if (app.Environment.IsDevelopment())
 // Ensure UseCors is called before UseAuthorization
 app.UseCors("AllowSpecificOrigin");
 
+app.UseStaticFiles();
+
 app.UseAuthentication();
 
 app.UseAuthorization();

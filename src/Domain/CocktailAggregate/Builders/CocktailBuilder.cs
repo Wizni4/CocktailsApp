@@ -35,14 +35,14 @@ namespace CocktailsApp.Domain.CocktailAggregate
             return this;
         }
 
-        public CocktailBuilder AddIngredient(Guid ingredientId, decimal quantity)
+        public CocktailBuilder AddIngredient(Guid ingredientId, decimal quantity, UnitOfMeasure unit)
         {
             TryCreateCocktail();
 
             if (_cocktail == null)
                 throw new InvalidOperationException("Cocktail must have a name before adding ingrdients");
 
-            _cocktail.AddIngredient(ingredientId, quantity, _creatorId);
+            _cocktail.AddIngredient(ingredientId, quantity, unit, _creatorId);
             return this;
         }
 

@@ -23,6 +23,9 @@ namespace CocktailsApp.Domain.StockAggregate
         private Stock() { }
         internal Stock(Guid clubId, Guid ingredientId, UnitOfMeasure unit, Guid createdBy) : base(createdBy)
         {
+            if (!Enum.IsDefined(unit))
+                throw new ArgumentException("Unit is invalid.");
+
             _clubId = clubId;
             _ingredientId = ingredientId;
             _unit = unit;

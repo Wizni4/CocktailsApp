@@ -22,6 +22,9 @@ namespace CocktailsApp.Domain.StockAggregate
             StockTransactionType transactionType,
             Guid createdBy) : base(createdBy)
         {
+            if (!Enum.IsDefined(transactionType))
+                throw new ArgumentException("Transaction type is invalid.");
+
             Quantity = quantity;
             Description = description;
             Date = DateTime.UtcNow;

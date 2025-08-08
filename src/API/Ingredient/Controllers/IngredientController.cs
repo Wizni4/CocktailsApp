@@ -7,11 +7,13 @@ using AutoMapper;
 using CocktailsApp.API.SeedWork;
 using CocktailsApp.Application.Ingredient;
 using CocktailsApp.Domain.IngredientAggregate;
+using CocktailsApp.Infrastructure.Shared;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -22,10 +24,15 @@ namespace CocktailsApp.API.Ingredient
     [Tags("Ingredient")]
     [ApiController]
     [Authorize]
-    public class IngredientController(IMediator mediator, IMapper autoMapper) : ControllerBase
+    public class IngredientController(
+        IMediator mediator,
+        IMapper autoMapper,
+        IOptions<ImageSettings> options
+    ) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
         private readonly IMapper _autoMapper = autoMapper;
+        private readonly IOptions<ImageSettings> _options = options;
 
         [HttpPost(Name = "CreateIngredient")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -33,6 +40,8 @@ namespace CocktailsApp.API.Ingredient
         public async Task<ActionResult<IngredientResponse>> CreateIngredient([FromBody] CreateIngredientRequest request)
         {
             var userId = this.GetUserId();
+
+            // Create the ingredient
             var command = new CreateIngredientCommand(
                 request.Allergens,
                 request.Name,
@@ -40,7 +49,15 @@ namespace CocktailsApp.API.Ingredient
                 request.IsAlcoholic,
                 userId
             );
-            var response = _autoMapper.Map<IngredientResponse>(await _mediator.Send(command));
+            var ingredientId = await _mediator.Send(command);
+
+            // Query the newly created ingredient
+            var query = new GetIngredientByIdQuery(ingredientId);
+            var ingredientDTO = await _mediator.Send(query);
+
+            // Map DTOs to response
+            var response = _autoMapper.Map<IngredientResponse>(ingredientDTO);
+
             return Created(
                 uri: $"/api/ingredients/{response.Id}",
                 value: response);
@@ -77,6 +94,20 @@ namespace CocktailsApp.API.Ingredient
         {
             var command = new SearchIngredientQuery(term);
             var response = _autoMapper.Map<IEnumerable<IngredientResponse>>(await _mediator.Send(command));
+            return Ok(response);
+        }
+
+        [HttpPost("{ingredientId}/image", Name = "UploadIngredientImage")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Consumes("multipart/form-data")]
+        [SwaggerIgnore]
+        public async Task<ActionResult<string>> UploadIngredientImage(Guid ingredientId, [FromForm] IFormFile image)
+        {
+            var command = new UploadIngredientImageCommand(
+                ingredientId,
+                image.OpenReadStream(),
+                image.FileName);
+            var response = $"{_options.Value.PublicBaseUrl}/{await _mediator.Send(command)}";
             return Ok(response);
         }
     }

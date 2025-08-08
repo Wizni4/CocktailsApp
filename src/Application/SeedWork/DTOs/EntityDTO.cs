@@ -20,5 +20,6 @@ namespace CocktailsApp.Application.SeedWork
         /// Gets or sets the unique identifier of the entity.
         /// </summary>
         public Guid Id { get; set; }
+        public string? ImageId { get; set; }
     }
 }

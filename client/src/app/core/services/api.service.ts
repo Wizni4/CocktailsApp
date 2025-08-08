@@ -29,6 +29,12 @@ export class ApiService {
     return this;
   }
 
+  public withFormData(formData: FormData): ApiService {
+    this.body = formData;
+    delete this.headers['Content-Type'];
+    return this;
+  }
+
   private buildRequestOptions(): {
     headers: HttpHeaders;
     params: HttpParams;

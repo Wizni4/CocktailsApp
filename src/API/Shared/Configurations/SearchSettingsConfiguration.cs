@@ -3,10 +3,11 @@
 // See the LICENSE file in the project root for more information.
 
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.Shared;
 
 using Microsoft.Extensions.Options;
 
-namespace CocktailsApp.API.Search
+namespace CocktailsApp.API.Shared
 {
     public class SearchSettingsConfiguration(IConfiguration configuration) : IConfigureNamedOptions<SearchSettingsDTO>
     {

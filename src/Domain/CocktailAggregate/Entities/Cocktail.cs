@@ -27,7 +27,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
             UpdateName(name);
         }
 
-        public void AddIngredient(Guid ingredientId, decimal quantity, Guid createdBy)
+        public void AddIngredient(Guid ingredientId, decimal quantity, UnitOfMeasure unit, Guid createdBy)
         {
             if (_ingredients.Any(ci => new CocktailIngredientByIngredientSpecification(ingredientId).SpecExpression.Compile()(ci)))
                 throw new ArgumentException($"Ingredient '{ingredientId}' is already in the cocktail.");
@@ -36,6 +36,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
                 .WithCreatorId(createdBy)
                 .WithIngredient(ingredientId)
                 .WithQuantity(quantity)
+                .WithUnit(unit)
                 .Build();
 
             _ingredients.Add(newCocktailIngredient);

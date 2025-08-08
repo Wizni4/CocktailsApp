@@ -4,5 +4,5 @@
 
 namespace CocktailsApp.Application.SeedWork
 {
-    public record SearchQuery<TResult>(string Term) : IQuery<TResult>;
+    public abstract record SearchQuery<TResult>(string Term) : IQuery<TResult>;
 }
