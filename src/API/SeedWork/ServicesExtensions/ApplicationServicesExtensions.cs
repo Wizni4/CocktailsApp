@@ -72,7 +72,7 @@ namespace CocktailsApp.API.SeedWork
         {
             // Application mapper
             services.AddAutoMapper(
-                typeof(ClubApplicationMapperProfile),
+                typeof(ClubApplicationProfile),
                 typeof(CocktailApplicationMapperProfile),
                 typeof(IngredientApplicationMapperProfile),
                 typeof(SearchApplicationMapperProfile),

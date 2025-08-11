@@ -4,11 +4,7 @@
 /*
  * Framework namespaces
  */
-using AutoMapper;
-
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-
 using Microsoft.Extensions.Options;
 /*
  * Application namespaces
@@ -19,16 +15,16 @@ namespace CocktailsApp.Application.Club
 {
     public class ClubService(
         IOptions<ClubSettingsDTO> clubSettings,
-        IUnitOfWork unitOfWork
+        IClubQueries clubRepository
     ) : IClubService
     {
         private readonly IOptions<ClubSettingsDTO> _clubSettings = clubSettings;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IClubQueries _clubRepository = clubRepository;
 
         public async Task<ClubLimitInfoDTO> GetClubLimitInfoAsync(Guid userId)
         {
             // Get number of club owned by the user
-            var ownedClubs = (await _unitOfWork.Set<DomainClub>().ReadRangeAsync(new ClubByOwnerIdSpecification(userId))).Count();
+            var ownedClubs = (await _clubRepository.ReadRangeAsync(new ClubByOwnerIdSpecification(userId))).Count();
 
             // Get the max number of owned clubs
             var maxOwnedClubs = _clubSettings.Value.MaxOwnedClubs;

@@ -46,8 +46,8 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(AddRolesToMembersCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members)
-                                                                                         .Include(c => c.Roles));
+            var club = await _clubRepository.ReadAsync(new LoadClubWithMembersCommandSpecification(request.ClubId));
+
             // Add each user add their specified roles
             foreach (var member in request.Members)
                 foreach (var roleId in member.RoleIds!)

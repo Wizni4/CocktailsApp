@@ -703,7 +703,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </exception>
         private ClubCocktail GetCocktail(Guid cocktailId)
         {
-            var cocktail = _cocktails.FirstOrDefault(new ClubCocktailByIdSpecification(cocktailId).SpecExpression.Compile())
+            var cocktail = _cocktails.FirstOrDefault(c => new ClubCocktailByIdSpecification(cocktailId).IsSatisfiedBy(c))
                 ?? throw new ArgumentException($"The cocktail could not be found in the club.");
 
             return cocktail;
@@ -719,7 +719,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </exception>
         private ClubMember GetMember(Guid clubMemberId)
         {
-            var member = _members.FirstOrDefault(new ClubMemberByIdSpecification(clubMemberId).SpecExpression.Compile())
+            var member = _members.FirstOrDefault(m => new ClubMemberByIdSpecification(clubMemberId).IsSatisfiedBy(m))
                 ?? throw new ArgumentException($"The member could not be found in the club.");
 
             return member;
@@ -735,7 +735,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </exception>
         private ClubRole GetRole(Guid roleId)
         {
-            var role = _roles.FirstOrDefault(new ClubRoleByIdSpecification(roleId).SpecExpression.Compile())
+            var role = _roles.FirstOrDefault(r => new ClubRoleByIdSpecification(roleId).IsSatisfiedBy(r))
                 ?? throw new ArgumentException($"The role could not be found in the club.");
 
             return role;
@@ -775,7 +775,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         private bool IsMemberAuthorized(Guid actorId, ClubPermissionType permission)
         {
             // Get the member based on the specified user ID
-            var member = _members.FirstOrDefault(new ClubMemberByIdSpecification(actorId).SpecExpression.Compile());
+            var member = _members.FirstOrDefault(m => new ClubMemberByIdSpecification(actorId).IsSatisfiedBy(m));
 
             if (member == null)
                 return false;

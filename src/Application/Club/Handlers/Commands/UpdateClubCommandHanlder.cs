@@ -15,8 +15,6 @@ using MediatR;
  * Application namespaces
  */
 using DomainAddress = CocktailsApp.Domain.Shared.Address;
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
-
 namespace CocktailsApp.Application.Club
 {
     public class UpdateClubCommandHanlder(
@@ -32,7 +30,7 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(UpdateClubCommand request, CancellationToken cancellationToken)
         {
             // Get the club from the db
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
+            var club = await _clubRepository.ReadAsync(new LoadClubCommandSpecification(request.ClubId));
 
             // Update Address
             if (request.Address != null)

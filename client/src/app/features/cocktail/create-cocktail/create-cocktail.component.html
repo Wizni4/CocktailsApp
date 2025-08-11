@@ -55,12 +55,10 @@
                 </td>
                 <td>{{ ingredient.type }}</td>
                 <td>{{ ingredient.allergens }}</td>
-                <td><button pButton
-                            icon="pi pi-plus"
-                            (click)="addIngredient(ingredient)"
-                            severity="contrast">
-                  Add
-                  </button>
+                <td><p-button label="Add"
+                              icon="pi pi-plus"
+                              (click)="addIngredient(ingredient)">
+                    </p-button>
                 </td>
               </tr>
             </ng-template>

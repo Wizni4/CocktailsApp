@@ -125,5 +125,20 @@ namespace CocktailsApp.API.Club
 
             return Ok(response);
         }
+
+        [HttpGet(Name = "GetMembers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [SwaggerOperation(Summary = "Get the from members of a club.")]
+        public async Task<ActionResult<IEnumerable<ClubMemberResponse>>> GetMembers(Guid clubId)
+        {
+            // Query the members of the specified club
+            var query = new GetClubMembersQuery(clubId);
+            var clubMemberDTOs = await _mediator.Send(query);
+
+            // Map DTOs to response
+            var response = _autoMapper.Map<IEnumerable<ClubMemberResponse>>(clubMemberDTOs);
+
+            return Ok(response);
+        }
     }
 }

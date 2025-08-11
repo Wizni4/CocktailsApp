@@ -32,20 +32,20 @@ namespace CocktailsApp.Application.SeedWork
         /// <param name="spec">Condition</param>
         /// <param name="includes">Properties that should be eagerly loaded</param>
         /// <returns>Domain model corresponding to the condition, including specified sub-properties</returns>
-        Task<T?> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
+        Task<T?> ReadAsync(ICommandSpecification<T> spec);
         /// <summary>
         /// Get a list of domain models, according to a condition.
         /// </summary>
         /// <param name="spec">Condition</param>
         /// <param name="includes">Properties that should be eagerly loaded</param>
         /// <returns>List of domain models corresponding to the condition, including specified sub-properties</returns>
-        Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null);
+        Task<IEnumerable<T>> ReadRangeAsync(ICommandSpecification<T> spec);
         /// <summary>
         /// Get all the domain models.
         /// </summary>
         /// <param name="includes">Properties that should be eagerly loaded</param>
         /// <returns>All the domain models, including specified sub-properties</returns>
-        Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null);
+        Task<IEnumerable<T>> ReadAllAsync(ICommandSpecification<T> spec);
         #endregion
 
         #region Update methods

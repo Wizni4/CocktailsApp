@@ -15,7 +15,7 @@ namespace CocktailsApp.Application.Cocktail
         {
             CreateMap<DomainCocktail, CocktailDTO>();
             CreateMap<DomainCocktailIngredient, CocktailIngredientDTO>()
-                .ForMember(dest => dest.Ingredient, opt => opt.MapFrom<IngredientResponseResolver>());
+                .ForMember(dest => dest.Ingredient, opt => opt.MapFrom<IngredientResolver>());
         }
     }
 }

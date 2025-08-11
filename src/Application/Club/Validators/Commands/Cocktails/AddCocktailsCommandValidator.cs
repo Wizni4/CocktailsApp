@@ -12,10 +12,6 @@
 using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
-
-using FluentValidation;
-
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 
 namespace CocktailsApp.Application.Club

@@ -16,7 +16,6 @@
   height: 25rem;
   border: 1px dashed;
   border-radius: 2.5%;
-  color: var(--p-sky-500);
 }
 
   .add-club__container:hover {

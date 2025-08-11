@@ -1,20 +1,3 @@
-html, body, .p-component {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.p-button,
-.p-card,
-.p-tabview,
-.p-inputtext,
-.p-message,
-.p-dropdown,
-.p-panel,
-.p-dialog,
-.p-toast,
-.p-menu {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
 
 html {
   height: 100%;
@@ -24,12 +7,11 @@ html {
 body {
   font-family: Segoe UI Symbol;
   font-weight: bold;
-  color: var(--text-color) !important;
-  background-color: var(--surface-ground);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--p-surface-ground);
 }
 
 .p-button:disabled {
@@ -37,22 +19,8 @@ body {
   pointer-events: all !important;
 }
 
-textarea,
-input {
-  color: var(--text-color) !important;
+.p-message .p-message-text {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
-
-.p-floatlabel-on:has(input:focus) label,
-.p-floatlabel-on:has(input.p-filled) label,
-.p-floatlabel-on:has(input:-webkit-autofill) label, .p-floatlabel-on:has(textarea:focus) label,
-.p-floatlabel-on:has(textarea.p-filled) label, .p-floatlabel-on:has(.p-inputwrapper-focus) label,
-.p-floatlabel-on:has(.p-inputwrapper-filled) label, .p-floatlabel-on:has(input[placeholder]) label,
-.p-floatlabel-on:has(textarea[placeholder]) label {
-  background-color: var(--surface-card) !important;
-}
-
-  .p-message .p-message-text {
-    white-space: normal;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-  }

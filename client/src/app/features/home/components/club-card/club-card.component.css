@@ -35,7 +35,6 @@
   display: flex;
   width: 100%;
   justify-content: center;
-  color: var(--text-color) !important;
 }
 
 .club-card__visibility {
@@ -44,7 +43,6 @@
 
 .club-card__club-description,
 .club-card__club-address {
-  color: var(--text-color) !important;
   font-weight: 100;
   display: -webkit-box;
   -webkit-line-clamp: 2;

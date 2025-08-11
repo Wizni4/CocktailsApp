@@ -25,6 +25,5 @@ namespace CocktailsApp.Application.Club
     /// </remarks>
     public interface IClubRepository : IRepository<DomainClub>
     {
-        Task<DomainClub?> GetClubBydIdAsync(Guid clubId, Func<IIncludable<DomainClub>, IIncludable>? includes = null);
     }
 }

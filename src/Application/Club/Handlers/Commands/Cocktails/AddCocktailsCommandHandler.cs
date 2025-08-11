@@ -7,6 +7,7 @@ using AutoMapper;
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+using FluentValidation.Results;
 /*
  * Domain namespaces
  */
@@ -38,12 +39,17 @@ namespace CocktailsApp.Application.Club
         /// </exception>
         public async Task<IEnumerable<Guid>> Handle(AddCocktailsCommand request, CancellationToken cancellationToken)
         {
+            var failures = new List<ValidationFailure>();
+
             // Get the club from the database, including related entities.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, c => c.Include(c => c.Cocktails));
+            var club = await _clubRepository.ReadAsync(new LoadClubWithCocktailsCommandSpecification(request.ClubId));
+
+            if (club == null)
+                failures.Add(new ValidationFailure($"Club ''"
 
             // Delegate addition logic to the domain layer.
             foreach (var cocktailId in request.CocktailIds)
-                club!.AddCocktail(cocktailId, request.ActorId);
+                club.AddCocktail(cocktailId, request.ActorId);
 
             // Persist changes to the database.
             _clubRepository.Update(club!);

@@ -29,7 +29,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
 
         public void AddIngredient(Guid ingredientId, decimal quantity, UnitOfMeasure unit, Guid createdBy)
         {
-            if (_ingredients.Any(ci => new CocktailIngredientByIngredientSpecification(ingredientId).SpecExpression.Compile()(ci)))
+            if (_ingredients.Any(ci => new CocktailIngredientByIngredientSpecification(ingredientId).IsSatisfiedBy(ci)))
                 throw new ArgumentException($"Ingredient '{ingredientId}' is already in the cocktail.");
 
             var newCocktailIngredient = new CocktailIngredientBuilder()
@@ -91,7 +91,7 @@ namespace CocktailsApp.Domain.CocktailAggregate
 
         private CocktailIngredient GetIngredient(Guid ingredientId)
         {
-            var coctailIngredient = _ingredients.FirstOrDefault(ci => new CocktailIngredientByIngredientSpecification(ingredientId).SpecExpression.Compile()(ci))
+            var coctailIngredient = _ingredients.FirstOrDefault(ci => new CocktailIngredientByIngredientSpecification(ingredientId).IsSatisfiedBy(ci))
                 ?? throw new ArgumentException($"Ingredient '{ingredientId}' is not part of the cocktail.");
 
             return coctailIngredient;

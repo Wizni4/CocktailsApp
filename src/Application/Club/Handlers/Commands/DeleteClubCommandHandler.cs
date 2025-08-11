@@ -24,12 +24,10 @@ namespace CocktailsApp.Application.Club
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public class DeleteClubCommandHandler(
         IUnitOfWork unitOfWork,
-        IClubRepository clubRepository,
-        IMapper autoMapper
+        IClubRepository clubRepository
     ) : ICommandHandler<DeleteClubCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
@@ -45,7 +43,7 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(DeleteClubCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
+            var club = await _clubRepository.ReadAsync(new LoadClubCommandSpecification(request.ClubId));
 
             // Delegate the club removal to the domain
             club!.DeleteClub(request.ActorId);

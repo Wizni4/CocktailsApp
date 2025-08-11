@@ -19,7 +19,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
     /// <typeparam name="T">
     /// The type of the aggregate root entity. Must inherit from <see cref="Entity"/> and implement <see cref="IAggregateRoot"/>.
     /// </typeparam>
-    public class EFRepository<T>(EFDbContext dbContext) : IRepository<T> where T : Entity, IAggregateRoot
+    public class EFCommandRepository<T>(EFDbContext dbContext) : IRepository<T> where T : Entity, IAggregateRoot
     {
         private readonly EFDbContext _dbContext = dbContext;
 
@@ -76,17 +76,13 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// </summary>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of all entities.</returns>
-        public Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null)
+        public Task<IEnumerable<T>> ReadAllAsync(ICommandSpecification<T> spec)
         {
             var query = _dbContext.Set<T>().AsQueryable();
 
             // Add include to the query
-            if (includes != null)
-                query = query.IncludeMultiples(includes);
-
-            // Add the limit if specified
-            if (limit != null && limit > 0)
-                query = query.Take(limit.Value);
+            if (spec.Includes != null)
+                query = query.IncludeMultiples(spec.Includes);
 
             return Task.FromResult(query.AsEnumerable());
         }
@@ -97,7 +93,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="spec">The specification that defines the query criteria.</param>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the matching entity.</returns>
-        public Task<T?> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null)
+        public Task<T?> ReadAsync(ICommandSpecification<T> spec)
         {
             if (spec == null)
                 throw new ArgumentNullException(nameof(spec));
@@ -105,10 +101,10 @@ namespace CocktailsApp.Infrastructure.SeedWork
             var query = _dbContext.Set<T>().AsQueryable();
 
             // Add include to the query
-            if (includes != null)
-                query = query.IncludeMultiples(includes);
+            if (spec.Includes != null)
+                query = query.IncludeMultiples(spec.Includes);
 
-            return Task.FromResult(query.FirstOrDefault(spec.SpecExpression));
+            return Task.FromResult(query.FirstOrDefault(spec.Specification!.SpecExpression));
         }
 
         /// <summary>
@@ -117,7 +113,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="spec">The specification that defines the query criteria.</param>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of matching entities.</returns>
-        public Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null)
+        public Task<IEnumerable<T>> ReadRangeAsync(ICommandSpecification<T> spec)
         {
             if (spec == null)
                 throw new ArgumentNullException(nameof(spec));
@@ -125,15 +121,12 @@ namespace CocktailsApp.Infrastructure.SeedWork
             var query = _dbContext.Set<T>().AsQueryable();
 
             // Add include to the query
-            if (includes != null)
-                query = query.IncludeMultiples(includes);
+            if (spec.Includes != null)
+                query = query.IncludeMultiples(spec.Includes);
 
             // apply the filter
-            query = query.Where(spec.SpecExpression);
+            query = query.Where(spec.Specification!.SpecExpression);
 
-            // Add the limit if specified (must be after the filter)
-            if (limit != null && limit > 0)
-                query = query.Take(limit.Value);
 
             return Task.FromResult(query.AsEnumerable());
         }

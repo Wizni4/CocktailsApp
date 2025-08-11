@@ -43,7 +43,7 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(RemoveCocktailsCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
+            var club = await _clubRepository.ReadAsync(new LoadClubCommandSpecification(request.ClubId));
 
             // Delegate the removal to the domain
             foreach (var cocktailId in request.CocktailIds)

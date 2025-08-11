@@ -23,7 +23,7 @@ namespace CocktailsApp.Application.Club
 
         public async Task<IEnumerable<Guid>> Handle(AddMembersCommand request, CancellationToken cancellationToken)
         {
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members));
+            var club = await _clubRepository.ReadAsync(new LoadClubWithMembersCommandSpecification(request.ClubId));
 
             // Add members to the club
             foreach (var newMember in request.NewMembers)

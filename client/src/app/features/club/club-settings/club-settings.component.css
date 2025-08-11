@@ -1,0 +1,21 @@
+.club-settings__main {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: calc(100vh - var(--topbar-h));
+}
+
+.club-settings__sidenav {
+  position: sticky;
+  height: calc(100vh - var(--topbar-h));
+  overflow: auto;
+  border-right: 1px solid var(--p-surface-border);
+  padding: .75rem;
+}
+
+.club-settings__sidenav .p-menu {
+  width: 100%;
+}
+
+.club-settings__content {
+  padding: 1rem 1.5rem;
+}

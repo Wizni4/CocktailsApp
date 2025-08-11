@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CreateClubRequest } from '../models/create-club.model';
-import { ClubService } from '../club.service';
+import { ClubService } from '../services/club.service';
 import { CustomInputComponent } from '../../../shared/components/custom-input/custom-input.component';
 import { SubmitButtonComponent } from '../../../shared/components/submit-button/submit-button.component';
 import { AddressFormComponent } from '../../../shared/components/address-form/address-form.component';

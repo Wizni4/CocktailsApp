@@ -4,11 +4,7 @@
 /*
  * Framework namespaces
  */
-using AutoMapper;
-
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-
 using MediatR;
 
 /*
@@ -43,8 +39,7 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(RemoveRolesFromMembersCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members)
-                                                                                         .Include(c => c.Roles));
+            var club = await _clubRepository.ReadAsync(new LoadClubWithMembersCommandSpecification(request.ClubId));
 
             // Delegate the role-removal logic to the domain.
             foreach (var member in request.Members)

@@ -9,7 +9,7 @@ using CocktailsApp.Infrastructure.SeedWork;
 
 namespace CocktailsApp.Infrastructure.IngredientAggregate
 {
-    public class IngredientRepository(EFDbContext context) : EFRepository<Ingredient>(context), IIngredientRepository
+    public class IngredientRepository(EFDbContext context) : EFCommandRepository<Ingredient>(context), IIngredientRepository
     {
     }
 }

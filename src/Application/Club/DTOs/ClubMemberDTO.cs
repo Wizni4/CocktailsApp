@@ -5,6 +5,7 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.User;
 using CocktailsApp.Domain.ClubAggregate;
 
 /*
@@ -27,6 +28,6 @@ namespace CocktailsApp.Application.Club
         /// <summary>
         /// Gets or sets the identifier of the user associated with this club member.
         /// </summary>
-        public required Guid UserId { get; set; }
+        public required UserDTO User { get; set; }
     }
 }

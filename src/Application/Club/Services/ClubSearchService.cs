@@ -1,36 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
-
-using AutoMapper;
-
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.Shared;
-
 using Microsoft.Extensions.Options;
 
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 namespace CocktailsApp.Application.Club
 {
     public class ClubSearchService(
-        IMapper autoMapper,
-        IUnitOfWork unitOfWork,
+        IClubQueries clubQueries,
         IOptions<SearchSettingsDTO> options
     ) : SearchService<ClubDTO, SearchClubQuery>(options), IClubSearchService
     {
-        private readonly IMapper _autoMapper = autoMapper;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IClubQueries _clubQueries = clubQueries;
 
-        public override async Task<IEnumerable<ClubDTO>> GetSearchResultsAsync(SearchClubQuery query)
+        public override Task<IEnumerable<ClubDTO>> GetSearchResultsAsync(SearchClubQuery query)
         {
             var searchLimit = _options.Value.Limit;
 
-            var clubs = await _unitOfWork.Set<DomainClub>().ReadRangeAsync(
-                new ClubByTermSpecification(query.Term, query.UserId),
-                limit: searchLimit);
-
-            return _autoMapper.Map<IEnumerable<ClubDTO>>(clubs);
+            return _clubQueries.ReadRangeAsync(
+                new SearchClubQuerySpecification(query.Term, query.UserId));
         }
     }
 }

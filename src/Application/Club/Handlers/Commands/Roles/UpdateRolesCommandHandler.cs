@@ -43,7 +43,7 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(UpdateRolesCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Roles));
+            var club = await _clubRepository.ReadAsync(new LoadClubWithRolesCommandSpecification(request.ClubId));
 
             // Update each specified roles
             foreach (var updatedRole in request.Roles)

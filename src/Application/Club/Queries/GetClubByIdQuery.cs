@@ -12,5 +12,5 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Club
 {
-    public record GetClubByIdQuery(Guid ClubId) : ClubQuery<ClubDTO>(ClubId);
+    public record GetClubByIdQuery(Guid ClubId) : ClubQuery<ClubDTO?>(ClubId);
 }

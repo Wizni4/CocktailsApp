@@ -13,7 +13,6 @@ namespace CocktailsApp.Application.SeedWork
     {
         private protected IOptions<SearchSettingsDTO> _options = options;
         public abstract Task<IEnumerable<TResult>> GetSearchResultsAsync(TSearchQuery query);
-
         private protected int GetRelevanceScore(string term, string target)
         {
             var result = 0;
