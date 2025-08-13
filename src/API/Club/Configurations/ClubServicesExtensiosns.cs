@@ -20,7 +20,6 @@ namespace CocktailsApp.API.Club
         public static IServiceCollection AddClubReaders(this IServiceCollection services)
         {
             ;
-            services.AddScoped<IRepository<DomainClub>, ClubRepository>();
             services.AddScoped<IClubRepository, ClubRepository>();
             return services;
         }

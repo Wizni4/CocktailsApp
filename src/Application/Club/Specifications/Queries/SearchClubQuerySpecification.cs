@@ -3,12 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
-
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 
 namespace CocktailsApp.Application.Club
@@ -25,11 +20,14 @@ namespace CocktailsApp.Application.Club
         private readonly Guid _userId = userId;
         private readonly IMapper _autoMapper = autoMapper;
 
+        public IQueryable<ClubRead> Filter(IQueryable<ClubRead> query)
         {
-            {
-                                 .Take(_limit);
-            }
+            throw new NotImplementedException();
         }
-        public override Func<IIncludable<DomainClub>, IIncludable>? Includes => null;
+
+        public IQueryable<ClubDTO> Select(IQueryable<ClubRead> filtered)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

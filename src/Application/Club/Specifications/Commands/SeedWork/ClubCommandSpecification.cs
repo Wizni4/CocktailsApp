@@ -15,7 +15,7 @@ namespace CocktailsApp.Application.Club
     {
         private readonly Guid _clubId = clubId;
         public virtual ISpecification<DomainClub>? Specification => new ClubByIdSpecification(_clubId);
-
+        public Func<IIncludable<DomainClub>, IIncludable>? Includes 
         {
             get
             {
@@ -24,5 +24,6 @@ namespace CocktailsApp.Application.Club
                                  .Include(c => c.Roles);
             }
         }
+
     }
 }
