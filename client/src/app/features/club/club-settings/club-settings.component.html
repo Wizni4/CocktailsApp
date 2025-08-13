@@ -1,0 +1,24 @@
+<main class="club-settings__main">
+  <aside class="club-settings__sidenav">
+    <p-menu [model]="menuItems" class="club-menu">
+      <ng-template #start>
+        <div class="p-menu-item">
+          <div class="p-menu-item-content">
+            <a pRipple
+               [routerLink]="['./']"
+               class="flex items-center p-menu-item-link"
+               routerLinkActive="p-menu-item-link-active"
+               [routerLinkActiveOptions]="{ exact: true }">
+              <span class="pi pi-cog p-menu-item-icon"></span>
+              <span class="p-menu-item-label ml-2">General</span>
+            </a>
+          </div>
+        </div>
+      </ng-template>
+    </p-menu>
+  </aside>
+
+  <main class="club-settings__content">
+    <router-outlet></router-outlet>
+  </main>
+</main>

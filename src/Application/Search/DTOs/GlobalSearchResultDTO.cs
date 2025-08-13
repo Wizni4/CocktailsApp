@@ -5,9 +5,6 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Application.Stock;
-using CocktailsApp.Domain.OrderAggregate;
-using CocktailsApp.Domain.SeedWork;
 /*
  * Framework namespaces
  */
@@ -15,10 +12,12 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Search
 {
-    public class GlobalSearchResultDTO : EntityDTO
+    public sealed class GlobalSearchResultDTO : EntityDTO, IImageDTO
     {
-        public required string Name { get; set; }
-        public required Type Type { get; set; }
-        public required int Relevance { get; set; }
+        public Guid Id { get; set; } = default;
+        public string Name { get; set; } = default!;
+        public string Type { get; set; } = default!;
+        public string? ImageId { get; set; } = null;
+        public int Relevance { get; set; } = default!;
     }
 }

@@ -13,30 +13,35 @@ using Microsoft.Extensions.Options;
 /*
  * Application namespaces
  */
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 namespace CocktailsApp.Application.Club
 {
     public class ClubService(
         IOptions<ClubSettingsDTO> clubSettings,
-        IUnitOfWork unitOfWork
+        IClubReader clubReader,
+        IMapper autoMapper
     ) : IClubService
     {
         private readonly IOptions<ClubSettingsDTO> _clubSettings = clubSettings;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IClubReader _clubReader = clubReader;
+        private readonly IMapper _autoMapper = autoMapper;
 
-        public async Task<ClubLimitInfoDTO> GetClubLimitInfoAsync(Guid userId)
+        public async Task<ClubLimitInfoDTO> GetClubLimitInfoAsync(Guid userId, CancellationToken cancellationToken)
         {
             // Get number of club owned by the user
-            var ownedClubs = (await _unitOfWork.Set<DomainClub>().ReadRangeAsync(new ClubByOwnerIdSpecification(userId))).Count();
+            var ownedClubs = (await _clubReader.ListAsync(
+                new ClubByIdQuerySpecification(userId, _autoMapper),
+                cancellationToken)).Count();
 
             // Get the max number of owned clubs
             var maxOwnedClubs = _clubSettings.Value.MaxOwnedClubs;
 
-            return new ClubLimitInfoDTO(
-                ownedClubs,
-                maxOwnedClubs,
-                ownedClubs < maxOwnedClubs);
+            return new ClubLimitInfoDTO()
+            {
+                MaxNumberOfOwnedClubs = maxOwnedClubs,
+                NumberOfOwnedClubs = ownedClubs,
+                CanCreateClub = ownedClubs < maxOwnedClubs
+            };
         }
     }
 }

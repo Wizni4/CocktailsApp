@@ -14,7 +14,9 @@ using MediatR;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public record SignUpCommand(string Username, string Email, string Password) : ICommand<Unit>
-    {
-    }
+    public record SignUpCommand(
+        string Username,
+        string Email,
+        string Password
+    ) : ICommand<Unit>;
 }

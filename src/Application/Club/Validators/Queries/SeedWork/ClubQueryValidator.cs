@@ -12,11 +12,10 @@ namespace CocktailsApp.Application.Club
 {
     public class ClubQueryValidator<TQuery> : AbstractValidator<TQuery> where TQuery : IClubQuery
     {
-        public ClubQueryValidator(IClubRepository clubRepository)
+        public ClubQueryValidator()
         {
             RuleFor(q => q.ClubId)
-                .ValidGuid()
-                .IsClubExists(clubRepository);
+                .ValidGuid();
         }
     }
 }

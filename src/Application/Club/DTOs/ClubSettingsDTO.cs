@@ -1,14 +1,14 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Application.SeedWork;
 /*
  * Framework namespaces
  */
 
 namespace CocktailsApp.Application.Club
 {
-    public class ClubSettingsDTO
+    public sealed class ClubSettingsDTO: EntityDTO
     {
         public int MaxOwnedClubs { get; set; }
     }

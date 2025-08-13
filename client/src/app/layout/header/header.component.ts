@@ -17,6 +17,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css'],
   imports: [
     AvatarModule,
     AvatarGroupModule,

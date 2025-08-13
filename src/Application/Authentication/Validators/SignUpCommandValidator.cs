@@ -20,15 +20,10 @@ namespace CocktailsApp.Application.Authentication
 {
     public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
     {
-        public SignUpCommandValidator(IUserRepository userRepository)
+        public SignUpCommandValidator()
         {
             RuleFor(c => c.Username)
-                .ValidString()
-                .MustAsync(async (userName, _) =>
-                {
-                    var user = await userRepository.ReadAsync(new UserByUsernameSpecification(userName!));
-                    return user is null;
-                }).WithMessage(c => $"User '{c.Username}' already exist.");
+                .ValidString();
 
             RuleFor(c => c.Email)
                 .ValidString()

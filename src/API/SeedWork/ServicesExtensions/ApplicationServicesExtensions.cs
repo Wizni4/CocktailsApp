@@ -9,22 +9,33 @@ using CocktailsApp.API.Authentication;
 using CocktailsApp.API.Club;
 using CocktailsApp.API.Cocktail;
 using CocktailsApp.API.Ingredient;
+using CocktailsApp.API.IngredientPricing;
+using CocktailsApp.API.Order;
 using CocktailsApp.API.Search;
 using CocktailsApp.API.Shared;
+using CocktailsApp.API.Stock;
 using CocktailsApp.API.User;
 using CocktailsApp.Application.Authentication;
 using CocktailsApp.Application.Club;
 using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.Ingredient;
+using CocktailsApp.Application.IngredientPricing;
+using CocktailsApp.Application.Order;
 using CocktailsApp.Application.Search;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.Shared;
+using CocktailsApp.Application.Stock;
 using CocktailsApp.Application.User;
+using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Infrastructure.ClubAggregate;
+
+
 
 /*
  * Infrastructure namespaces
  */
 using CocktailsApp.Infrastructure.SeedWork;
+using CocktailsApp.Infrastructure.UserAggregate;
 
 using FluentValidation;
 
@@ -50,6 +61,15 @@ namespace CocktailsApp.API.SeedWork
             // -- Ingredient
             services.AddIngredientRepositories();
 
+            // -- IngredientPricing
+            services.AddIngredientPricingRepositories();
+
+            // -- Order
+            services.AddOrderRepositories();
+
+            // -- Stock
+            services.AddStockRepositories();
+
             // -- User
             services.AddUserRepositories();
 
@@ -60,11 +80,56 @@ namespace CocktailsApp.API.SeedWork
             return services;
         }
 
-        public static IServiceCollection AddEventDispatcher(this IServiceCollection services)
+        public static IServiceCollection AddReaders(this IServiceCollection services)
         {
-            // -- SeedWork
-            services.AddScoped<DomainEventDispatcher>();
+            // -- Club
+            services.AddClubReaders();
 
+            // -- Cocktail
+            services.AddCocktailReaders();
+
+            // -- Ingredient
+            services.AddIngredientReaders();
+
+            // -- IngredientPricing
+            services.AddIngredientPricingReaders();
+
+            // -- Order
+            services.AddOrderReaders();
+
+            // -- Stock
+            services.AddStockReaders();
+
+            // -- User
+            services.AddUserReaders();
+
+            return services;
+        }
+
+        public static IServiceCollection AddProjectors(this IServiceCollection services)
+        {
+            // -- Club
+            services.AddClubProjectors();
+
+            // -- Cocktail
+            services.AddCocktailProjectors();
+
+            // -- Ingredient
+            services.AddIngredientProjectors();
+
+            // -- IngredientPricing
+            services.AddIngredientPricingProjectors();
+
+            // -- Order
+            services.AddOrderProjectors();
+
+            // -- Stock
+            services.AddStockProjectors();
+
+            // -- User
+            services.AddUserProjectors();
+
+            services.AddScoped<ProjectionBus>();
             return services;
         }
 
@@ -72,21 +137,33 @@ namespace CocktailsApp.API.SeedWork
         {
             // Application mapper
             services.AddAutoMapper(
-                typeof(ClubApplicationMapperProfile),
-                typeof(CocktailApplicationMapperProfile),
-                typeof(IngredientApplicationMapperProfile),
-                typeof(SearchApplicationMapperProfile),
-                typeof(SharedApplicationMapperProfile),
-                typeof(UserApplicationMapperProfile));
+                typeof(ClubDTOProfile),
+                typeof(CocktailDTOProfile),
+                typeof(IngredientDTOProfile),
+                typeof(IngredientPricingDTOProfile),
+                typeof(OrderDTOProfile),
+                typeof(SearchDTOProfile),
+                typeof(SharedDTOProfile),
+                typeof(StockDTOProfile),
+                typeof(UserDTOProfile));
 
             // API mapper
             services.AddAutoMapper(
-                typeof(AuthAPIMapperProfile),
-                typeof(ClubAPIMapperProfile),
-                typeof(CocktailAPIMapperProfile),
-                typeof(IngredientAPIMapperProfile),
-                typeof(SharedAPIMapperProfile),
-                typeof(UserAPIMapperProfile));
+                typeof(AuthResponseProfile),
+                typeof(ClubResponseProfile),
+                typeof(CocktailResponseProfile),
+                typeof(IngredientResponseProfile),
+                typeof(IngredientPricingResponseProfile),
+                typeof(OrderResponseProfile),
+                typeof(SearchResponseProfile),
+                typeof(SharedResponseProfile),
+                typeof(StockResponseProfile),
+                typeof(UserResponseProfile));
+
+            // Infra mapper
+            services.AddAutoMapper(
+                typeof(ClubInfraProfile),
+                typeof(UserInfraProfile));
 
             return services;
         }
@@ -110,11 +187,24 @@ namespace CocktailsApp.API.SeedWork
                 // -- Ingredient
                 cfg.RegisterServicesFromAssembly(typeof(IngredientDTO).Assembly);
 
+                // -- IngredientPricing
+                cfg.RegisterServicesFromAssembly(typeof(IngredientPricingDTO).Assembly);
+
+                // -- Order
+                cfg.RegisterServicesFromAssembly(typeof(OrderDTO).Assembly);
+
+                // -- Stock
+                cfg.RegisterServicesFromAssembly(typeof(StockDTO).Assembly);
+
                 // -- Search
                 cfg.RegisterServicesFromAssembly(typeof(GlobalSearchResultDTO).Assembly);
 
                 // -- User
                 cfg.RegisterServicesFromAssembly(typeof(UserDTO).Assembly);
+
+                // The projector bridge lives in Infra; events live in Domain
+                cfg.RegisterServicesFromAssembly(typeof(Projector<>).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(IDomainEvent).Assembly);
             });
 
             return services;
@@ -133,6 +223,15 @@ namespace CocktailsApp.API.SeedWork
 
             // -- Ingredient
             services.AddValidatorsFromAssembly(typeof(IngredientDTO).Assembly);
+
+            // -- IngredientPricing
+            services.AddValidatorsFromAssembly(typeof(IngredientPricingDTO).Assembly);
+
+            // -- Order
+            services.AddValidatorsFromAssembly(typeof(OrderDTO).Assembly);
+
+            // -- Stock
+            services.AddValidatorsFromAssembly(typeof(StockDTO).Assembly);
 
             // -- Search
             services.AddValidatorsFromAssembly(typeof(GlobalSearchResultDTO).Assembly);
@@ -157,14 +256,31 @@ namespace CocktailsApp.API.SeedWork
             // -- Ingredient
             services.AddIngredientApplicationServices();
 
+            // -- IngredientPricing
+            services.AddIngredientPricingApplicationServices();
+
+            // -- Order
+            services.AddOrderApplicationServices();
+
             // -- Search
             services.AddSearchApplicationServices();
 
             // -- Shared
             services.AddSharedApplicationServices();
 
+            // -- Stock
+            services.AddStockApplicationServices();
+
             // -- User
             services.AddUserApplicationServices();
+
+            return services;
+        }
+
+        public static IServiceCollection AddBackgroundServices(this IServiceCollection services)
+        {
+            // Background outbox dispatcher
+            services.AddHostedService<OutboxDispatcher>();
 
             return services;
         }

@@ -4,18 +4,20 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 
 namespace CocktailsApp.Application.Cocktail
 {
     public class SearchCocktailQueryHandler(
         ICocktailsSearchService cocktailsSearchService
-    ) : IQueryHandler<SearchCocktailQuery, IEnumerable<CocktailDTO>>
+    ) : IQueryHandler<SearchCocktailQuery, ReadOnlyCollection<CocktailDTO>>
     {
         private readonly ICocktailsSearchService _cocktailsSearchService = cocktailsSearchService;
 
-        public Task<IEnumerable<CocktailDTO>> Handle(SearchCocktailQuery request, CancellationToken cancellationToken)
+        public Task<ReadOnlyCollection<CocktailDTO>> Handle(SearchCocktailQuery request, CancellationToken cancellationToken)
         {
-            return _cocktailsSearchService.GetSearchResultsAsync(request);
+            return _cocktailsSearchService.GetSearchResultsAsync(request, cancellationToken);
         }
     }
 }

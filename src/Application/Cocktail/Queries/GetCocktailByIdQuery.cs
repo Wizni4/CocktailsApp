@@ -7,5 +7,5 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public record GetCocktailByIdQuery(Guid CocktailId) : IQuery<CocktailDTO>;
+    public record GetCocktailByIdQuery(Guid CocktailId) : IQuery<CocktailDTO?>;
 }

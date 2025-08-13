@@ -13,10 +13,9 @@ using MediatR;
 
 namespace CocktailsApp.Application.Club
 {
-    public interface IClubCommand : IBaseRequest
+    public interface IClubCommand : ICommand
     {
         Guid ClubId { get; }
-        Guid ActorId { get; }
     }
-    public record ClubCommand<T>(Guid ClubId, Guid ActorId) : ICommand<T>, IClubCommand;
+    public record ClubCommand<T>(Guid ClubId, Guid ActorId) : Command<T>(ActorId), IClubCommand;
 }

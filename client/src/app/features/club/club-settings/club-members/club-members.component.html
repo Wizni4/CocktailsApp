@@ -1,0 +1,25 @@
+<main class="club-members__main">
+  <ng-container *ngIf="(clubMembers$ | async) as clubMembers">
+    <p-table [value]="clubMembers"
+             scrollable="true"
+             scrollHeight="20rem"
+             size="small">
+      <ng-template #header>
+        <tr>
+          <th>
+            Name
+            <p-columnFilter type="text" field="name"/>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-clubMember>
+        <td>
+          <div class="flex items-center gap-2">
+            <img [src]="clubMember.imageUrl" style="vertical-align: middle; height:1.5rem;" />
+            <span>{{ clubMember.name }}</span>
+          </div>
+        </td>
+      </ng-template>
+    </p-table>
+  </ng-container>
+</main>

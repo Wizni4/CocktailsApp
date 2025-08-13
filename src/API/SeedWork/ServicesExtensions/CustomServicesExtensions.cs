@@ -46,7 +46,9 @@ namespace CocktailsApp.API.SeedWork
         {
             services.AddProblemDetails(options =>
             {
-                options.IncludeExceptionDetails = (ctx, ex) => false; // 🔒 Never include stack traces
+                // Show exception details (stack traces) only in Development
+                options.IncludeExceptionDetails = (ctx, ex) =>
+                    ctx.RequestServices.GetRequiredService<IHostEnvironment>().IsDevelopment();  // 🔒 Never include stack traces
 
                 options.Map<ValidationException>(ex =>
                     new ProblemDetails

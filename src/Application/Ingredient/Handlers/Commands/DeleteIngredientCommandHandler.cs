@@ -5,23 +5,25 @@ using CocktailsApp.Application.SeedWork;
 
 using MediatR;
 
-using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
 
 namespace CocktailsApp.Application.Ingredient
 {
     public class DeleteIngredientCommandHandler(
+        IIngredientRepository ingredientRepository,
         IUnitOfWork unitOfWork
     ) : ICommandHandler<DeleteIngredientCommand, Unit>
     {
+        private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Unit> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)
         {
-            var ingredient = await _unitOfWork.Set<DomainIngredient>().ReadAsync(
-                new IngredientByIdSpecification(request.Id));
+            var ingredient = await _ingredientRepository.ReadAsync(
+                new IngredientByIdCommandSpecification(request.Id),
+                cancellationToken);
 
-            _unitOfWork.Set<DomainIngredient>().Delete(ingredient!);
-            await _unitOfWork.SaveChangesAsync();
+            await _ingredientRepository.DeleteAsync(ingredient!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

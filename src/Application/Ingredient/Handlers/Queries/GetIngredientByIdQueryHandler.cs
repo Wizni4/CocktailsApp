@@ -6,25 +6,22 @@ using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
 
-using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
-
 
 namespace CocktailsApp.Application.Ingredient
 {
     public class GetIngredientByIdQueryHandler(
-        IMapper autoMapper,
-        IUnitOfWork unitOfWork
-    ) : IQueryHandler<GetIngredientByIdQuery, IngredientDTO>
+        IIngredientReader ingredientReader,
+        IMapper autoMapper
+    ) : IQueryHandler<GetIngredientByIdQuery, IngredientDTO?>
     {
+        private readonly IIngredientReader _ingredientReader = ingredientReader;
         private readonly IMapper _autoMapper = autoMapper;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<IngredientDTO> Handle(GetIngredientByIdQuery request, CancellationToken cancellationToken)
+        public Task<IngredientDTO?> Handle(GetIngredientByIdQuery request, CancellationToken cancellationToken)
         {
-            var ingredient = await _unitOfWork.Set<DomainIngredient>().ReadAsync(
-                new IngredientByIdSpecification(request.IngredientId));
-
-            return _autoMapper.Map<IngredientDTO>(ingredient);
+            return _ingredientReader.FirstOrDefaultAsync(
+                new IngredientByIdQuerySpecification(request.IngredientId, _autoMapper),
+                cancellationToken);
         }
     }
 }

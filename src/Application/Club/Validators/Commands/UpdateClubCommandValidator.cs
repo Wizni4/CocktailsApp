@@ -18,12 +18,7 @@ namespace CocktailsApp.Application.Club
 {
     public class UpdateClubCommandValidator : ClubCommandValidator<UpdateClubCommand>
     {
-        public UpdateClubCommandValidator(IClubRepository clubRepository)
-            : base(clubRepository, [
-                ClubPermissionType.ChangeAddress,
-                ClubPermissionType.ChangeName,
-                ClubPermissionType.ChangeDescription,
-                ClubPermissionType.ChangeVisibility])
+        public UpdateClubCommandValidator()
         {
             When(c => c.Address is not null, () =>
             {
@@ -44,7 +39,6 @@ namespace CocktailsApp.Application.Club
             {
                 RuleFor(c => c.Visibility).ValidEnum();
             });
-
         }
     }
 }

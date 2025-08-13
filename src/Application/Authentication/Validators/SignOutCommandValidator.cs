@@ -15,7 +15,7 @@ using FluentValidation;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public class SignOutCommandValidator : AbstractValidator<SignOutCommand>
+    public class SignOutCommandValidator : CommandValidator<SignOutCommand>
     {
         public SignOutCommandValidator()
         {

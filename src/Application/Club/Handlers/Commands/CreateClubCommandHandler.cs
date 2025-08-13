@@ -12,7 +12,6 @@ using CocktailsApp.Domain.Shared;
 /*
  * Application namespaces
  */
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 namespace CocktailsApp.Application.Club
 {
@@ -27,11 +26,13 @@ namespace CocktailsApp.Application.Club
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public class CreateClubCommandHandler(
         IUnitOfWork unitOfWork,
-        IMapper autoMapper
+        IMapper autoMapper,
+        IClubRepository clubRepository
     ) : ICommandHandler<CreateClubCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
+        private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
         /// Handles the club creation command by building and saving a new club entity.
@@ -53,8 +54,8 @@ namespace CocktailsApp.Application.Club
                 .WithVisibility(request.Visibility)
                 .Build();
 
-            _unitOfWork.Set<DomainClub>().Create(club);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.CreateAsync(club, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return club.Id;
         }
     }

@@ -5,5 +5,5 @@
 
 namespace CocktailsApp.Application.Club
 {
-    public class GetClubRolesQueryValidator(IClubRepository clubRepository) : ClubQueryValidator<GetClubRolesQuery>(clubRepository);
+    public class GetClubRolesQueryValidator : ClubQueryValidator<GetClubRolesQuery>;
 }

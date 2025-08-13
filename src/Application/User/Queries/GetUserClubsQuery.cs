@@ -10,6 +10,8 @@ using CocktailsApp.Application.Club;
  */
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 /*
  * Domain namespaces
  */

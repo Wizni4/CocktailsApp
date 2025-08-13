@@ -9,25 +9,26 @@ using CocktailsApp.Application.Shared;
 
 using Microsoft.Extensions.Options;
 
+using System.Collections.ObjectModel;
+
 
 namespace CocktailsApp.Application.Ingredient
 {
     public class IngredientSearchService(
-        IMapper autoMapper,
-        IIngredientRepository ingredientRepository,
-        IOptions<SearchSettingsDTO> options
+        IIngredientReader ingredientReader,
+        IOptions<SearchSettingsDTO> options,
+        IMapper autoMapper
     ) : SearchService<IngredientDTO, SearchIngredientQuery>(options), IIngredientSearchService
     {
+        private readonly IIngredientReader _ingredientReader = ingredientReader;
         private readonly IMapper _autoMapper = autoMapper;
-        private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
-        public override async Task<IEnumerable<IngredientDTO>> GetSearchResultsAsync(SearchIngredientQuery query)
+        public override async Task<ReadOnlyCollection<IngredientDTO>> GetSearchResultsAsync(SearchIngredientQuery query, CancellationToken cancellationToken)
         {
             var searchLimit = _options.Value.Limit;
 
-            var ingredients = await _ingredientRepository.ReadRangeAsync(
-                new IngredientByTermSpecification(query.Term), limit: searchLimit);
-
-            return _autoMapper.Map<IEnumerable<IngredientDTO>>(ingredients);
+            return (await _ingredientReader.ListAsync(
+                new SearchIngredientQuerySpecification(searchLimit, query.Term, _autoMapper),
+                cancellationToken)).ToList().AsReadOnly();
         }
     }
 }

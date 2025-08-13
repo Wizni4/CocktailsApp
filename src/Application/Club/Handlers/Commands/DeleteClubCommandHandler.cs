@@ -4,7 +4,6 @@
 /*
  * Framework namespaces
  */
-using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
 
@@ -13,7 +12,6 @@ using MediatR;
 /*
  * Application namespaces
  */
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 namespace CocktailsApp.Application.Club
 {
@@ -24,12 +22,10 @@ namespace CocktailsApp.Application.Club
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public class DeleteClubCommandHandler(
         IUnitOfWork unitOfWork,
-        IClubRepository clubRepository,
-        IMapper autoMapper
+        IClubRepository clubRepository
     ) : ICommandHandler<DeleteClubCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _autoMapper = autoMapper;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>
@@ -45,16 +41,18 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(DeleteClubCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubCommandSpecification(request.ClubId),
+                cancellationToken);
 
             // Delegate the club removal to the domain
             club!.DeleteClub(request.ActorId);
 
             // Delete the club from the DB
-            _clubRepository.Delete(club);
+            await _clubRepository.DeleteAsync(club, cancellationToken);
 
             // Persist the changes.
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

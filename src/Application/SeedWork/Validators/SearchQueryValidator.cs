@@ -4,10 +4,12 @@
 
 using FluentValidation;
 
+using System.Collections.ObjectModel;
+
 namespace CocktailsApp.Application.SeedWork
 {
     public abstract class SearchQueryValidator<TSearchQuery, TResult>
-        : AbstractValidator<TSearchQuery> where TSearchQuery : SearchQuery<IEnumerable<TResult>> where TResult : EntityDTO
+        : AbstractValidator<TSearchQuery> where TSearchQuery : SearchQuery<ReadOnlyCollection<TResult>> where TResult : EntityDTO
     {
         public SearchQueryValidator()
         {

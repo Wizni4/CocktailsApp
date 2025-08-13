@@ -8,5 +8,8 @@ using MediatR;
 
 namespace CocktailsApp.Application.Ingredient
 {
-    public record DeleteIngredientCommand(Guid Id) : ICommand<Unit>;
+    public record DeleteIngredientCommand(
+        Guid Id,
+        Guid ActorId
+    ) : Command<Unit>(ActorId);
 }

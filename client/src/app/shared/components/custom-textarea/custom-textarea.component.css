@@ -19,10 +19,7 @@
     width: 100%;
     resize: vertical;
     box-sizing: border-box;
-    background-color: var(--surface-card);
     border-radius: 6px;
-    padding-block: var(--p-inputtext-padding-x);
-    padding-inline: var(--p-inputtext-padding-x);
     font-size: 1rem;
     font-family: inherit;
     font-feature-settings: inherit;

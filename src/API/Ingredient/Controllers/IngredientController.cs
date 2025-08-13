@@ -68,7 +68,8 @@ namespace CocktailsApp.API.Ingredient
         [SwaggerOperation(Summary = "Delete an ingredient.")]
         public async Task<IActionResult> DeleteIngredient(Guid ingredientId)
         {
-            var command = new DeleteIngredientCommand(ingredientId);
+            var userId = this.GetUserId();
+            var command = new DeleteIngredientCommand(ingredientId, userId);
             await _mediator.Send(command);
             return NoContent();
         }
@@ -103,10 +104,12 @@ namespace CocktailsApp.API.Ingredient
         [SwaggerIgnore]
         public async Task<ActionResult<string>> UploadIngredientImage(Guid ingredientId, [FromForm] IFormFile image)
         {
+            var userId = this.GetUserId();
             var command = new UploadIngredientImageCommand(
                 ingredientId,
                 image.OpenReadStream(),
-                image.FileName);
+                image.FileName,
+                userId);
             var response = $"{_options.Value.PublicBaseUrl}/{await _mediator.Send(command)}";
             return Ok(response);
         }

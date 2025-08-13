@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
@@ -11,6 +11,8 @@ import { AuthInterceptor } from './core/auth.interceptor';
 import { AuthService } from './features/auth/auth.service';
 import { of, firstValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 
 export function initializeApp(authService: AuthService): () => Promise<void> {
   return() =>
@@ -36,7 +38,7 @@ export const appConfig: ApplicationConfig = {
           },
         }),
         options: {
-          darkModeSelector: 'none'
+          darkModeSelector: '.my-app-dark'
         }
       }
     }),
@@ -51,5 +53,10 @@ export const appConfig: ApplicationConfig = {
       deps: [AuthService],
       multi: true
     },
+    // bring in the ngx-loading-bar modules as providers
+    importProvidersFrom(
+      LoadingBarRouterModule,
+      LoadingBarHttpClientModule
+    )
   ],
 };

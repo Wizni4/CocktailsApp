@@ -40,7 +40,7 @@ namespace CocktailsApp.API.Club
                 new AddressDTO()
                 {
                     Street = request.Address.Street,
-                    StreetNumber = request.Address.StreetNumber,
+                    StreetNumber= request.Address.StreetNumber,
                     City = request.Address.City,
                     PostalCode = request.Address.PostalCode,
                     State = request.Address.State,
@@ -55,7 +55,7 @@ namespace CocktailsApp.API.Club
 
             // Query the newly created club
             var query = new GetClubByIdQuery(clubId);
-            var clubDTO = await _mediator.Send(command);
+            var clubDTO = await _mediator.Send(query);
 
             // Convert the DTO to response model
             var response = _autoMapper.Map<ClubResponse>(clubDTO);

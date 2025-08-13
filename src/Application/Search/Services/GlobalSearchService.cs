@@ -15,10 +15,7 @@ using CocktailsApp.Application.User;
 
 using Microsoft.Extensions.Options;
 
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
-using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
-using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
-using DomainUser = CocktailsApp.Domain.UserAggregate.User;
+using System.Collections.ObjectModel;
 /*
  * Framework namespaces
  */
@@ -27,46 +24,56 @@ using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 namespace CocktailsApp.Application.Search
 {
     public class GlobalSearchService(
-        IUnitOfWork unitOfWork,
+        IClubReader clubReader,
+        IIngredientReader ingredientReader,
+        ICocktailReader cocktailReader,
+        IUserReader userReader,
         IMapper autoMapper,
         IOptions<SearchSettingsDTO> options
     ) : SearchService<GlobalSearchResultDTO, GlobalSearchQuery>(options), IGlobalSearchService
     {
+        private readonly IClubReader _clubReader = clubReader;
+        private readonly IIngredientReader _ingredientReader = ingredientReader;
+        private readonly ICocktailReader _cocktailReader = cocktailReader;
+        private readonly IUserReader _userReader = userReader;
         private readonly IMapper _autoMapper = autoMapper;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        public override async Task<IEnumerable<GlobalSearchResultDTO>> GetSearchResultsAsync(GlobalSearchQuery query)
+        public override async Task<ReadOnlyCollection<GlobalSearchResultDTO>> GetSearchResultsAsync(GlobalSearchQuery query, CancellationToken cancellationToken)
         {
             // Get the search limit
             var searchLimit = _options.Value.Limit;
 
             // Get cocktails by name
-            var cocktails = _unitOfWork.Set<DomainCocktail>()
-                .ReadRangeAsync(new CocktailByTermSpecification(query.Term), limit: searchLimit);
+            var cocktailDTOs = _cocktailReader.ListAsync(
+                new SearchCocktailQuerySpecification(searchLimit, query.Term, _autoMapper),
+                cancellationToken);
 
             // Get clubs by name
-            var clubs = _unitOfWork.Set<DomainClub>()
-                .ReadRangeAsync(new ClubByTermSpecification(query.Term, query.UserId), limit: searchLimit);
+            var clubDTOs = _clubReader.ListAsync(
+                new SearchClubQuerySpecification(searchLimit, query.Term, query.UserId, _autoMapper),
+                cancellationToken);
 
             // Get ingredients by name
-            var ingredients = _unitOfWork.Set<DomainIngredient>()
-                .ReadRangeAsync(new IngredientByTermSpecification(query.Term), limit: searchLimit);
+            var ingredientDTOs = _ingredientReader.ListAsync(
+                new SearchIngredientQuerySpecification(searchLimit, query.Term, _autoMapper),
+                cancellationToken);
 
             // Get users by Username
-            var users = _unitOfWork.Set<DomainUser>()
-                .ReadRangeAsync(new UserByTermSpecification(query.Term), limit: searchLimit);
+            var userDTOs = _userReader.ListAsync(
+                new SearchUserQuerySpecification(searchLimit, query.Term, _autoMapper),
+                cancellationToken);
 
             // Wait queries to complete
             await Task.WhenAll(
-                cocktails,
-                ingredients,
-                users,
-                clubs);
+                cocktailDTOs,
+                ingredientDTOs,
+                userDTOs,
+                clubDTOs);
 
             // Map result and filter by score
-            var results = _autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await clubs)
-                .Concat(_autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await cocktails))
-                .Concat(_autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await ingredients))
-                .Concat(_autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await users))
+            var results = _autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await clubDTOs)
+                .Concat(_autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await cocktailDTOs))
+                .Concat(_autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await ingredientDTOs))
+                .Concat(_autoMapper.Map<IEnumerable<GlobalSearchResultDTO>>(await userDTOs))
                 .Select(r =>
                 {
                     r.Relevance = GetRelevanceScore(query.Term, r.Name);
@@ -74,7 +81,9 @@ namespace CocktailsApp.Application.Search
                 })
                 .OrderByDescending(r => r.Relevance)
                 .ThenBy(r => r.Name)
-                .Take(searchLimit);
+                .Take(searchLimit)
+                .ToList()
+                .AsReadOnly();
 
             return results;
         }

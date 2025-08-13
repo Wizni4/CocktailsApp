@@ -53,8 +53,9 @@ namespace CocktailsApp.API.Authentication
         [Authorize]
         public new async Task<IActionResult> SignOut()
         {
+            var userId = this.GetUserId();
             var username = this.GetUsername();
-            var command = new SignOutCommand(username);
+            var command = new SignOutCommand(userId, username);
             await _mediator.Send(command);
             _cookieService.DeleteRefreshTokenCookie();
             return NoContent();
@@ -64,7 +65,8 @@ namespace CocktailsApp.API.Authentication
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<SignInResponse>> RefreshToken()
         {
-            var response = await _mediator.Send(new RefreshTokenCommand(_cookieService.GetRefreshTokenFromCookie()));
+            var response = await _mediator.Send(new RefreshTokenCommand(
+                _cookieService.GetRefreshTokenFromCookie()));
             return Ok(_autoMapper.Map<SignInResponse>(response));
         }
     }

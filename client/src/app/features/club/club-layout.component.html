@@ -1,0 +1,15 @@
+<main class="club-main">
+  <p-tabs class="shadow-2" [value]="activeTab">
+    <p-tablist>
+      <p-tab value="overview" [routerLink]="['/clubs', clubId]">
+        <i class="pi pi-home"></i>
+        Overview
+      </p-tab>
+      <p-tab value="settings" [routerLink]="['/clubs', clubId, 'settings']">
+        <i class="pi pi-cog"></i>
+        Settings
+      </p-tab>
+    </p-tablist>
+  </p-tabs>
+  <router-outlet></router-outlet>
+</main>

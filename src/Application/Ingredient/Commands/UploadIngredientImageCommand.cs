@@ -4,14 +4,13 @@
 
 using CocktailsApp.Application.SeedWork;
 
-using MediatR;
-
 
 namespace CocktailsApp.Application.Ingredient
 {
     public record UploadIngredientImageCommand(
         Guid IngredientId,
         Stream Image,
-        string ImageName
-    ) : ICommand<string>;
+        string ImageName,
+        Guid ActorId
+    ) : Command<string>(ActorId);
 }

@@ -11,7 +11,7 @@ namespace CocktailsApp.Application.Club
 {
     public class GetClubByIdQueryValidator : ClubQueryValidator<GetClubByIdQuery>
     {
-        public GetClubByIdQueryValidator(IClubRepository clubRepository) : base(clubRepository)
+        public GetClubByIdQueryValidator()
         {
         }
     }

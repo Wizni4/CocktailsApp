@@ -2,14 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using CocktailsApp.Domain.SeedWork;
+
+using System.Collections.ObjectModel;
 
 
 namespace CocktailsApp.Application.SeedWork
 {
     public interface ISearchService<TResult, TSearchQuery>
-        : IService where TResult : EntityDTO where TSearchQuery : SearchQuery<IEnumerable<TResult>>
+        : IService
+        where TResult : EntityDTO
+        where TSearchQuery : SearchQuery<ReadOnlyCollection<TResult>>
     {
-        Task<IEnumerable<TResult>> GetSearchResultsAsync(TSearchQuery query);
+        Task<ReadOnlyCollection<TResult>> GetSearchResultsAsync(TSearchQuery query, CancellationToken cancellationToken);
     }
 }

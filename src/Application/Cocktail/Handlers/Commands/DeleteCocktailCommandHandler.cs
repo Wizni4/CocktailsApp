@@ -6,23 +6,25 @@ using CocktailsApp.Application.SeedWork;
 
 using MediatR;
 
-using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 
 namespace CocktailsApp.Application.Cocktail
 {
     public class DeleteCocktailCommandHandler(
+        ICocktailRepository cocktailRepository,
         IUnitOfWork unitOfWork
     ) : ICommandHandler<DeleteCocktailCommand, Unit>
     {
+        private readonly ICocktailRepository _cocktailRepository = cocktailRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Unit> Handle(DeleteCocktailCommand request, CancellationToken cancellationToken)
         {
-            var cocktail = await _unitOfWork.Set<DomainCocktail>().ReadAsync(
-                new CocktailByIdSpecification(request.Id));
+            var cocktail = await _cocktailRepository.ReadAsync(
+                new CocktailByIdCommandSpecification(request.Id),
+                cancellationToken);
 
-            _unitOfWork.Set<DomainCocktail>().Delete(cocktail!);
-            await _unitOfWork.SaveChangesAsync();
+            await _cocktailRepository.DeleteAsync(cocktail!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

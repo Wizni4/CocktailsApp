@@ -5,14 +5,18 @@ using CocktailsApp.Application.Shared;
 
 using Microsoft.Extensions.Options;
 
+using System.Collections.ObjectModel;
+
 
 namespace CocktailsApp.Application.SeedWork
 {
     public abstract class SearchService<TResult, TSearchQuery>(IOptions<SearchSettingsDTO> options)
-        : ISearchService<TResult, TSearchQuery> where TResult : EntityDTO where TSearchQuery : SearchQuery<IEnumerable<TResult>>
+        : ISearchService<TResult, TSearchQuery>
+        where TResult : EntityDTO
+        where TSearchQuery : SearchQuery<ReadOnlyCollection<TResult>>
     {
         private protected IOptions<SearchSettingsDTO> _options = options;
-        public abstract Task<IEnumerable<TResult>> GetSearchResultsAsync(TSearchQuery query);
+        public abstract Task<ReadOnlyCollection<TResult>> GetSearchResultsAsync(TSearchQuery query, CancellationToken cancellationToken);
 
         private protected int GetRelevanceScore(string term, string target)
         {

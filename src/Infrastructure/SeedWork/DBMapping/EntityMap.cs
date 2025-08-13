@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using CocktailsApp.Domain.IngredientAggregate;
 using CocktailsApp.Domain.SeedWork;
 
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +20,11 @@ namespace CocktailsApp.Infrastructure.SeedWork
             // Properties
             builder.Property(e => e.CreationDate)
                 .IsRequired();
+            builder.Property(e => e.CreatedBy)
+                .IsRequired();
             builder.Property(e => e.UpdateDate)
                 .IsRequired();
-            builder.Property(e => e.CreatedBy)
+            builder.Property(e => e.UpdatedBy)
                 .IsRequired();
             builder.Property(e => e.ImageId);
         }

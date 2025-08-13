@@ -5,7 +5,6 @@ using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.SeedWork;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 /*
 * Framework namespaces
 */
@@ -19,56 +18,58 @@ namespace CocktailsApp.Infrastructure.SeedWork
     /// <typeparam name="T">
     /// The type of the aggregate root entity. Must inherit from <see cref="Entity"/> and implement <see cref="IAggregateRoot"/>.
     /// </typeparam>
-    public class EFRepository<T>(EFDbContext dbContext) : IRepository<T> where T : Entity, IAggregateRoot
+    public abstract class EFRepository<T>(EFWriteDbContext dbContext) : IRepository<T> where T : Entity, IAggregateRoot
     {
-        private readonly EFDbContext _dbContext = dbContext;
+        private protected readonly EFWriteDbContext DbContext = dbContext;
 
         /// <summary>
         /// Persists a single entity to the data store.
         /// </summary>
         /// <param name="entity">The entity to create.</param>
-        public void Create(T entity)
+        public virtual Task CreateAsync(T entity, CancellationToken cancellationToken)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            _dbContext.Set<T>().Add(entity); ;
+            return DbContext.Set<T>().AddAsync(entity, cancellationToken).AsTask();
         }
 
         /// <summary>
         /// Persists a collection of entities to the data store.
         /// </summary>
         /// <param name="entities">The collection of entities to create.</param>
-        public void CreateRange(IEnumerable<T> entities)
+        public virtual Task CreateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
         {
             if (entities == null || entities.Count() == 0)
                 throw new ArgumentNullException(nameof(entities));
 
-            _dbContext.Set<T>().AddRange(entities);
+            return DbContext.Set<T>().AddRangeAsync(entities, cancellationToken);
         }
 
         /// <summary>
         /// Deletes a single entity from the data store.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
-        public void Delete(T entity)
+        public virtual Task DeleteAsync(T entity, CancellationToken cancellationToken)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            _dbContext.Set<T>().Remove(entity);
+            DbContext.Set<T>().Remove(entity);
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Deletes a collection of entities from the data store.
         /// </summary>
         /// <param name="entities">The collection of entities to delete.</param>
-        public void DeleteRange(IEnumerable<T> entities)
+        public virtual Task DeleteRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
         {
             if (entities == null || entities.Count() == 0)
                 throw new ArgumentNullException(nameof(entities));
 
-            _dbContext.Set<T>().RemoveRange(entities);
+            DbContext.Set<T>().RemoveRange(entities);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -76,19 +77,16 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// </summary>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of all entities.</returns>
-        public Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null)
+        public virtual Task<IEnumerable<T>> ReadAllAsync(ICommandSpecification<T> spec, CancellationToken cancellationToken)
         {
-            var query = _dbContext.Set<T>().AsQueryable();
+            var query = DbContext.Set<T>().AsQueryable();
 
             // Add include to the query
-            if (includes != null)
-                query = query.IncludeMultiples(includes);
+            if (spec.Includes != null)
+                query = query.IncludeMultiples(spec.Includes);
 
-            // Add the limit if specified
-            if (limit != null && limit > 0)
-                query = query.Take(limit.Value);
-
-            return Task.FromResult(query.AsEnumerable());
+            return query.ToListAsync(cancellationToken)
+                        .ContinueWith(a => a.Result.AsEnumerable());
         }
 
         /// <summary>
@@ -97,18 +95,15 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="spec">The specification that defines the query criteria.</param>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the matching entity.</returns>
-        public Task<T?> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null)
+        public virtual Task<T?> ReadAsync(ICommandSpecification<T> spec, CancellationToken cancellationToken)
         {
-            if (spec == null)
-                throw new ArgumentNullException(nameof(spec));
-
-            var query = _dbContext.Set<T>().AsQueryable();
+            var query = DbContext.Set<T>().AsQueryable();
 
             // Add include to the query
-            if (includes != null)
-                query = query.IncludeMultiples(includes);
+            if (spec.Includes != null)
+                query = query.IncludeMultiples(spec.Includes);
 
-            return Task.FromResult(query.FirstOrDefault(spec.SpecExpression));
+            return query.FirstOrDefaultAsync(spec.Specification!.SpecExpression, cancellationToken);
         }
 
         /// <summary>
@@ -117,49 +112,45 @@ namespace CocktailsApp.Infrastructure.SeedWork
         /// <param name="spec">The specification that defines the query criteria.</param>
         /// <param name="includes">A function to define related entities to include.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of matching entities.</returns>
-        public Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null)
+        public virtual Task<IEnumerable<T>> ReadRangeAsync(ICommandSpecification<T> spec, CancellationToken cancellationToken)
         {
-            if (spec == null)
-                throw new ArgumentNullException(nameof(spec));
-
-            var query = _dbContext.Set<T>().AsQueryable();
+            var query = DbContext.Set<T>().AsQueryable();
 
             // Add include to the query
-            if (includes != null)
-                query = query.IncludeMultiples(includes);
+            if (spec.Includes != null)
+                query = query.IncludeMultiples(spec.Includes);
 
             // apply the filter
-            query = query.Where(spec.SpecExpression);
+            query = query.Where(spec.Specification!.SpecExpression);
 
-            // Add the limit if specified (must be after the filter)
-            if (limit != null && limit > 0)
-                query = query.Take(limit.Value);
-
-            return Task.FromResult(query.AsEnumerable());
+            return query.ToListAsync(cancellationToken)
+                        .ContinueWith(a => a.Result.AsEnumerable());
         }
 
         /// <summary>
         /// Updates an existing entity in the data store.
         /// </summary>
         /// <param name="entity">The entity to update.</param>
-        public void Update(T entity)
+        public virtual Task UpdateAsync(T entity, CancellationToken cancellationToken)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            _dbContext.Update(entity);
+            DbContext.Update(entity);
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Updates a collection of entities in the data store.
         /// </summary>
         /// <param name="entities">The collection of entities to update.</param>
-        public void UpdateRange(IEnumerable<T> entities)
+        public virtual Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
         {
             if (entities == null || entities.Count() == 0)
                 throw new ArgumentNullException(nameof(entities));
 
-            _dbContext.UpdateRange(entities);
+            DbContext.UpdateRange(entities);
+            return Task.CompletedTask;
         }
     }
 }

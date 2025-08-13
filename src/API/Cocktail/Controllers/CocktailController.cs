@@ -41,7 +41,7 @@ namespace CocktailsApp.API.Cocktail
             // Create a new cocktail
             var command = new CreateCocktailCommand(
                 request.Description,
-                [.. _autoMapper.Map<IEnumerable<IngredientModel>>(request.Ingredients)],
+                [.. _autoMapper.Map<IEnumerable<Application.Cocktail.IngredientModel>>(request.Ingredients)],
                 request.Name,
                 userId
             );
@@ -64,7 +64,8 @@ namespace CocktailsApp.API.Cocktail
         [SwaggerOperation(Summary = "Delete an ingredient.")]
         public async Task<IActionResult> DeleteIngredient(Guid cocktailId)
         {
-            var command = new DeleteCocktailCommand(cocktailId);
+            var userId = this.GetUserId();
+            var command = new DeleteCocktailCommand(cocktailId, userId);
             await _mediator.Send(command);
             return NoContent();
         }

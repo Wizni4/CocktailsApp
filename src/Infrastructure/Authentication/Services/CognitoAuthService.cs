@@ -5,6 +5,7 @@ using CocktailsApp.Application.Authentication;
 
 using Microsoft.Extensions.Options;
 
+
 namespace CocktailsApp.Infrastructure.Authentication
 {
     public class CognitoAuthService(
@@ -29,9 +30,7 @@ namespace CocktailsApp.Infrastructure.Authentication
                     new() { Name = "email", Value = command.Email },
                 }
             };
-
             var response = await _cognitoClient.SignUpAsync(signUpRequest);
-
             return response.UserSub;
         }
 
@@ -54,7 +53,7 @@ namespace CocktailsApp.Infrastructure.Authentication
             if (response.AuthenticationResult == null)
                 throw new UnauthorizedAccessException("Invalid credentials");
 
-            return new AuthDTO
+            return new AuthDTO()
             {
                 AccessToken = response.AuthenticationResult.AccessToken,
                 IdToken = response.AuthenticationResult.IdToken,
@@ -79,11 +78,11 @@ namespace CocktailsApp.Infrastructure.Authentication
             if (response.AuthenticationResult == null)
                 throw new UnauthorizedAccessException("Refresh failed");
 
-            return new AuthDTO
+            return new AuthDTO()
             {
                 AccessToken = response.AuthenticationResult.AccessToken,
                 IdToken = response.AuthenticationResult.IdToken,
-                RefreshToken = refreshToken,
+                RefreshToken = response.AuthenticationResult.RefreshToken,
             };
         }
 

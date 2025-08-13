@@ -9,27 +9,27 @@ using CocktailsApp.Application.Shared;
 
 using Microsoft.Extensions.Options;
 
-using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
+using System.Collections.ObjectModel;
+
 
 namespace CocktailsApp.Application.Cocktail
 {
     public class CocktailSearchService(
-        IMapper autoMapper,
-        IUnitOfWork unitOfWork,
-        IOptions<SearchSettingsDTO> option
+        ICocktailReader cocktailReader,
+        IOptions<SearchSettingsDTO> option,
+        IMapper autoMapper
     ) : SearchService<CocktailDTO, SearchCocktailQuery>(option), ICocktailsSearchService
     {
+        private readonly ICocktailReader _cocktailReader = cocktailReader;
         private readonly IMapper _autoMapper = autoMapper;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public override async Task<IEnumerable<CocktailDTO>> GetSearchResultsAsync(SearchCocktailQuery query)
+        public override async Task<ReadOnlyCollection<CocktailDTO>> GetSearchResultsAsync(SearchCocktailQuery query, CancellationToken cancellationToken)
         {
             var searchLimit = _options.Value.Limit;
 
-            var cocktails = await _unitOfWork.Set<DomainCocktail>().ReadRangeAsync(
-                new CocktailByTermSpecification(query.Term), limit: searchLimit);
-
-            return _autoMapper.Map<IEnumerable<CocktailDTO>>(cocktails);
+            return (await _cocktailReader.ListAsync(
+                new SearchCocktailQuerySpecification(searchLimit, query.Term, _autoMapper),
+                cancellationToken)).ToList().AsReadOnly();
         }
     }
 }

@@ -17,12 +17,12 @@ namespace CocktailsApp.Application.SeedWork
         /// Create a new domain model.
         /// </summary>
         /// <param name="entity">Domain model to create</param>
-        void Create(T entity);
+        Task CreateAsync(T entity, CancellationToken cancellationToken);
         /// <summary>
         /// Create a list of new domain models.
         /// </summary>
         /// <param name="entities">List of domain models to create</param>
-        void CreateRange(IEnumerable<T> entities);
+        Task CreateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
         #endregion
 
         #region Read methods
@@ -32,20 +32,20 @@ namespace CocktailsApp.Application.SeedWork
         /// <param name="spec">Condition</param>
         /// <param name="includes">Properties that should be eagerly loaded</param>
         /// <returns>Domain model corresponding to the condition, including specified sub-properties</returns>
-        Task<T?> ReadAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null);
+        Task<T?> ReadAsync(ICommandSpecification<T> spec, CancellationToken cancellationToken);
         /// <summary>
         /// Get a list of domain models, according to a condition.
         /// </summary>
         /// <param name="spec">Condition</param>
         /// <param name="includes">Properties that should be eagerly loaded</param>
         /// <returns>List of domain models corresponding to the condition, including specified sub-properties</returns>
-        Task<IEnumerable<T>> ReadRangeAsync(ISpecification<T> spec, Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null);
+        Task<IEnumerable<T>> ReadRangeAsync(ICommandSpecification<T> spec, CancellationToken cancellationToken);
         /// <summary>
         /// Get all the domain models.
         /// </summary>
         /// <param name="includes">Properties that should be eagerly loaded</param>
         /// <returns>All the domain models, including specified sub-properties</returns>
-        Task<IEnumerable<T>> ReadAllAsync(Func<IIncludable<T>, IIncludable>? includes = null, int? limit = null);
+        Task<IEnumerable<T>> ReadAllAsync(ICommandSpecification<T> spec, CancellationToken cancellationToken);
         #endregion
 
         #region Update methods
@@ -54,13 +54,13 @@ namespace CocktailsApp.Application.SeedWork
         /// </summary>
         /// <param name="entity">Domain model to update</param>
         /// <returns>Domain model updated</returns>
-        void Update(T entity);
+        Task UpdateAsync(T entity, CancellationToken cancellationToken);
         /// <summary>
         /// Update a list of domain models.
         /// </summary>
         /// <param name="entities">List of domain models to update</param>
         /// <returns>List of domain models updated</returns>
-        void UpdateRange(IEnumerable<T> entities);
+        Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
         #endregion
 
         #region Delete methods
@@ -68,12 +68,12 @@ namespace CocktailsApp.Application.SeedWork
         /// Delete a domain model.
         /// </summary>
         /// <param name="entity">Domain model to delete</param>
-        void Delete(T entity);
+        Task DeleteAsync(T entity, CancellationToken cancellationToken);
         /// <summary>
         /// Delete a list of domain models.
         /// </summary>
         /// <param name="entities">List of domain models to delete</param>
-        void DeleteRange(IEnumerable<T> entities);
+        Task DeleteRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
         #endregion
     }
 }

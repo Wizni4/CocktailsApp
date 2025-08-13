@@ -3,7 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.Collections.ObjectModel;
+
 namespace CocktailsApp.Application.Club
 {
-    public record GetClubRolesQuery(Guid ClubId) : ClubQuery<IEnumerable<ClubRoleDTO>>(ClubId);
+    public record GetClubRolesQuery(Guid ClubId) : ClubQuery<ReadOnlyCollection<ClubRoleDTO>>(ClubId);
 }

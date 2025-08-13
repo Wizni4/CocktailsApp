@@ -43,15 +43,17 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(RemoveCocktailsCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubWithCocktailsCommandSpecification(request.ClubId),
+                cancellationToken);
 
             // Delegate the removal to the domain
             foreach (var cocktailId in request.CocktailIds)
                 club!.RemoveCocktail(cocktailId, request.ClubId);
 
             // Persist the changes.
-            _clubRepository.Update(club!);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.UpdateAsync(club!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Return the updated club as a DTO.
             return Unit.Value;

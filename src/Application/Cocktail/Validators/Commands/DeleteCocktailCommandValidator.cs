@@ -5,17 +5,15 @@ using CocktailsApp.Application.SeedWork;
 
 using FluentValidation;
 
-using DomainCocktail = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public class DeleteCocktailCommandValidator : AbstractValidator<DeleteCocktailCommand>
+    public class DeleteCocktailCommandValidator : CommandValidator<DeleteCocktailCommand>
     {
-        public DeleteCocktailCommandValidator(IUnitOfWork unitOfWork)
+        public DeleteCocktailCommandValidator()
         {
             RuleFor(c => c.Id)
-                .ValidGuid()
-                .IsCocktailExists(unitOfWork.Set<DomainCocktail>());
+                .ValidGuid();
         }
     }
 }

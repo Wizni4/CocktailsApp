@@ -23,7 +23,7 @@ namespace CocktailsApp.Domain.IngredientAggregate
             if (_ingredient == null)
                 throw new InvalidOperationException("Ingredient name, type and creator id must be specified before adding allergens");
 
-            _ingredient.AddAllergen(name);
+            _ingredient.AddAllergen(name, _creatorId);
             return this;
         }
         public IngredientBuilder AsAlcoholic()

@@ -31,11 +31,9 @@
   position: absolute;
   left: 2.3rem;
   font-size: 1rem;
-  color: var(--p-sky-500) !important;
 }
 
 input {
-  color: var(--text-color-secondary) !important;
   padding-left: 2rem;
 }
 

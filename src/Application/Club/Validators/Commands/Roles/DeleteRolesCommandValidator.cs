@@ -25,8 +25,7 @@ namespace CocktailsApp.Application.Club
         /// Initializes a new instance of the <see cref="DeleteRolesCommandValidator"/> class.
         /// Defines validation rules for the <see cref="DeleteRolesCommand"/>.
         /// </summary>
-        public DeleteRolesCommandValidator(IClubRepository clubRepository)
-            : base(clubRepository, [ClubPermissionType.DeleteRole])
+        public DeleteRolesCommandValidator()
         {
             RuleFor(c => c.RoleIds).ValidList();
             RuleForEach(c => c.RoleIds).ValidGuid();

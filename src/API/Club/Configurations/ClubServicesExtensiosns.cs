@@ -2,13 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 using CocktailsApp.Application.Club;
-using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Infrastructure.ClubAggregate;
-
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
-using DomainClubCocktail = CocktailsApp.Domain.ClubAggregate.ClubCocktail;
-using DomainClubMember = CocktailsApp.Domain.ClubAggregate.ClubMember;
-using DomainClubRole = CocktailsApp.Domain.ClubAggregate.ClubRole;
+using CocktailsApp.Infrastructure.SeedWork;
+using CocktailsApp.Infrastructure.Shared;
 
 
 namespace CocktailsApp.API.Club
@@ -17,9 +13,24 @@ namespace CocktailsApp.API.Club
     {
         public static IServiceCollection AddClubRepositories(this IServiceCollection services)
         {
-            ;
-            services.AddScoped<IRepository<DomainClub>, ClubRepository>();
             services.AddScoped<IClubRepository, ClubRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddClubReaders(this IServiceCollection services)
+        {
+            ;
+            services.AddScoped<IClubReader, ClubReader>();
+            services.AddScoped<IClubCocktailReader, ClubCocktailReader>();
+            services.AddScoped<IClubMemberReader, ClubMemberReader>();
+            services.AddScoped<IClubRoleReader, ClubRoleReader>();
+            return services;
+        }
+
+        public static IServiceCollection AddClubProjectors(this IServiceCollection services)
+        {
+            services.AddScoped<IProjection, ClubProjection>();
+            services.AddScoped<IProjection, ClubCrossAggregateProjection>();
             return services;
         }
 

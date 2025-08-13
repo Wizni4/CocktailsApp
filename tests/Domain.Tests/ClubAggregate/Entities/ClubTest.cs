@@ -54,7 +54,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             // Create Test Member
             _club.AddMember(_memberUserId, _owner.Id);
             _member = _club.Members.First(m => m.UserId == _memberUserId);
-            _member.AddRole(_role);
+            _member.AddRole(_role, _owner.Id);
 
             // Create Cocktail
             var cocktailId = Guid.NewGuid();
@@ -91,10 +91,10 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
                     actorId = _owner.Id;
                     break;
                 case "user":
-                    _role.AddPermission(permission);
+                    _role.AddPermission(permission, _owner.Id);
                     break;
                 case "member":
-                    _role.AddPermission(permission);
+                    _role.AddPermission(permission, _owner.Id);
                     break;
                 case "not_a_member":
                     _club.RemoveMember(_member.Id, _owner.Id);
@@ -324,7 +324,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         {
             // Arrange
             var permission = ClubPermissionType.RemoveRoleFromMember;
-            _role.AddPermission(permission);
+            _role.AddPermission(permission, _owner.Id);
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
@@ -365,7 +365,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void AddRoleToMember_OwnerRoleActorNotOwner_ThrowsUnauthorizedAccessException()
         {
             // Arrange
-            _role.AddPermission(ClubPermissionType.AddRoleToMember);
+            _role.AddPermission(ClubPermissionType.AddRoleToMember, _owner.Id);
 
             // Act & Assert
             var exception = Assert.Throws<UnauthorizedAccessException>(() =>
@@ -490,7 +490,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var roleName = "Test role";
             _club.CreateRole(roleName, _owner.Id);
             var role = _club.Roles.First(r => r.Name == roleName);
-            _member.AddRole(role);
+            _member.AddRole(role, _owner.Id);
 
             // Arrange
             var permission = ClubPermissionType.DeleteRole;
@@ -659,7 +659,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void RemoveMember_RemoveHimself_ThrowUnauthorizedAccessException()
         {
             // Arrange
-            _role.AddPermission(ClubPermissionType.RemoveMember);
+            _role.AddPermission(ClubPermissionType.RemoveMember, _owner.Id);
 
             // Act & Assert
             var exception = Assert.Throws<UnauthorizedAccessException>(() =>
@@ -696,7 +696,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void RemovePermissionFromRole_PermissionScenarios(string scenario, bool shouldSucceed)
         {
             // Add a permission to the role which will be removed
-            _role.AddPermission(ClubPermissionType.AddCocktail);
+            _role.AddPermission(ClubPermissionType.AddCocktail, _owner.Id);
 
             // Arrange
             var permission = ClubPermissionType.RemovePermissionFromRole;
@@ -767,7 +767,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
             var roleName = "New test role";
             _club.CreateRole(roleName, _owner.Id);
             var role = _club.Roles.First(r => r.Name == roleName);
-            _member.AddRole(role);
+            _member.AddRole(role, _owner.Id);
 
             // Arrange
             var permission = ClubPermissionType.RemoveRoleFromMember;
@@ -794,7 +794,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void RemoveRoleToMember_OwnerRoleActorNotOwner_ThrowUnauthorizedAccessException()
         {
             // Arrange
-            _role.AddPermission(ClubPermissionType.RemoveRoleFromMember);
+            _role.AddPermission(ClubPermissionType.RemoveRoleFromMember, _owner.Id);
 
             // Act & Assert
             var exception = Assert.Throws<UnauthorizedAccessException>(() =>
@@ -817,7 +817,7 @@ namespace CocktailsApp.Domain.Tests.ClubAggregate
         public void RemoveRoleToMember_MemberDoesNotHaveRole_ThrowArgumentException()
         {
             // Arrange
-            _member.RemoveRole(_role.Id);
+            _member.RemoveRole(_role.Id, _owner.Id);
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>

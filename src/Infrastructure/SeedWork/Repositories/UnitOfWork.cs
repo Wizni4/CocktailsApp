@@ -13,30 +13,27 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CocktailsApp.Infrastructure.SeedWork
 {
-    public class UnitOfWork(EFDbContext dbContext, DomainEventDispatcher dispatcher, IServiceProvider serviceProvider) : IUnitOfWork
+    public sealed class UnitOfWork(
+        EFWriteDbContext dbContext
+    ) : IUnitOfWork
     {
-        private readonly DomainEventDispatcher _dispatcher = dispatcher;
-        private readonly EFDbContext _dbContext = dbContext;
-        private readonly IServiceProvider _serviceProvider = serviceProvider;
-        public async Task SaveChangesAsync()
+        private readonly EFWriteDbContext _dbContext = dbContext;
+        public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             var domainEvents = _dbContext.ChangeTracker
                 .Entries<AggregateRoot>()
                 .SelectMany(x => x.Entity.DomainEvents)
                 .ToList();
 
+            // Persist outbox messages
+            _dbContext.Set<OutboxMessage>().AddRange(
+                domainEvents.Select(OutboxMessageFactory.FromDomainEvent));
 
             foreach (var entity in _dbContext.ChangeTracker.Entries<AggregateRoot>())
                 entity.Entity.ClearDomainEvents();
 
             // Update last update date of all modified entities
-            await _dispatcher.DispatchAsync(domainEvents);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public IRepository<T> Set<T>() where T : Entity, IAggregateRoot
-        {
-            return _serviceProvider.GetRequiredService<IRepository<T>>();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

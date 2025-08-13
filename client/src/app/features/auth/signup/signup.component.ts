@@ -11,6 +11,7 @@ import { SubmitButtonComponent } from '../../../shared/components/submit-button/
 @Component({
   selector: 'app-sign-up',
   templateUrl: './signup.component.html',
+  styleUrls: ['../auth.component.css'],
   standalone: true,
   imports: [
     FormsModule,

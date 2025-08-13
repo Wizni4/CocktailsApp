@@ -3,10 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 
+using CocktailsApp.Application.SeedWork;
+
 namespace CocktailsApp.Application.Ingredient
 {
-    public class AllergenDTO
+    public sealed class AllergenDTO : EntityDTO
     {
-        public required string Name { get; set; }
+        public string Name { get; set; } = default!;
     }
 }

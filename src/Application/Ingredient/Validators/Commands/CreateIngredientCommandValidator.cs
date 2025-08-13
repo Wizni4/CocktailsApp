@@ -3,29 +3,18 @@
 // See the LICENSE file in the project root for more information.
 
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Application.User;
 
 using FluentValidation;
-
-using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
-using DomainUser = CocktailsApp.Domain.UserAggregate.User;
 
 
 namespace CocktailsApp.Application.Ingredient
 {
-    public class CreateIngredientCommandValidator : AbstractValidator<CreateIngredientCommand>
+    public class CreateIngredientCommandValidator : CommandValidator<CreateIngredientCommand>
     {
-        public CreateIngredientCommandValidator(IUnitOfWork unitOfWork)
+        public CreateIngredientCommandValidator()
         {
-            RuleFor(c => c.CreatorId)
-                .ValidGuid()
-                .IsUserExists(unitOfWork.Set<DomainUser>());
             RuleFor(c => c.Name)
-                .MustAsync(async (name, _) =>
-                {
-                    var ingredient = await unitOfWork.Set<DomainIngredient>().ReadAsync(new IngredientByNameSpecification(name!));
-                    return ingredient is null;
-                }).WithMessage(c => $"Ingredient: '{c.Name}' already exists.");
+                .ValidString();
             RuleFor(c => c.Type)
                 .ValidEnum();
             RuleFor(c => c.IsAlcoholic)

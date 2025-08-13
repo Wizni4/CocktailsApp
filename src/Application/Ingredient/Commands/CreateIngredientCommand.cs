@@ -14,6 +14,6 @@ namespace CocktailsApp.Application.Ingredient
         string Name,
         IngredientType Type,
         bool? IsAlcoholic,
-        Guid CreatorId
-    ) : ICommand<Guid>;
+        Guid ActorId
+    ) : Command<Guid>(ActorId);
 }

@@ -4,9 +4,11 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 
 namespace CocktailsApp.Application.Ingredient
 {
-    public record GetAllIngredientsQuery : IQuery<IEnumerable<IngredientDTO>>;
+    public record GetAllIngredientsQuery : IQuery<ReadOnlyCollection<IngredientDTO>>;
 
 }

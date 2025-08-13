@@ -4,8 +4,10 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public record SearchCocktailQuery(string Term) : SearchQuery<IEnumerable<CocktailDTO>>(Term);
+    public record SearchCocktailQuery(string Term) : SearchQuery<ReadOnlyCollection<CocktailDTO>>(Term);
 }

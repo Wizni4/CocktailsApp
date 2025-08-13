@@ -28,6 +28,9 @@ namespace CocktailsApp.Domain.UserAggregate
             _id = id;
             _email = email ?? throw new ArgumentNullException(nameof(email));
             _username = username ?? throw new ArgumentNullException(nameof(username));
+
+            // Raise user created event
+            AddDomainEvent(new UserCreatedEvent(this.Id, Username));
         }
     }
 }

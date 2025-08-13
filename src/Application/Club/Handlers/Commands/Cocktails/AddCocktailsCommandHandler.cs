@@ -39,15 +39,17 @@ namespace CocktailsApp.Application.Club
         public async Task<IEnumerable<Guid>> Handle(AddCocktailsCommand request, CancellationToken cancellationToken)
         {
             // Get the club from the database, including related entities.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, c => c.Include(c => c.Cocktails));
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubWithCocktailsCommandSpecification(request.ClubId),
+                cancellationToken);
 
             // Delegate addition logic to the domain layer.
             foreach (var cocktailId in request.CocktailIds)
                 club!.AddCocktail(cocktailId, request.ActorId);
 
             // Persist changes to the database.
-            _clubRepository.Update(club!);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.UpdateAsync(club!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Return the updated club as a DTO.
             return club!.Cocktails.Select(c => c.Id);

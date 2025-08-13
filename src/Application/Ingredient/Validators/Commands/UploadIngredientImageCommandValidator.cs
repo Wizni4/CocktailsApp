@@ -9,13 +9,12 @@ using FluentValidation;
 
 namespace CocktailsApp.Application.Ingredient
 {
-    public class UploadIngredientImageCommandValidator : AbstractValidator<UploadIngredientImageCommand>
+    public class UploadIngredientImageCommandValidator : CommandValidator<UploadIngredientImageCommand>
     {
-        public UploadIngredientImageCommandValidator(IIngredientRepository ingredientRepository)
+        public UploadIngredientImageCommandValidator()
         {
             RuleFor(c => c.IngredientId)
-                .ValidGuid()
-                .IsIngredientExists(ingredientRepository);
+                .ValidGuid();
             RuleFor(c => c.Image)
                 .NotNull();
             RuleFor(c => c.ImageName)

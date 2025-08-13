@@ -56,7 +56,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentException">
         /// Thrown when the <see cref="ClubMember"/> already has the <paramref name="role"/>
         /// </exception>
-        internal void AddRole(ClubRole role)
+        internal void AddRole(ClubRole role, Guid actorId)
         {
             // Ensure the member does not already have this role.
             if (_roles.Any(r => r.Id == role.Id))
@@ -64,7 +64,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
             // Add role to the member
             _roles.Add(role);
-            Touch();
+            Touch(actorId);
         }
 
         /// <summary>
@@ -74,14 +74,14 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentException">
         /// Thrown when the member doesn't have the <paramref name="roleId"/>.
         /// </exception>
-        internal void RemoveRole(Guid roleId)
+        internal void RemoveRole(Guid roleId, Guid actorId)
         {
             // Get the role, and ensure the member have the role.
             // Throw an error if the memebr doesn have the role.
             var role = _roles.FirstOrDefault(r => r.Id == roleId)
                 ?? throw new ArgumentException("The member doesn't have this role.");
             _roles.Remove(role);
-            Touch();
+            Touch(actorId);
         }
 
         /// <summary>

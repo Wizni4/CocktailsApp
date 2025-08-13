@@ -1,8 +1,6 @@
 ﻿/*
  * Framework namespaces
  */
-using AutoMapper;
-
 using CocktailsApp.Application.SeedWork;
 /*
  * Application namespaces
@@ -23,7 +21,9 @@ namespace CocktailsApp.Application.Club
 
         public async Task<IEnumerable<Guid>> Handle(AddMembersCommand request, CancellationToken cancellationToken)
         {
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members));
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubWithMembersCommandSpecification(request.ClubId),
+                cancellationToken);
 
             // Add members to the club
             foreach (var newMember in request.NewMembers)
@@ -38,8 +38,8 @@ namespace CocktailsApp.Application.Club
             }
 
             // Persit data in DB
-            _clubRepository.Update(club!);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.UpdateAsync(club!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return club!.Members.Select(m => m.Id);
         }
     }

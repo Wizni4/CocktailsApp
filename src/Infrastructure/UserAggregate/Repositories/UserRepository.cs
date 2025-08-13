@@ -11,7 +11,8 @@ using CocktailsApp.Infrastructure.SeedWork;
 
 namespace CocktailsApp.Infrastructure.UserAggregate
 {
-    public class UserRepository(EFDbContext dbContext) : EFRepository<User>(dbContext), IUserRepository
+    public class UserRepository(EFWriteDbContext dbContext)
+        : EFRepository<User>(dbContext), IUserRepository
     {
     }
 }

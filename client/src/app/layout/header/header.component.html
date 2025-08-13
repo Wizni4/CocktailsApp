@@ -1,4 +1,4 @@
-<header class="app-header shadow-2">
+<header class="app-header">
   <div class="header-logo">
     <a routerLink="/home">
         <img src="assets/logo.png" alt="Logo" />
@@ -11,31 +11,27 @@
               (click)="toggleDarkMode()"
               icon="pi pi-moon"
               [rounded]="true"
-              [text]="true"
-              severity="secondary">
+              [text]="true">
     </p-button>
     <p-button *ngIf="!layoutService.isDarkMode()"
               (click)="toggleDarkMode()"
               icon="pi pi-sun"
               [rounded]="true"
-              [text]="true"
-              severity="secondary">
+              [text]="true">
     </p-button>
 
     <!--SignIn-->
     <p-button *ngIf="!(isAuthenticated$ | async)"
               routerLink="/auth/signin"
               label="Sign in"
-              variant="text"
-              severity="secondary">
+              variant="text">
     </p-button>
     <!--SignUp-->
     <p-button *ngIf="!(isAuthenticated$ | async)"
               routerLink="/auth/signup"
               label="Sign up"
               [raised]="true"
-              variant="outlined"
-              severity="secondary">
+              variant="outlined">
     </p-button>
 
     <!--Profile (only if authicated)-->
@@ -43,8 +39,7 @@
               (onClick)="menu.toggle($event)"
               icon="pi pi-user"
               [rounded]="true"
-              [text]="true"
-              severity="primary">
+              [text]="true">
     </p-button>
 
     <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body" styleClass="user-menu-overlay"></p-menu>

@@ -25,25 +25,10 @@ namespace CocktailsApp.Application.Club
         /// Initializes a new instance of the <see cref="RemoveCocktailsCommandValidator"/> class.
         /// Defines validation rules for the <see cref="RemoveCocktailsCommand"/>.
         /// </summary>
-        public RemoveCocktailsCommandValidator(
-            IClubRepository clubRepository
-        ) : base(clubRepository, [ClubPermissionType.RemoveCocktail])
+        public RemoveCocktailsCommandValidator()
         {
             RuleFor(c => c.CocktailIds).ValidList();
             RuleForEach(c => c.CocktailIds).ValidGuid();
-            RuleFor(c => c)
-                .CustomAsync(async (command, context, _) =>
-                {
-                    var club = await clubRepository.GetClubBydIdAsync(
-                        command.ClubId,
-                        opt => opt.Include(c => c.Cocktails));
-
-                    if (club != null)
-                        AssertMissingEntities(
-                            context,
-                            club.Cocktails,
-                            command.CocktailIds);
-                });
         }
     }
 }

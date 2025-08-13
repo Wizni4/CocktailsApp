@@ -2,7 +2,6 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.Shared;
 
 /*
  * Framework namespaces
@@ -10,14 +9,9 @@ using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Domain.StockAggregate
 {
-    public class IngredientOutOfStock : DomainEvent
-    {
-        public Guid StockId { get; }
-        public Guid IngredientId { get; }
-        internal IngredientOutOfStock(Guid stockId, Guid ingredientId)
-        {
-            StockId = stockId;
-            IngredientId = ingredientId;
-        }
-    }
+    public sealed record IngredientOutOfStock(
+        Guid StockId,
+        Guid IngredientId,
+        Guid ActorId
+    ) : DomainEvent(StockId, typeof(Stock), ActorId);
 }

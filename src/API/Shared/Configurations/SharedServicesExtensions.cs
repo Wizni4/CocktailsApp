@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using CocktailsApp.Application.Shared;
+using CocktailsApp.Infrastructure.SeedWork;
 using CocktailsApp.Infrastructure.Shared;
 
 namespace CocktailsApp.API.Shared

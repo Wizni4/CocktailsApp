@@ -7,17 +7,17 @@
  */
 using CocktailsApp.Application.Ingredient;
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.Shared;
 /*
  * Framework namespaces
  */
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public class CocktailIngredientDTO : EntityDTO
+    public sealed class CocktailIngredientDTO : EntityDTO
     {
-        public required IngredientDTO Ingredient { get; set; }
-        public required decimal Quantity { get; set; }
-        public required UnitOfMeasure Unit { get; set; }
+        public Guid Id { get; set; } = default!;
+        public IngredientDTO Ingredient { get; set; } = default!;
+        public decimal Quantity { get; set; } = default;
+        public string Unit { get; set; } = default!;
     }
 }

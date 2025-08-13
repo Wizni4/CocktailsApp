@@ -4,7 +4,9 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 namespace CocktailsApp.Application.Ingredient
 {
-    public record SearchIngredientQuery(string Term) : SearchQuery<IEnumerable<IngredientDTO>>(Term);
+    public record SearchIngredientQuery(string Term) : SearchQuery<ReadOnlyCollection<IngredientDTO>>(Term);
 }

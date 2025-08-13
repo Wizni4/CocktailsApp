@@ -22,32 +22,64 @@ namespace CocktailsApp.Domain.IngredientPricingAggregate
         private IngredientPricing() { }
         internal IngredientPricing(Guid ingredientId, decimal cost, decimal price, Guid createdBy) : base(createdBy)
         {
-            UpdateCost(cost);
-            UpdatePrice(price);
+            SetCost(cost);
+            SetPrice(price);
             _ingredientId = ingredientId;
+
+            // raise ingredient pricing created event
+            AddDomainEvent(new IngredientPricingCreatedEvent(Id, Cost, Price, createdBy));
         }
 
-        public void UpdatePrice(decimal newPrice)
+        public void DeleteIngredientPricing(Guid actorId)
         {
-            if (newPrice >= 0)
-                throw new ArgumentException("Price must be greater or equals to 0", nameof(newPrice));
+            // State that entity changed
+            Touch(actorId);
 
-            if (newPrice < Cost)
-                throw new ArgumentException("Price can't be lower than Cost", nameof(newPrice));
+            // raise ingredient pricing deleted
+            AddDomainEvent(new IngredientPricingDeletedEvent(Id, actorId));
+        }
 
+        public void UpdateCost(decimal newCost, Guid actorId)
+        {
+            var oldCost = Cost;
+            SetCost(newCost);
+
+            // State that entity changed
+            Touch(actorId);
+
+            // Raise cost changed event
+            AddDomainEvent(new IngredientCostChangedEvent(IngredientId, oldCost, newCost, actorId));
+        }
+
+        public void UpdatePrice(decimal newPrice, Guid actorId)
+        {
             var oldPrice = Price;
-            _price = newPrice;
-            AddDomainEvent(new IngredientPricingUpdatedEvent(IngredientId, oldPrice, newPrice));
+            SetPrice(newPrice);
+
+            // State that entity changed
+            Touch(actorId);
+
+            // Raise price changed event
+            AddDomainEvent(new IngredientPriceChangedEvent(IngredientId, oldPrice, newPrice, actorId));
         }
 
-        public void UpdateCost(decimal newCost)
+        private void SetCost(decimal cost)
         {
-            if (newCost >= 0)
-                throw new ArgumentException("Cost must be greater or equals to 0", nameof(newCost));
+            if (cost >= 0)
+                throw new ArgumentException("Cost must be greater or equals to 0", nameof(cost));
 
-            var oldCost = Price;
-            _cost = newCost;
-            AddDomainEvent(new IngredientCostingUpdatedEvent(IngredientId, oldCost, newCost));
+            _cost = cost;
+        }
+
+        private void SetPrice(decimal price)
+        {
+            if (price >= 0)
+                throw new ArgumentException("Price must be greater or equals to 0", nameof(price));
+
+            if (price < Cost)
+                throw new ArgumentException("Price can't be lower than Cost", nameof(price));
+
+            _price = price;
         }
     }
 }

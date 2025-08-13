@@ -1,6 +1,4 @@
-﻿
-
-using CocktailsApp.Application.Search;
+﻿using CocktailsApp.Application.Search;
 
 namespace CocktailsApp.API.Search
 {

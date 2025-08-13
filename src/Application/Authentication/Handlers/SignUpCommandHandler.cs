@@ -6,6 +6,7 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+using CocktailsApp.Application.User;
 using CocktailsApp.Domain.SeedWork;
 using CocktailsApp.Domain.UserAggregate;
 
@@ -16,9 +17,14 @@ using MediatR;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public class SignUpCommandHandler(IAuthService authService, IUnitOfWork unitOfWork) : ICommandHandler<SignUpCommand, Unit>
+    public class SignUpCommandHandler(
+        IAuthService authService,
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork
+    ) : ICommandHandler<SignUpCommand, Unit>
     {
         private readonly IAuthService _authService = authService;
+        private readonly IUserRepository _userRepository = userRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<Unit> Handle(SignUpCommand request, CancellationToken cancellationToken)
@@ -31,8 +37,8 @@ namespace CocktailsApp.Application.Authentication
                 .WithEmail(request.Email)
                 .Build();
 
-            _unitOfWork.Set<Domain.UserAggregate.User>().Create(user);
-            await _unitOfWork.SaveChangesAsync();
+            await _userRepository.CreateAsync(user, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

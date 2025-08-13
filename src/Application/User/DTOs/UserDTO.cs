@@ -12,7 +12,10 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.User
 {
-    public class UserDTO : EntityDTO
+    public sealed class UserDTO : EntityDTO, IImageDTO
     {
+        public Guid Id { get; set; } = default;
+        public string Username { get; set; } = default!;
+        public string? ImageId { get; set; } = null;
     }
 }

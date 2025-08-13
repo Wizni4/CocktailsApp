@@ -14,5 +14,8 @@ using System.Threading.Tasks;
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public record DeleteCocktailCommand(Guid Id) : ICommand<Unit>;
+    public record DeleteCocktailCommand(
+        Guid Id,
+        Guid ActorId
+    ) : Command<Unit>(ActorId);
 }

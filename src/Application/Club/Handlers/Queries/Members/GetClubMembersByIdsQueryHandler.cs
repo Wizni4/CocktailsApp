@@ -6,29 +6,23 @@ using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
 
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
+using System.Collections.ObjectModel;
 
 
 namespace CocktailsApp.Application.Club
 {
     internal class GetClubMembersByIdsQueryHandler(
-        IMapper autoMapper,
-        IUnitOfWork unitOfWork
-    ) : IQueryHandler<GetClubMembersByIdsQuery, IEnumerable<ClubMemberDTO>>
+        IClubMemberReader clubMemberReader,
+        IMapper autoMapper
+    ) : IQueryHandler<GetClubMembersByIdsQuery, ReadOnlyCollection<ClubMemberDTO>>
     {
+        private readonly IClubMemberReader _clubMemberReader = clubMemberReader;
         private readonly IMapper _autoMapper = autoMapper;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
-
-        public async Task<IEnumerable<ClubMemberDTO>> Handle(GetClubMembersByIdsQuery request, CancellationToken cancellationToken)
+        public async Task<ReadOnlyCollection<ClubMemberDTO>> Handle(GetClubMembersByIdsQuery request, CancellationToken cancellationToken)
         {
-            var club = await _unitOfWork.Set<DomainClub>().ReadAsync(
-                new ClubByIdSpecification(request.ClubId),
-                opt => opt.Include(c => c.Members)
-                            .ThenInclude(m => m.Roles));
-
-            var clubMembers = club!.Members.Where(m => request.MemberIds.Contains(m.Id));
-
-            return _autoMapper.Map<IEnumerable<ClubMemberDTO>>(clubMembers);
+            return (await _clubMemberReader.ListAsync(
+                new ClubMembersByIdsQuerySpecification(request.ClubId, request.MemberIds, _autoMapper),
+                cancellationToken)).ToList().AsReadOnly();
         }
     }
 }

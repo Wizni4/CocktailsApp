@@ -1,9 +1,11 @@
 ﻿
 
+using System.Collections.ObjectModel;
+
 namespace CocktailsApp.Application.Club
 {
     public record GetClubCocktailsByIdsQuery(
         Guid ClubId,
         IEnumerable<Guid> CocktailIds
-    ) : ClubQuery<IEnumerable<ClubCocktailDTO>>(ClubId);
+    ) : ClubQuery<ReadOnlyCollection<ClubCocktailDTO>>(ClubId);
 }

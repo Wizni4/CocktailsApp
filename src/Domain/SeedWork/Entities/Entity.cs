@@ -29,6 +29,10 @@ namespace CocktailsApp.Domain.SeedWork
         /// </summary>
         public DateTime CreationDate { get => _creationDate; }
         private readonly DateTime _creationDate;
+
+        public Guid UpdatedBy { get => _updatedBy; }
+        private protected Guid _updatedBy;
+
         /// <summary>
         /// <see cref="Entity"/> last date of update.
         /// </summary>
@@ -48,24 +52,27 @@ namespace CocktailsApp.Domain.SeedWork
             if (createdBy == Guid.Empty)
                 throw new ArgumentException("User creating entity must be specified");
 
-            _createdBy = createdBy;
             Id = Guid.NewGuid();
+            _createdBy = createdBy;
             _creationDate = DateTime.UtcNow;
+
             _updateDate = _creationDate;
+            _updatedBy = _createdBy;
         }
 
-        public void UpdateImage(string imageId)
+        public void UpdateImage(string imageId, Guid actorId)
         {
             _imageId = imageId;
-            Touch();
+            Touch(actorId);
         }
 
         /// <summary>
         /// Update the <see cref="UpdateDate"/> to <see cref="DateTime.UtcNow"/>
         /// </summary>
-        private protected void Touch()
+        private protected void Touch(Guid actorId)
         {
             _updateDate = DateTime.UtcNow;
+            _updatedBy = actorId;
         }
     }
 }

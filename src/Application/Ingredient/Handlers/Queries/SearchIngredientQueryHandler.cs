@@ -4,16 +4,18 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 
 namespace CocktailsApp.Application.Ingredient
 {
     public class SearchIngredientQueryHandler(IIngredientSearchService ingredientSearchService)
-        : IQueryHandler<SearchIngredientQuery, IEnumerable<IngredientDTO>>
+        : IQueryHandler<SearchIngredientQuery, ReadOnlyCollection<IngredientDTO>>
     {
         private readonly IIngredientSearchService _ingredientSearchService = ingredientSearchService;
-        public Task<IEnumerable<IngredientDTO>> Handle(SearchIngredientQuery request, CancellationToken cancellationToken)
+        public Task<ReadOnlyCollection<IngredientDTO>> Handle(SearchIngredientQuery request, CancellationToken cancellationToken)
         {
-            return _ingredientSearchService.GetSearchResultsAsync(request);
+            return _ingredientSearchService.GetSearchResultsAsync(request, cancellationToken);
         }
     }
 }

@@ -18,8 +18,7 @@ namespace CocktailsApp.Application.Club
 {
     public class CreateRolesCommandValidator : ClubCommandValidator<CreateRolesCommand>
     {
-        public CreateRolesCommandValidator(IClubRepository clubRepository)
-            : base(clubRepository, [ClubPermissionType.CreateRole, ClubPermissionType.AddPermissionToRole])
+        public CreateRolesCommandValidator()
         {
             RuleFor(c => c.NewRoles).ValidList();
             RuleForEach(c => c.NewRoles)
@@ -32,26 +31,6 @@ namespace CocktailsApp.Application.Club
                          a.RuleForEach(m => m.Permissions).ValidEnum();
                      });
                  });
-
-            RuleFor(c => c)
-                .CustomAsync(async (command, context, _) =>
-                {
-                    var club = await clubRepository.GetClubBydIdAsync(
-                        command.ClubId,
-                        opt => opt.Include(c => c.Roles));
-
-                    if (club != null)
-                    {
-                        var alreadyExistingNames = command.NewRoles
-                        .Select(c => c.Name)
-                        .Where(name => club.Roles.Any(r => r.Name == name));
-
-                        // Add validation message if some cocktails dont exist in the club
-                        if (alreadyExistingNames.Any())
-                            context.AddFailure(
-                                 $"The following roles already exist in the club:\n- {string.Join("\n- ", alreadyExistingNames)}");
-                    }
-                });
         }
     }
 }

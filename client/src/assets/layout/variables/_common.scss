@@ -1,0 +1,20 @@
+:root {
+  --p-primary-color: var(--p-primary-color);
+  --p-primary-contrast-color: var(--p-primary-contrast-color);
+  --p-text-color: var(--p-text-color);
+  --p-text-color-secondary: var(--p-text-muted-color);
+  --p-surface-border: var(--p-content-border-color);
+  --p-surface-card: var(--p-content-background);
+  --p-surface-hover: var(--p-content-hover-background);
+  --p-surface-overlay: var(--p-overlay-popover-background);
+  --p-transition-duration: var(--p-transition-duration);
+  --p-maskbg: var(--p-mask-background);
+  --p-content-border-radius: var(--p-content-border-radius);
+  --p-layout-section-transition-duration: 0.2s;
+  --p-element-transition-duration: var(--p-transition-duration);
+  --p-focus-ring-width: var(--p-focus-ring-width);
+  --p-focus-ring-style: var(--p-focus-ring-style);
+  --p-focus-ring-color: var(--p-focus-ring-color);
+  --p-focus-ring-offset: var(--p-focus-ring-offset);
+  --p-focus-ring-shadow: var(--p-focus-ring-shadow);
+}

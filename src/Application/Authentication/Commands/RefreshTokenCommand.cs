@@ -12,7 +12,7 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public record RefreshTokenCommand(string RefreshToken) : ICommand<AuthDTO>
-    {
-    }
+    public record RefreshTokenCommand(
+        string RefreshToken
+    ) : ICommand<AuthDTO>;
 }

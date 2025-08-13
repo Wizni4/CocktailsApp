@@ -14,7 +14,8 @@ using MediatR;
 
 namespace CocktailsApp.Application.Authentication
 {
-    public record SignOutCommand(string? Username) : ICommand<Unit>
-    {
-    }
+    public record SignOutCommand(
+        Guid UserId,
+        string? Username
+    ) : Command<Unit>(UserId);
 }

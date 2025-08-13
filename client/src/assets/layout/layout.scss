@@ -1,5 +1,4 @@
-@use './variables/_dark';
-@use './variables/_light';
-@use './_auth';
-@use './_core';
-@use './_header';
+@use './variables/_common.scss';
+@use './variables/_dark.scss';
+@use './variables/_light.scss';
+@use './_core.scss';

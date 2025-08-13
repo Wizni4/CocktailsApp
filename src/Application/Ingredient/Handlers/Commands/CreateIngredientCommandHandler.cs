@@ -2,25 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using AutoMapper;
-
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Application.Shared;
 using CocktailsApp.Domain.IngredientAggregate;
 
-using DomainIngredient = CocktailsApp.Domain.IngredientAggregate.Ingredient;
 
 namespace CocktailsApp.Application.Ingredient
 {
     public class CreateIngredientCommandHandler(
+        IIngredientRepository ingredientRepository,
         IUnitOfWork unitOfWork
     ) : ICommandHandler<CreateIngredientCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
         public async Task<Guid> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {
             var ingredientBuilder = new IngredientBuilder()
-                .WithCreatorId(request.CreatorId)
+                .WithCreatorId(request.ActorId)
                 .WithName(request.Name)
                 .WithType(request.Type);
 
@@ -33,8 +31,8 @@ namespace CocktailsApp.Application.Ingredient
 
             var ingredient = ingredientBuilder.Build();
 
-            _unitOfWork.Set<DomainIngredient>().Create(ingredient);
-            await _unitOfWork.SaveChangesAsync();
+            await _ingredientRepository.CreateAsync(ingredient, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return ingredient.Id;
         }

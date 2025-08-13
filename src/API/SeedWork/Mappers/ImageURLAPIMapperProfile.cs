@@ -10,13 +10,13 @@ namespace CocktailsApp.API.SeedWork
 {
     public abstract class ImageURLAPIMapperProfile : Profile
     {
-        public IMappingExpression<TSource, TDestination> CreateImageMap<TSource, TDestination>() where TSource : EntityDTO where TDestination : ImageResponse
+        public IMappingExpression<TSource, TDestination> CreateImageMap<TSource, TDestination>() where TSource : IImageDTO where TDestination : ImageResponse
         {
             return base.CreateMap<TSource, TDestination>()
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom<ImageURLResolver<TSource, TDestination>>());
         }
 
-        public IMappingExpression<TSource, TDestination> CreateImageMap<TSource, TDestination>(MemberList memberList) where TSource : EntityDTO where TDestination : ImageResponse
+        public IMappingExpression<TSource, TDestination> CreateImageMap<TSource, TDestination>(MemberList memberList) where TSource : IImageDTO where TDestination : ImageResponse
         {
             return base.CreateMap<TSource, TDestination>(memberList)
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom<ImageURLResolver<TSource, TDestination>>());

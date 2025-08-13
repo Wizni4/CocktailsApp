@@ -9,13 +9,12 @@ using FluentValidation;
 
 namespace CocktailsApp.Application.Ingredient
 {
-    public class DeleteIngredientCommandValidator : AbstractValidator<DeleteIngredientCommand>
+    public class DeleteIngredientCommandValidator : CommandValidator<DeleteIngredientCommand>
     {
-        public DeleteIngredientCommandValidator(IIngredientRepository ingredientRepository)
+        public DeleteIngredientCommandValidator()
         {
             RuleFor(i => i.Id)
-                .ValidGuid()
-                .IsIngredientExists(ingredientRepository);
+                .ValidGuid();
         }
     }
 }

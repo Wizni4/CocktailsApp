@@ -22,12 +22,14 @@ builder.Services.AddCustomErrors();
 builder.Services.AddCustomSwagger();
 
 // -- Dependencies injections
+builder.Services.AddRepositories();
+builder.Services.AddReaders();
+builder.Services.AddProjectors();
+builder.Services.AddAutoMapper();
+builder.Services.AddMediatR(builder.Configuration);
 builder.Services.AddApplicationValidators();
 builder.Services.AddApplicationServices();
-builder.Services.AddAutoMapper();
-builder.Services.AddEventDispatcher();
-builder.Services.AddMediatR(builder.Configuration);
-builder.Services.AddRepositories();
+builder.Services.AddBackgroundServices();
 
 // -- Environment configuration
 builder.ConfigureEnvironment();

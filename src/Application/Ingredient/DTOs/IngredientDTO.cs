@@ -11,15 +11,18 @@
  */
 
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.IngredientAggregate;
+
+using System.Collections.ObjectModel;
 
 namespace CocktailsApp.Application.Ingredient
 {
-    public class IngredientDTO : EntityDTO
+    public sealed class IngredientDTO : EntityDTO, IImageDTO
     {
-        public required List<AllergenDTO> Allergens { get; set; }
-        public required string Name { get; set; }
-        public IngredientType Type { get; set; }
-        public required bool IsAlcoholic { get; set; }
+        public Guid Id { get; set; } = default;
+        public string Name { get; set; } = default!;
+        public string Type { get; set; } = default!;
+        public bool IsAlcoholic { get; set; } = default;
+        public string? ImageId { get; set; } = null;
+        public List<AllergenDTO> Allergens { get; set; } = default!;
     }
 }

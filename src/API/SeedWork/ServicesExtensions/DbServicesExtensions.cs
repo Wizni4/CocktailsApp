@@ -12,8 +12,15 @@ namespace CocktailsApp.API.SeedWork
     {
         public static IServiceCollection AddLocalDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            string connectionStr = configuration.GetConnectionString("Local") ?? throw new ArgumentNullException("The local DB configuration is null");
-            services.AddDbContextPool<EFDbContext>(options => options.UseSqlServer(connectionStr));
+
+            // -- Write DB
+            string localDbWriteConnectionStr = configuration.GetConnectionString("LocalWrite") ?? throw new ArgumentNullException("The local write DB configuration is null");
+            services.AddDbContextPool<EFWriteDbContext>(options => options.UseSqlServer(localDbWriteConnectionStr));
+
+            // -- Read DB
+            string localDbReadConnectionStr = configuration.GetConnectionString("LocalRead") ?? throw new ArgumentNullException("The local read DB configuration is null");
+            services.AddDbContextPool<EFReadDbContext>(options => options.UseSqlServer(localDbReadConnectionStr));
+
             return services;
         }
 

@@ -22,14 +22,17 @@ namespace CocktailsApp.Domain.CocktailAggregate
         internal Cocktail(string name, string? description, Guid createdBy) : base(createdBy)
         {
             if (description != null)
-                UpdateDescription(description);
+                SetDescription(description);
 
-            UpdateName(name);
+            SetName(name);
+
+            // raise Cocktail created event
+            AddDomainEvent(new CocktailCreatedEvent(Id, Name, Description, ImageId, createdBy));
         }
 
         public void AddIngredient(Guid ingredientId, decimal quantity, UnitOfMeasure unit, Guid createdBy)
         {
-            if (_ingredients.Any(ci => new CocktailIngredientByIngredientSpecification(ingredientId).SpecExpression.Compile()(ci)))
+            if (_ingredients.Any(ci => new CocktailIngredientByIngredientSpecification(ingredientId).IsSatisfiedBy(ci)))
                 throw new ArgumentException($"Ingredient '{ingredientId}' is already in the cocktail.");
 
             var newCocktailIngredient = new CocktailIngredientBuilder()
@@ -40,61 +43,130 @@ namespace CocktailsApp.Domain.CocktailAggregate
                 .Build();
 
             _ingredients.Add(newCocktailIngredient);
-            Touch();
+
+            // State that entity was updated
+            Touch(createdBy);
+
+            // Raise ingredient added event
+            AddDomainEvent(new IngredientAddedEvent(
+                Id,
+                newCocktailIngredient.Id,
+                newCocktailIngredient.IngredientId,
+                newCocktailIngredient.Quantity,
+                newCocktailIngredient.Unit,
+                createdBy
+            ));
         }
 
-        public void DeleteCocktail()
+        public void DeleteCocktail(Guid actorId)
         {
             // Raise the event
-            AddDomainEvent(new CocktailDeletedEvent(Id));
-            Touch();
+            Touch(actorId);
+            AddDomainEvent(new CocktailDeletedEvent(Id, actorId));
         }
 
-        public void RemoveIngredient(Guid ingredientId)
+        public void RemoveIngredient(Guid ingredientId, Guid actorId)
         {
             var cocktailIngredient = GetIngredient(ingredientId);
             _ingredients.Remove(cocktailIngredient);
-            Touch();
+
+            // State that entity was updated
+            Touch(actorId);
+
+            // Raise ingredient added event
+            AddDomainEvent(new IngredientRemovedEvent(
+                Id,
+                cocktailIngredient.Id,
+                actorId
+            ));
         }
 
-        public void UpdateIngredientQuantity(Guid ingredientId, decimal newQuantity)
+        public void UpdateIngredientQuantity(Guid ingredientId, decimal newQuantity, Guid actorId)
         {
             var cocktailIngredient = GetIngredient(ingredientId);
-            cocktailIngredient.UpdateQuantity(newQuantity);
-            Touch();
+            cocktailIngredient.UpdateQuantity(newQuantity, actorId);
+
+            // State that entity was updated
+            Touch(actorId);
+
+            // Raise ingredient added event
+            AddDomainEvent(new IngredientQuantityChangedEvent(
+                Id,
+                cocktailIngredient.Id,
+                cocktailIngredient.Quantity,
+                actorId
+            ));
         }
 
-        public void UpdateIngredientUnit(Guid ingredientId, UnitOfMeasure newUnit)
+        public void UpdateIngredientUnit(Guid ingredientId, UnitOfMeasure newUnit, Guid actorId)
         {
             var cocktailIngredient = GetIngredient(ingredientId);
-            cocktailIngredient.UpdateUnit(newUnit);
-            Touch();
+            cocktailIngredient.UpdateUnit(newUnit, actorId);
+
+            // State that entity was updated
+            Touch(actorId);
+
+            // Raise ingredient added event
+            AddDomainEvent(new IngredientUnitChangedEvent(
+                Id,
+                cocktailIngredient.Id,
+                cocktailIngredient.Unit,
+                actorId
+            ));
         }
 
-        public void UpdateName(string name)
+        public void UpdateName(string name, Guid actorId)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name cannot be null");
+            SetName(name);
 
-            _name = name;
-            Touch();
+            // State that entity was updated
+            Touch(actorId);
+
+            // Raise ingredient added event
+            AddDomainEvent(new CocktailRenamedEvent(
+                Id,
+                Name,
+                actorId
+            ));
         }
 
-        public void UpdateDescription(string description)
+        public void UpdateDescription(string description, Guid actorId)
+        {
+            SetDescription(description);
+
+            // State that entity was updated
+            Touch(actorId);
+
+            // Raise ingredient added event
+            AddDomainEvent(new CocktailDescriptionChangedEvent(
+                Id,
+                Description!,
+                actorId
+            ));
+        }
+
+        private CocktailIngredient GetIngredient(Guid ingredientId)
+        {
+            var coctailIngredient = _ingredients.FirstOrDefault(ci => new CocktailIngredientByIngredientSpecification(ingredientId).IsSatisfiedBy(ci))
+                ?? throw new ArgumentException($"Ingredient '{ingredientId}' is not part of the cocktail.");
+
+            return coctailIngredient;
+        }
+
+        private void SetDescription(string description)
         {
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException("Description cannot be null");
 
             _description = description;
-            Touch();
         }
 
-        private CocktailIngredient GetIngredient(Guid ingredientId)
+        private void SetName(string name)
         {
-            var coctailIngredient = _ingredients.FirstOrDefault(ci => new CocktailIngredientByIngredientSpecification(ingredientId).SpecExpression.Compile()(ci))
-                ?? throw new ArgumentException($"Ingredient '{ingredientId}' is not part of the cocktail.");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Name cannot be null");
 
-            return coctailIngredient;
+            _name = name;
         }
     }
 }

@@ -5,10 +5,12 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 namespace CocktailsApp.Application.Club
 {
     public record GetClubMembersByIdsQuery(
         Guid ClubId,
         IEnumerable<Guid> MemberIds
-    ) : ClubQuery<IEnumerable<ClubMemberDTO>>(ClubId);
+    ) : ClubQuery<ReadOnlyCollection<ClubMemberDTO>>(ClubId);
 }

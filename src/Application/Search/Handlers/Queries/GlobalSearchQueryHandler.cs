@@ -9,6 +9,7 @@ using AutoMapper;
 using CocktailsApp.Application.SeedWork;
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 
 /*
@@ -20,12 +21,12 @@ namespace CocktailsApp.Application.Search
 {
     public class GlobalSearchQueryHandler(
         IGlobalSearchService searchService
-    ) : IQueryHandler<GlobalSearchQuery, IEnumerable<GlobalSearchResultDTO>>
+    ) : IQueryHandler<GlobalSearchQuery, ReadOnlyCollection<GlobalSearchResultDTO>>
     {
         private readonly IGlobalSearchService _searchService = searchService;
-        public Task<IEnumerable<GlobalSearchResultDTO>> Handle(GlobalSearchQuery request, CancellationToken cancellationToken)
+        public Task<ReadOnlyCollection<GlobalSearchResultDTO>> Handle(GlobalSearchQuery request, CancellationToken cancellationToken)
         {
-            return _searchService.GetSearchResultsAsync(request);
+            return _searchService.GetSearchResultsAsync(request, cancellationToken);
         }
     }
 }

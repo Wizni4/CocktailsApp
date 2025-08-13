@@ -3,8 +3,7 @@
 // See the LICENSE file in the project root for more information.
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.User;
-using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Infrastructure.SeedWork;
 using CocktailsApp.Infrastructure.UserAggregate;
 
 using DomainUser = CocktailsApp.Domain.UserAggregate.User;
@@ -18,6 +17,19 @@ namespace CocktailsApp.API.User
             ;
             services.AddScoped<IRepository<DomainUser>, UserRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddUserReaders(this IServiceCollection services)
+        {
+            services.AddScoped<IUserReader, UserReader>();
+            return services;
+        }
+
+        public static IServiceCollection AddUserProjectors(this IServiceCollection services)
+        {
+            services.AddScoped<IProjection, UserProjection>();
+            services.AddScoped<IProjection, UserCrossAggregateProjection>();
             return services;
         }
 

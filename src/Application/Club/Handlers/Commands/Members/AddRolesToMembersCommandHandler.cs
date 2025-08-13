@@ -46,16 +46,18 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(AddRolesToMembersCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Members)
-                                                                                         .Include(c => c.Roles));
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubWithMembersCommandSpecification(request.ClubId),
+                cancellationToken);
+
             // Add each user add their specified roles
             foreach (var member in request.Members)
                 foreach (var roleId in member.RoleIds!)
                     club!.AddRoleToMember(member.Id, roleId, request.ActorId);
 
             // Persist the changes.
-            _clubRepository.Update(club!);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.UpdateAsync(club!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Return the updated members as a DTO.
             return Unit.Value;

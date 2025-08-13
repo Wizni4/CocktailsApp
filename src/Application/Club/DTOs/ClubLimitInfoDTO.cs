@@ -8,9 +8,14 @@
  * Application namespaces
  */
 
+using CocktailsApp.Application.SeedWork;
+
 namespace CocktailsApp.Application.Club
 {
-    public record ClubLimitInfoDTO(int NumberOfOwnedClubs, int MaxNumberOfOwnedClubs, bool CanCreateClub)
+    public sealed class ClubLimitInfoDTO: EntityDTO
     {
+        public int NumberOfOwnedClubs { get; set; }
+        public int MaxNumberOfOwnedClubs { get; set; }
+        public bool CanCreateClub { get; set; }
     }
 }

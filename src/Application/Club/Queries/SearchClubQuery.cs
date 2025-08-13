@@ -4,7 +4,9 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 namespace CocktailsApp.Application.Club
 {
-    public record SearchClubQuery(string Term, Guid UserId) : SearchQuery<IEnumerable<ClubDTO>>(Term);
+    public record SearchClubQuery(string Term, Guid UserId) : SearchQuery<ReadOnlyCollection<ClubDTO>>(Term);
 }

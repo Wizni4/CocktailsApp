@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CocktailsApp.Infrastructure.CocktailAggregate
 {
-    public class CocktailRepository(EFDbContext dbContext) : EFRepository<Cocktail>(dbContext), ICocktailRepository
+    public class CocktailRepository(EFWriteDbContext dbContext) : EFRepository<Cocktail>(dbContext), ICocktailRepository
     {
     }
 }

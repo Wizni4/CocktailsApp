@@ -6,16 +6,20 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+
+using System.Collections.ObjectModel;
 /*
  * Framework namespaces
  */
 
 namespace CocktailsApp.Application.Cocktail
 {
-    public class CocktailDTO : EntityDTO
+    public sealed class CocktailDTO: EntityDTO, IImageDTO
     {
-        public string? Descritpion { get; set; }
-        public required IEnumerable<CocktailIngredientDTO> Ingredients { get; set; }
-        public required string Name { get; set; }
+        public Guid Id { get; set; } = default;
+        public string Name { get; set; } = default!;
+        public string? Description { get; set; } = null!;
+        public string? ImageId { get; set; } = null!;
+        public List<CocktailIngredientDTO> Ingredients { get; set; } = default!;
     }
 }

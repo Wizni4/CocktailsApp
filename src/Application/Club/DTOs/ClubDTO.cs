@@ -4,10 +4,10 @@
 /*
  * Application namespaces
  */
-using CocktailsApp.Application.Cocktail;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.Shared;
-using CocktailsApp.Domain.ClubAggregate;
+
+using System.Collections.ObjectModel;
 /*
  * Framework namespaces
  */
@@ -15,44 +15,19 @@ using CocktailsApp.Domain.ClubAggregate;
 namespace CocktailsApp.Application.Club
 {
     /// <summary>
-    /// Data Transfer Object (DTO) representing a club, including its metadata, address, members, roles, cocktails, and visibility.
+    /// Data Transfer Object (DTO) representing a club{ get; set; } including its metadata, address, members, roles, cocktails, and visibility.
     /// Inherits from <see cref="EntityDTO"/> to include common entity identification.
     /// </summary>
-    public class ClubDTO : EntityDTO
+    public sealed class ClubDTO: EntityDTO, IImageDTO
     {
-        /// <summary>
-        /// Gets or sets the physical address of the club.
-        /// </summary>
-        public AddressDTO? Address { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of cocktails associated with the club.
-        /// </summary>
-        public List<CocktailDTO> Cocktails { get; set; } = [];
-
-        /// <summary>
-        /// Gets or sets the textual description of the club.
-        /// </summary>
-        public required string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the club.
-        /// </summary>
-        public required string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of members belonging to the club.
-        /// </summary>
-        public List<ClubRoleDTO> Members { get; set; } = [];
-
-        /// <summary>
-        /// Gets or sets the list of roles available within the club.
-        /// </summary>
-        public List<ClubRoleDTO> Roles { get; set; } = [];
-
-        /// <summary>
-        /// Gets or sets the visibility level of the club (e.g., Public, Private).
-        /// </summary>
-        public ClubVisibility Visibility { get; set; }
+        public Guid Id { get; set; } = default;
+        public AddressDTO? Address { get; set; } = default;
+        public List<ClubCocktailDTO> Cocktails { get; set; } = default!;
+        public List<ClubMemberDTO> Members { get; set; } = default!;
+        public List<ClubRoleDTO> Roles { get; set; } = default!;
+        public string Description{ get; set; } = default!;
+        public string Name { get; set; } = default!;
+        public string Visibility { get; set; } = default!;
+        public string? ImageId { get; set; } = null;
     }
 }

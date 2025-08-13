@@ -48,7 +48,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         internal ClubRole(string name, Guid createdBy, bool isOwnerRole = false) : base(createdBy)
         {
             IsOwnerRole = isOwnerRole;
-            UpdateName(name);
+            UpdateName(name, createdBy);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentException">
         /// Thrown when the role already has the <paramref name="permission"/>.
         /// </exception>
-        internal void AddPermission(ClubPermissionType permission)
+        internal void AddPermission(ClubPermissionType permission, Guid actorId)
         {
             var newPermission = new ClubPermission(permission);
 
@@ -72,14 +72,14 @@ namespace CocktailsApp.Domain.ClubAggregate
             // Give the permission to the role.
             // FYI: As Permission is a ValueObject, instanciating a new Permission will not create new entry in the database.
             _permissions.Add(newPermission);
-            Touch();
+            Touch(actorId);
         }
 
         /// <summary>
         /// Removes <see cref="ClubPermissionType"/> from the <see cref="ClubRole"/>
         /// </summary>
         /// <param name="permission">The <see cref="ClubPermissionType"/> to remove from the role.</param>
-        internal void RemovePermission(ClubPermissionType permission)
+        internal void RemovePermission(ClubPermissionType permission, Guid actorId)
         {
             var newPermission = new ClubPermission(permission);
 
@@ -90,7 +90,7 @@ namespace CocktailsApp.Domain.ClubAggregate
                 throw new ArgumentException($"The role '{Name}' does not have the permission '{permission.ToString()}'.");
 
             _permissions.Remove(GetPermission(permission));
-            Touch();
+            Touch(actorId);
         }
 
         /// <summary>
@@ -100,13 +100,13 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="newName"/> is <see langword="null"/> or <see langword="empty"/>
         /// </exception>
-        internal void UpdateName(string newName)
+        internal void UpdateName(string newName, Guid actorId)
         {
             if (string.IsNullOrWhiteSpace(newName))
                 throw new ArgumentException("The role name cannot be an empty string or composed entirely of whitespace.");
 
             _name = newName;
-            Touch();
+            Touch(actorId);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace CocktailsApp.Domain.ClubAggregate
 
         private ClubPermission GetPermission(ClubPermissionType permissionType)
         {
-            var permission = _permissions.FirstOrDefault(new ClubPermissionByTypeSpecification(permissionType).SpecExpression.Compile())
+            var permission = _permissions.FirstOrDefault(p => new ClubPermissionByTypeSpecification(permissionType).IsSatisfiedBy(p))
                 ?? throw new KeyNotFoundException($"Permission '{permissionType.ToString()}' was not found in the '{Name}' role.");
 
             return permission;

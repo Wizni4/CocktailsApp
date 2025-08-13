@@ -29,20 +29,33 @@ namespace CocktailsApp.Domain.StockAggregate
             _clubId = clubId;
             _ingredientId = ingredientId;
             _unit = unit;
+
+            // raise stockt created event
+            AddDomainEvent(new StockCreatedEvent(Id, ClubId, IngredientId, CreatedBy));
         }
 
-        public void AddTransaction(decimal quantity, string description, StockTransactionType transactionType, Guid createdBy)
+        public void AddTransaction(decimal quantity, string description, StockTransactionType transactionType, Guid actorId)
         {
             if (transactionType == StockTransactionType.Debit && Quantity < quantity)
                 throw new ArgumentException("Quantity debit exceed remaining quantity", nameof(quantity));
 
-            var transaction = new StockTransaction(quantity, description, transactionType, createdBy);
+            var transaction = new StockTransaction(quantity, description, transactionType, actorId);
             _stockTransactions.Add(transaction);
-            Touch();
+
+            // State that entity changed
+            Touch(actorId);
 
             // Check if stock quantity is now zero and raise an event if true
             if (Quantity == 0)
-                AddDomainEvent(new IngredientOutOfStock(Id, IngredientId));
+                AddDomainEvent(new IngredientOutOfStock(Id, IngredientId, actorId));
+
+            // raise transaction added event
+            AddDomainEvent(new TransactionAddedEvent(
+                Id,
+                transaction.Quantity,
+                transaction.Description,
+                transaction.TransactionType,
+                actorId));
         }
     }
 }

@@ -26,26 +26,26 @@ namespace CocktailsApp.Domain.CocktailAggregate
         ) : base(createdBy)
         {
             IngredientId = ingredientId;
-            UpdateQuantity(quantity);
-            UpdateUnit(unit);
+            UpdateQuantity(quantity, createdBy);
+            UpdateUnit(unit, createdBy);
         }
 
-        internal void UpdateQuantity(decimal quantity)
+        internal void UpdateQuantity(decimal quantity, Guid actorId)
         {
             if (quantity <= 0)
                 throw new ArgumentException("Quantity must be strictly positive.");
 
             _quantity = quantity;
-            Touch();
+            Touch(actorId);
         }
 
-        internal void UpdateUnit(UnitOfMeasure unit)
+        internal void UpdateUnit(UnitOfMeasure unit, Guid actorId)
         {
             if (!Enum.IsDefined(unit))
                 throw new ArgumentException("Unit is invalid.");
 
             _unit = unit;
-            Touch();
+            Touch(actorId);
         }
     }
 }

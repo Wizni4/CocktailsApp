@@ -12,7 +12,8 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Search
 {
-    public interface IGlobalSearchService : ISearchService<GlobalSearchResultDTO, GlobalSearchQuery>
+    public interface IGlobalSearchService
+        : ISearchService<GlobalSearchResultDTO, GlobalSearchQuery>
     {
     }
 }

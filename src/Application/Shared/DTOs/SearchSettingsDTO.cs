@@ -15,7 +15,7 @@ using CocktailsApp.Domain.SeedWork;
 
 namespace CocktailsApp.Application.Shared
 {
-    public class SearchSettingsDTO
+    public class SearchSettingsDTO: EntityDTO
     {
         public int Limit { get; set; }
     }

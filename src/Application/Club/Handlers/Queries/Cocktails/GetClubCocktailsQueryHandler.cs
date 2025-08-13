@@ -6,26 +6,23 @@ using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
 
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
+using System.Collections.ObjectModel;
 
 
 namespace CocktailsApp.Application.Club
 {
     public class GetClubCocktailsQueryHandler(
-        IMapper autoMapper,
-        IUnitOfWork unitOfWork
-    ) : IQueryHandler<GetClubCocktailsQuery, IEnumerable<ClubCocktailDTO>>
+        IClubCocktailReader clubCocktailReader,
+        IMapper autoMapper
+    ) : IQueryHandler<GetClubCocktailsQuery, ReadOnlyCollection<ClubCocktailDTO>>
     {
+        private readonly IClubCocktailReader _clubCocktailReader = clubCocktailReader;
         private readonly IMapper _autoMapper = autoMapper;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
-
-        public async Task<IEnumerable<ClubCocktailDTO>> Handle(GetClubCocktailsQuery request, CancellationToken cancellationToken)
+        public async Task<ReadOnlyCollection<ClubCocktailDTO>> Handle(GetClubCocktailsQuery request, CancellationToken cancellationToken)
         {
-            var club = await _unitOfWork.Set<DomainClub>().ReadAsync(
-                new ClubByIdSpecification(request.ClubId),
-                opt => opt.Include(c => c.Cocktails));
-
-            return _autoMapper.Map<IEnumerable<ClubCocktailDTO>>(club!.Cocktails);
+            return (await _clubCocktailReader.ListAsync(
+                new ClubCocktailsQuerySpecification(request.ClubId, _autoMapper),
+                cancellationToken)).ToList().AsReadOnly();
         }
     }
 }

@@ -26,7 +26,9 @@ namespace CocktailsApp.Application.Club
         public async Task<IEnumerable<Guid>> Handle(CreateRolesCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Roles));
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubWithRolesCommandSpecification(request.ClubId),
+                cancellationToken);
 
             // Create roles (delegated to the domain)
             foreach (var newRole in request.NewRoles)
@@ -40,8 +42,8 @@ namespace CocktailsApp.Application.Club
             }
 
             // Persist the changes.
-            _clubRepository.Update(club!);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.UpdateAsync(club!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Return the updated club as a DTO.
             return club!.Roles.Select(x => x.Id);

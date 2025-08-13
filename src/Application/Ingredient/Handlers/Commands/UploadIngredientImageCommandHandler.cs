@@ -13,16 +13,19 @@ namespace CocktailsApp.Application.Ingredient
 {
     public class UploadIngredientImageCommandHandler(
         IImageService imageService,
+        IIngredientRepository ingredientRepository,
         IUnitOfWork unitOfWork
     ) : ICommandHandler<UploadIngredientImageCommand, string>
     {
         private readonly IImageService _imageService = imageService;
+        private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<string> Handle(UploadIngredientImageCommand request, CancellationToken cancellationToken)
         {
-            var ingredientResult = _unitOfWork.Set<DomainIngredient>().ReadAsync(
-                new IngredientByIdSpecification(request.IngredientId));
+            var ingredientResult = _ingredientRepository.ReadAsync(
+                new IngredientByIdCommandSpecification(request.IngredientId),
+                cancellationToken);
 
             var imageIdResult = _imageService.UploadImageAsync(
                 request.Image,
@@ -33,10 +36,10 @@ namespace CocktailsApp.Application.Ingredient
             var ingredient = await ingredientResult;
             var imageId = await imageIdResult;
 
-            ingredient!.UpdateImage(imageId);
+            ingredient!.UpdateImage(imageId, request.ActorId);
 
-            _unitOfWork.Set<DomainIngredient>().Update(ingredient);
-            await _unitOfWork.SaveChangesAsync();
+            await _ingredientRepository.UpdateAsync(ingredient, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return imageId;
         }
     }

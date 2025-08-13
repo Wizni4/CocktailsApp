@@ -10,11 +10,10 @@ namespace CocktailsApp.Application.Cocktail
 {
     public class GetCocktailByIdQueryValidator : AbstractValidator<GetCocktailByIdQuery>
     {
-        public GetCocktailByIdQueryValidator(ICocktailRepository cocktailRepository)
+        public GetCocktailByIdQueryValidator()
         {
             RuleFor(q => q.CocktailId)
-                .ValidGuid()
-                .IsCocktailExists(cocktailRepository);
+                .ValidGuid();
         }
     }
 }

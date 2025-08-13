@@ -32,7 +32,9 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(UpdateClubCommand request, CancellationToken cancellationToken)
         {
             // Get the club from the db
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId);
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubCommandSpecification(request.ClubId),
+                cancellationToken);
 
             // Update Address
             if (request.Address != null)
@@ -51,8 +53,8 @@ namespace CocktailsApp.Application.Club
                 club!.UpdateVisibility(request.Visibility.Value, request.ActorId);
 
             // Persist the changes.
-            _clubRepository.Update(club!);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.UpdateAsync(club!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Return the updated club as a DTO.
             return Unit.Value;

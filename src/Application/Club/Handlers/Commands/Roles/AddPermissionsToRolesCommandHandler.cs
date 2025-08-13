@@ -44,7 +44,9 @@ namespace CocktailsApp.Application.Club
         public async Task<Unit> Handle(AddPermissionsToRolesCommand request, CancellationToken cancellationToken)
         {
             // Load the club aggregate, including roles.
-            var club = await _clubRepository.GetClubBydIdAsync(request.ClubId, opt => opt.Include(c => c.Roles));
+            var club = await _clubRepository.ReadAsync(
+                new LoadClubWithRolesCommandSpecification(request.ClubId),
+                cancellationToken);
 
             // Delegate the permission-adding logic to the club aggregate.
             foreach (var role in request.Roles)
@@ -52,8 +54,8 @@ namespace CocktailsApp.Application.Club
                     club!.AddPermissionToRole(role.Id, permission, request.ActorId);
 
             // Persist the changes.
-            _clubRepository.Update(club!);
-            await _unitOfWork.SaveChangesAsync();
+            await _clubRepository.UpdateAsync(club!, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Return the updated roles as a DTO.
             return Unit.Value;

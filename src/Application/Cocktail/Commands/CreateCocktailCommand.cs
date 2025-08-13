@@ -18,8 +18,8 @@ namespace CocktailsApp.Application.Cocktail
         string? Description,
         List<IngredientModel> Ingredients,
         string Name,
-        Guid CreatorId
-   ) : ICommand<Guid>;
+        Guid ActorId
+   ) : Command<Guid>(ActorId);
 
     public record IngredientModel(
         Guid Id,

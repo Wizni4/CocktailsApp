@@ -2,25 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using AutoMapper;
-
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.CocktailAggregate;
 
-using DomainCocktails = CocktailsApp.Domain.CocktailAggregate.Cocktail;
 
 namespace CocktailsApp.Application.Cocktail
 {
     public class CreateCocktailCommandHandler(
+        ICocktailRepository cocktailRepository,
         IUnitOfWork unitOfWork
     ) : ICommandHandler<CreateCocktailCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ICocktailRepository _cocktailRepository = cocktailRepository;
 
         public async Task<Guid> Handle(CreateCocktailCommand request, CancellationToken cancellationToken)
         {
             var cocktailBuilder = new CocktailBuilder()
-                .WithCreatorId(request.CreatorId)
+                .WithCreatorId(request.ActorId)
                 .WithDescription(request.Description)
                 .WithName(request.Name);
 
@@ -33,8 +32,8 @@ namespace CocktailsApp.Application.Cocktail
 
             var cocktail = cocktailBuilder.Build();
 
-            _unitOfWork.Set<DomainCocktails>().Create(cocktail);
-            await _unitOfWork.SaveChangesAsync();
+            await _cocktailRepository.CreateAsync(cocktail, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return cocktail.Id;
         }

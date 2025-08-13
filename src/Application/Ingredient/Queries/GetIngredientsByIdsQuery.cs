@@ -5,7 +5,9 @@
 
 using CocktailsApp.Application.SeedWork;
 
+using System.Collections.ObjectModel;
+
 namespace CocktailsApp.Application.Ingredient
 {
-    public record GetIngredientsByIdsQuery(IEnumerable<Guid> Ids) : IQuery<IEnumerable<IngredientDTO>>;
+    public record GetIngredientsByIdsQuery(IEnumerable<Guid> Ids) : IQuery<ReadOnlyCollection<IngredientDTO>>;
 }

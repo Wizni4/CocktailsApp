@@ -9,7 +9,7 @@ namespace CocktailsApp.Application.Club
 {
     public class GetClubRolesByIdsQueryValidator : ClubQueryValidator<GetClubRolesByIdsQuery>
     {
-        public GetClubRolesByIdsQueryValidator(IClubRepository clubRepository) : base(clubRepository)
+        public GetClubRolesByIdsQueryValidator()
         {
             RuleFor(q => q.RoleIds)
                 .ValidList();

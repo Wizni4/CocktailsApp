@@ -11,11 +11,9 @@ namespace CocktailsApp.Application.Ingredient
 {
     public class GetIngredientByIdQueryValidator : AbstractValidator<GetIngredientByIdQuery>
     {
-        public GetIngredientByIdQueryValidator(IIngredientRepository ingredientRepository)
+        public GetIngredientByIdQueryValidator()
         {
-            RuleFor(c => c.IngredientId)
-                .ValidGuid()
-                .IsIngredientExists(ingredientRepository);
+            RuleFor(c => c.IngredientId).ValidGuid();
         }
     }
 }

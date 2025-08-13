@@ -24,8 +24,7 @@ namespace CocktailsApp.Application.Club
         /// Initializes a new instance of the <see cref="DeleteClubCommandValidator"/> class.
         /// Defines validation rules for the <see cref="DeleteClubCommand"/>.
         /// </summary>
-        public DeleteClubCommandValidator(IClubRepository clubRepository)
-            : base(clubRepository)
+        public DeleteClubCommandValidator()
         {
         }
     }

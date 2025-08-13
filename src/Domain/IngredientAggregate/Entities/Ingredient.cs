@@ -37,9 +37,12 @@ namespace CocktailsApp.Domain.IngredientAggregate
             _name = name;
             _type = type;
             _isAlcoholic = isAlcoholic;
+
+            // raise ingredient created event
+            AddDomainEvent(new IngredientCreatedEvent(Id, Name, Type, IsAlcoholic, CreatedBy));
         }
 
-        public Allergen AddAllergen(string name)
+        public Allergen AddAllergen(string name, Guid actorId)
         {
             var allergen = new Allergen(name);
 
@@ -47,11 +50,26 @@ namespace CocktailsApp.Domain.IngredientAggregate
                 throw new ArgumentException($"Ingredient '{Name}' already contains the allergen '{name}'");
 
             _allergens.Add(allergen);
-            Touch();
+
+            // State that entity changed
+            Touch(actorId);
+
+            // raise allergen added event
+            AddDomainEvent(new AllergenAddedEvent(Id, allergen.Name, actorId));
+
             return allergen;
         }
 
-        public void RemoveAllergen(string name)
+        public void DeleteIngredient(Guid actorId)
+        {
+            // State that entity changed
+            Touch(actorId);
+
+            // raise allergen added event
+            AddDomainEvent(new IngredientDeletedEvent(Id, actorId));
+        }
+
+        public void RemoveAllergen(string name, Guid actorId)
         {
             var allergen = new Allergen(name);
 
@@ -59,7 +77,12 @@ namespace CocktailsApp.Domain.IngredientAggregate
                 throw new ArgumentException($"Ingredient '{Name}' does not contain the allergen '{name}'");
 
             _allergens.Remove(allergen);
-            Touch();
+
+            // State that entity changed
+            Touch(actorId);
+
+            // raise allergen added event
+            AddDomainEvent(new AllergenRemovedEvent(Id, allergen.Name, actorId));
         }
     }
 }

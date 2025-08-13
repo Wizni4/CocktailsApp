@@ -5,6 +5,8 @@
  * Application namespaces
  */
 using CocktailsApp.Application.SeedWork;
+
+using System.Collections.ObjectModel;
 /*
  * Framework namespaces
  */
@@ -12,5 +14,5 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Search
 {
-    public record GlobalSearchQuery(string Term, Guid UserId) : SearchQuery<IEnumerable<GlobalSearchResultDTO>>(Term);
+    public record GlobalSearchQuery(string Term, Guid UserId) : SearchQuery<ReadOnlyCollection<GlobalSearchResultDTO>>(Term);
 }

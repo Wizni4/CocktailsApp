@@ -7,7 +7,7 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Ingredient
 {
-    public record GetIngredientByIdQuery(Guid IngredientId) : IQuery<IngredientDTO>
+    public record GetIngredientByIdQuery(Guid IngredientId) : IQuery<IngredientDTO?>
     {
     }
 }
