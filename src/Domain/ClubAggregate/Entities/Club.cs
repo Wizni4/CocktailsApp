@@ -800,7 +800,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </exception>
         private ClubMember GetMember(Guid clubMemberId)
         {
-            var member = _members.FirstOrDefault(cm => new ClubMemberByIdSpecification(clubMemberId).IsSatisfiedBy(cm))
+            var member = _members.FirstOrDefault(new ClubMemberByIdSpecification(clubMemberId).SpecExpression.Compile())
                 ?? throw new ArgumentException($"The member could not be found in the club.");
 
             return member;
@@ -816,7 +816,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         /// </exception>
         private ClubRole GetRole(Guid roleId)
         {
-            var role = _roles.FirstOrDefault(cr => new ClubRoleByIdSpecification(roleId).IsSatisfiedBy(cr))
+            var role = _roles.FirstOrDefault(new ClubRoleByIdSpecification(roleId).SpecExpression.Compile())
                 ?? throw new ArgumentException($"The role could not be found in the club.");
 
             return role;
@@ -856,7 +856,7 @@ namespace CocktailsApp.Domain.ClubAggregate
         private bool IsMemberAuthorized(Guid actorId, ClubPermissionType permission)
         {
             // Get the member based on the specified user ID
-            var member = _members.FirstOrDefault(cm => new ClubMemberByIdSpecification(actorId).IsSatisfiedBy(cm));
+            var member = _members.FirstOrDefault(new ClubMemberByIdSpecification(actorId).SpecExpression.Compile());
 
             if (member == null)
                 return false;

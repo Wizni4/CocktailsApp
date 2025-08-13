@@ -22,8 +22,14 @@ namespace CocktailsApp.Application.Club
     /// </summary>
     public sealed class ClubMemberDTO : EntityDTO
     {
-        public Guid Id { get; set; }
-        public List<ClubRoleDTO> Roles { get; set; } = default!;
-        public UserDTO User { get; set; } = default!;
+        /// <summary>
+        /// Gets or sets the list of roles assigned to the club member.
+        /// </summary>
+        public List<ClubRoleDTO> Roles { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the identifier of the user associated with this club member.
+        /// </summary>
+        public required Guid UserId { get; set; }
     }
 }

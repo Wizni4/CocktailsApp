@@ -8,6 +8,9 @@ using AutoMapper.QueryableExtensions;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
 
+using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
+
+
 namespace CocktailsApp.Application.Club
 {
     public class SearchClubQuerySpecification(
@@ -22,21 +25,11 @@ namespace CocktailsApp.Application.Club
         private readonly Guid _userId = userId;
         private readonly IMapper _autoMapper = autoMapper;
 
-        public IQueryable<ClubRead> Filter(IQueryable<ClubRead> query)
         {
-            return query.Where(c =>
-                c.Name.Contains(_term) &&
-                (
-                    c.Visibility == ClubVisibility.Public.ToString() ||
-                    c.Members.Any(m => m.UserId == _userId)
-                ));
+            {
+                                 .Take(_limit);
+            }
         }
-
-        public IQueryable<ClubDTO> Select(IQueryable<ClubRead> filtered)
-        {
-            return filtered
-                .ProjectTo<ClubDTO>(_autoMapper.ConfigurationProvider)
-                .Take(_limit);
-        }
+        public override Func<IIncludable<DomainClub>, IIncludable>? Includes => null;
     }
 }

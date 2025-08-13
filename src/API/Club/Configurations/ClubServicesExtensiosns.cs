@@ -20,17 +20,8 @@ namespace CocktailsApp.API.Club
         public static IServiceCollection AddClubReaders(this IServiceCollection services)
         {
             ;
-            services.AddScoped<IClubReader, ClubReader>();
-            services.AddScoped<IClubCocktailReader, ClubCocktailReader>();
-            services.AddScoped<IClubMemberReader, ClubMemberReader>();
-            services.AddScoped<IClubRoleReader, ClubRoleReader>();
-            return services;
-        }
-
-        public static IServiceCollection AddClubProjectors(this IServiceCollection services)
-        {
-            services.AddScoped<IProjection, ClubProjection>();
-            services.AddScoped<IProjection, ClubCrossAggregateProjection>();
+            services.AddScoped<IRepository<DomainClub>, ClubRepository>();
+            services.AddScoped<IClubRepository, ClubRepository>();
             return services;
         }
 

@@ -4,25 +4,28 @@
 
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.SeedWork;
 
 using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 
 namespace CocktailsApp.Application.Club
 {
-    public abstract class ClubCommandSpecification(Guid clubId) : ICommandSpecification<DomainClub>
+    public class ClubCocktailQuerySpecification(
+        Guid clubId
+    ) : ClubQuerySpecification<ClubCocktail, ClubDTO>,
+        IChildQuerySpecification<DomainClub, ClubCocktail, ClubCocktailDTO>
     {
         private readonly Guid _clubId = clubId;
-        public virtual ISpecification<DomainClub>? Specification => new ClubByIdSpecification(_clubId);
-
+        public Func<ISelector<DomainClub>, ISelector<ClubCocktail>> Selector
         {
             get
             {
-                return opt => opt.Include(c => c.Members)
-                                    .ThenInclude(m => m.Roles)
-                                 .Include(c => c.Roles);
+                return opt => opt.Where(new ClubByIdSpecification(_clubId))
+                                 .SelectMany(c => c.Cocktails);
             }
         }
+
+        public override Func<IIncludable<ClubCocktail>, IIncludable>? Includes => null;
+
     }
 }

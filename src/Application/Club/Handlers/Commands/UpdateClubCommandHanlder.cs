@@ -15,8 +15,6 @@ using MediatR;
  * Application namespaces
  */
 using DomainAddress = CocktailsApp.Domain.Shared.Address;
-using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
-
 namespace CocktailsApp.Application.Club
 {
     public class UpdateClubCommandHanlder(

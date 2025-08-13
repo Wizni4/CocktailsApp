@@ -22,7 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Cocktail\Specifications\" />
+    <Folder Include="Ingredient\Specifications\" />
     <Folder Include="User\Commands\" />
+    <Folder Include="User\Specifications\" />
   </ItemGroup>
 
 </Project>

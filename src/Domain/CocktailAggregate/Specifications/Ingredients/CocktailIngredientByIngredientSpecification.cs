@@ -2,8 +2,6 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.SeedWork;
-using CocktailsApp.Domain.Shared;
-
 using System.Linq.Expressions;
 /*
  * Framework namespaces

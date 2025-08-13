@@ -5,30 +5,31 @@ using AutoMapper;
 
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.Shared;
-
 using Microsoft.Extensions.Options;
 
-using System.Collections.ObjectModel;
+using DomainClub = CocktailsApp.Domain.ClubAggregate.Club;
 
 
 namespace CocktailsApp.Application.Club
 {
     public class ClubSearchService(
-        IClubReader clubReader,
-        IOptions<SearchSettingsDTO> options,
-        IMapper autoMapper
+        IMapper autoMapper,
+        IUnitOfWork unitOfWork,
+        IOptions<SearchSettingsDTO> options
     ) : SearchService<ClubDTO, SearchClubQuery>(options), IClubSearchService
     {
-        private readonly IClubReader _clubReader = clubReader;
         private readonly IMapper _autoMapper = autoMapper;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public override async Task<ReadOnlyCollection<ClubDTO>> GetSearchResultsAsync(SearchClubQuery query, CancellationToken cancellationToken)
+        public override async Task<IEnumerable<ClubDTO>> GetSearchResultsAsync(SearchClubQuery query)
         {
             var searchLimit = _options.Value.Limit;
 
-            return (await _clubReader.ListAsync(
-                new SearchClubQuerySpecification(searchLimit, query.Term, query.UserId, _autoMapper),
-                cancellationToken)).ToList().AsReadOnly();
+            var clubs = await _unitOfWork.Set<DomainClub>().ReadRangeAsync(
+                new ClubByTermSpecification(query.Term, query.UserId),
+                limit: searchLimit);
+
+            return _autoMapper.Map<IEnumerable<ClubDTO>>(clubs);
         }
     }
 }

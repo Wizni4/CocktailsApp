@@ -26,6 +26,7 @@ namespace CocktailsApp.Application.Authentication
         private readonly IAuthService _authService = authService;
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IUserRepository _userRepository = userRepository;
 
         public async Task<Unit> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {

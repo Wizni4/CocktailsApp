@@ -18,13 +18,14 @@ namespace CocktailsApp.Application.Club
         IMapper autoMapper
     ) : IQueryHandler<GetClubByIdQuery, ClubDTO?>
     {
-        private readonly IClubReader _clubReader = clubReader;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _autoMapper = autoMapper;
-        public Task<ClubDTO?> Handle(GetClubByIdQuery request, CancellationToken cancellationToken)
+
+        public async Task<ClubDTO> Handle(GetClubByIdQuery request, CancellationToken cancellationToken)
         {
-            return _clubReader.FirstOrDefaultAsync(
-                new ClubByIdQuerySpecification(request.ClubId, _autoMapper),
-                cancellationToken);
+            var club = await _unitOfWork.Set<DomainClub>().ReadAsync(
+                new ClubByIdSpecification(request.ClubId));
+            return _autoMapper.Map<ClubDTO>(club);
         }
     }
 }
