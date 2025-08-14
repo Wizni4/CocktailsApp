@@ -4,7 +4,7 @@
 
 using AutoMapper;
 
-using CocktailsApp.Application.Stock;
+using CocktailsApp.Application.Stocks;
 using CocktailsApp.Infrastructure.SeedWork;
 
 

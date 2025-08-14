@@ -5,7 +5,7 @@
 using CocktailsApp.Domain.Common;
 
 
-namespace CocktailsApp.Domain.StockAggregate
+namespace CocktailsApp.Domain.Stocks
 {
     public sealed record StockCreatedEvent(
         Guid StockId,

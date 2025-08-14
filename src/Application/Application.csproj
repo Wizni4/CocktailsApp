@@ -30,7 +30,9 @@
     <Folder Include="Prices\DTOs\" />
     <Folder Include="Prices\Commands\" />
     <Folder Include="Prices\Queries\" />
-    <Folder Include="SeedWork\Handlers\" />
+    <Folder Include="Stock\Commands\" />
+    <Folder Include="Stock\DTOs\" />
+    <Folder Include="Stock\Queries\" />
     <Folder Include="Users\Commands\" />
   </ItemGroup>
 

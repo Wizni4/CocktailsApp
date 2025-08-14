@@ -1,7 +1,7 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.StockAggregate;
+using CocktailsApp.Domain.Stocks;
 using CocktailsApp.Infrastructure.SeedWork;
 
 

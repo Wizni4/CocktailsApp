@@ -6,7 +6,7 @@
  * Framework namespaces
  */
 
-namespace CocktailsApp.Domain.StockAggregate
+namespace CocktailsApp.Domain.Stocks
 {
     public enum StockTransactionType
     {

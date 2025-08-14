@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using CocktailsApp.API.Authentication;
-using CocktailsApp.API.Club;
+using CocktailsApp.API.Clubs;
 using CocktailsApp.API.Shared;
 
 namespace CocktailsApp.API.SeedWork

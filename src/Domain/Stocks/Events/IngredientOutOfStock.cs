@@ -7,7 +7,7 @@ using CocktailsApp.Domain.Common;
  * Framework namespaces
  */
 
-namespace CocktailsApp.Domain.StockAggregate
+namespace CocktailsApp.Domain.Stocks
 {
     public sealed record IngredientOutOfStock(
         Guid StockId,

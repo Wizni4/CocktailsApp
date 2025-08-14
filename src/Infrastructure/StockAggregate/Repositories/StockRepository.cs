@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using CocktailsApp.Application.Stock;
-using CocktailsApp.Domain.StockAggregate;
+using CocktailsApp.Application.Stocks;
+using CocktailsApp.Domain.Stocks;
 using CocktailsApp.Infrastructure.SeedWork;
 
 

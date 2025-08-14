@@ -2,7 +2,7 @@
  * Domain namespaces
  */
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.Domain.OrderAggregate;
+using CocktailsApp.Domain.Orders;
 using CocktailsApp.Domain.Users;
 using CocktailsApp.Infrastructure.SeedWork;
 

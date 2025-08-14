@@ -5,7 +5,7 @@
 using CocktailsApp.Domain.Common;
 
 
-namespace CocktailsApp.Domain.OrderAggregate
+namespace CocktailsApp.Domain.Orders
 {
     public sealed record OrderCreatedEvent(
         Guid OrderId,

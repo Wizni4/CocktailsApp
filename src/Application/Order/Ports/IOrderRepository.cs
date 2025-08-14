@@ -1,7 +1,7 @@
 ﻿
 
 using CocktailsApp.Application.Common;
-using CocktailsApp.Domain.OrderAggregate;
+using CocktailsApp.Domain.Orders;
 
 namespace CocktailsApp.Application.Orders
 {

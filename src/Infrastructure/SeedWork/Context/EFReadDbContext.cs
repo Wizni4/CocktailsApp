@@ -11,7 +11,7 @@ using CocktailsApp.Application.Cocktails;
 using CocktailsApp.Application.Ingredients;
 using CocktailsApp.Application.Prices;
 using CocktailsApp.Application.Orders;
-using CocktailsApp.Application.Stock;
+using CocktailsApp.Application.Stocks;
 using CocktailsApp.Application.Users;
 using CocktailsApp.Infrastructure.ClubAggregate;
 using CocktailsApp.Infrastructure.CocktailAggregate;

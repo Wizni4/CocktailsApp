@@ -90,8 +90,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Order\Controllers\" />
-    <Folder Include="Stock\Controllers\" />
+    <Folder Include="Orders\Controllers\" />
+    <Folder Include="Stocks\Controllers\" />
   </ItemGroup>
 
 </Project>

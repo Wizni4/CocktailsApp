@@ -4,7 +4,7 @@
 using CocktailsApp.Domain.Clubs;
 using CocktailsApp.Domain.Cocktails;
 using CocktailsApp.Domain.Ingredients;
-using CocktailsApp.Domain.StockAggregate;
+using CocktailsApp.Domain.Stocks;
 using CocktailsApp.Domain.Users;
 using CocktailsApp.Infrastructure.SeedWork;
 

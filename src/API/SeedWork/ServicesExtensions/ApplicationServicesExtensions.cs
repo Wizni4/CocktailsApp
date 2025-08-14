@@ -6,15 +6,15 @@
  */
 
 using CocktailsApp.API.Authentication;
-using CocktailsApp.API.Club;
-using CocktailsApp.API.Cocktail;
-using CocktailsApp.API.Ingredient;
-using CocktailsApp.API.IngredientPricing;
-using CocktailsApp.API.Order;
+using CocktailsApp.API.Clubs;
+using CocktailsApp.API.Cocktails;
+using CocktailsApp.API.Ingredients;
+using CocktailsApp.API.Prices;
+using CocktailsApp.API.Orders;
 using CocktailsApp.API.Search;
 using CocktailsApp.API.Shared;
-using CocktailsApp.API.Stock;
-using CocktailsApp.API.User;
+using CocktailsApp.API.Stocks;
+using CocktailsApp.API.Users;
 using CocktailsApp.Application.Auth;
 using CocktailsApp.Application.Clubs;
 using CocktailsApp.Application.Cocktails;
@@ -25,7 +25,7 @@ using CocktailsApp.Application.Prices;
 using CocktailsApp.Application.Search;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.Shared;
-using CocktailsApp.Application.Stock;
+using CocktailsApp.Application.Stocks;
 using CocktailsApp.Application.Users;
 using CocktailsApp.Domain.Common;
 using CocktailsApp.Infrastructure.ClubAggregate;

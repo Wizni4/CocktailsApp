@@ -7,7 +7,7 @@ using CocktailsApp.Domain.Common;
  * Framework namespaces
  */
 
-namespace CocktailsApp.Domain.OrderAggregate
+namespace CocktailsApp.Domain.Orders
 {
     public sealed class OrderItem : ValueObject
     {
