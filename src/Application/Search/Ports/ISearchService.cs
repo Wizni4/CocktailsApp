@@ -1,6 +1,6 @@
-﻿using CocktailsApp.Application.Search;
+﻿using CocktailsApp.Application.Common;
 
-namespace CocktailsApp.Application.Common
+namespace CocktailsApp.Application.Search
 {
     public interface ISearchService
     {

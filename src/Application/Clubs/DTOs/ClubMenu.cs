@@ -7,7 +7,7 @@ namespace CocktailsApp.Application.Clubs
         Guid ClubId,
         string ClubName,
         IReadOnlyCollection<MenuCocktailItem> Cocktails
-    ) : Entity;
+    ) : IDTO;
 
     public sealed record MenuCocktailItem(
         Guid CocktailId,
@@ -15,5 +15,5 @@ namespace CocktailsApp.Application.Clubs
         string? ImageId,
         bool ContainsAlcohol,
         IReadOnlyCollection<string> Allergens
-    ) : Entity;
+    ) : IDTO;
 }

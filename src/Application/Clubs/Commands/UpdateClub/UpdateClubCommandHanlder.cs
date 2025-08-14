@@ -5,11 +5,11 @@ using MediatR;
 namespace CocktailsApp.Application.Clubs
 {
     public sealed class UpdateClubCommandHanlder(
-        ICurrentUser user,
+        ICurrentUserService user,
         IClubRepository clubRepository
     ) : ICommandHandler<UpdateClubCommand, Unit>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         public async Task<Unit> Handle(UpdateClubCommand request, CancellationToken cancellationToken)

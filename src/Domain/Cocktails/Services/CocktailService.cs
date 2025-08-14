@@ -1,8 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.Prices;
 using CocktailsApp.Domain.Common;
+using CocktailsApp.Domain.Prices;
 /*
  * Framework namespaces
  */

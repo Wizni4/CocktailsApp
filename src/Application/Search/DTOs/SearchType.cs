@@ -2,8 +2,8 @@
 
 namespace CocktailsApp.Application.Search
 {
-    public enum SearchType 
-    { 
+    public enum SearchType
+    {
         Club,
         Cocktail,
         Ingredient,

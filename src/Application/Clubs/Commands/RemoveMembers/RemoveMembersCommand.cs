@@ -18,10 +18,6 @@ namespace CocktailsApp.Application.Clubs
     /// </param>
     public sealed record RemoveMembersCommand(
         Guid ClubId,
-        IEnumerable<Guid> MemberIds,
-        Guid RequestId
-    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand
-    {
-        public string IdempotencyKey => $"RemoveMembers:{RequestId}";
-    }
+        IEnumerable<Guid> MemberIds
+    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand;
 }

@@ -17,10 +17,6 @@ namespace CocktailsApp.Application.Clubs
     /// </param>
     public sealed record AddRolesToMembersCommand(
         Guid ClubId,
-        IEnumerable<MemberRolesUpdateModel> Members,
-        Guid RequestId
-    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand
-    {
-        public string IdempotencyKey => $"AddRolesToMembers:{RequestId}";
-    }
+        IEnumerable<MemberRolesUpdateModel> Members
+    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand;
 }

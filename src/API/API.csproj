@@ -62,7 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="4.0.1.13" />
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.2" />
     <PackageReference Include="AWSSDK.SSO" Version="4.0.0.15" />
     <PackageReference Include="AWSSDK.SSOOIDC" Version="4.0.0.15" />
@@ -74,7 +74,6 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.14.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -87,11 +86,21 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\ReadStore\ReadStore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Orders\Controllers\" />
-    <Folder Include="Stocks\Controllers\" />
+    <Folder Include="Orders\Requests\" />
+    <Folder Include="Orders\Responses\" />
+    <Folder Include="Prices\Requests\" />
+    <Folder Include="Prices\Responses\" />
+    <Folder Include="Search\Requests\" />
+    <Folder Include="Shared\Response\" />
+    <Folder Include="Shared\Request\" />
+    <Folder Include="Stocks\Requests\" />
+    <Folder Include="Stocks\Responses\" />
+    <Folder Include="Users\Requests\" />
+    <Folder Include="wwwroot\assets\defaults\" />
   </ItemGroup>
 
 </Project>

@@ -11,8 +11,8 @@ namespace CocktailsApp.Application.Common
     /// </summary>
     /// <typeparam name="TRequest">The type of the request being validated. Must be non-nullable.</typeparam>
     /// <typeparam name="TResponse">The type of response produced by the handler.</typeparam>
-    public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) 
-        : IPipelineBehavior<TRequest, TResponse> 
+    public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+        : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IBaseRequest
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators = validators;

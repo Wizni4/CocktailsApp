@@ -3,12 +3,12 @@
 namespace CocktailsApp.Application.Clubs
 {
     public sealed class GetClubMenuAuthorization(
-        IClubAccess access    
+        IClubAccess access
     ) : IAuthorize<GetClubMenuQuery>
     {
         private readonly IClubAccess _access = access;
 
-        public async Task AuthorizeAsync(GetClubMenuQuery request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(GetClubMenuQuery request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
 

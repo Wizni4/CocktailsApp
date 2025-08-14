@@ -6,5 +6,5 @@ namespace CocktailsApp.Application.Common
     {
         string Name { get; }
     }
-    
+
 }

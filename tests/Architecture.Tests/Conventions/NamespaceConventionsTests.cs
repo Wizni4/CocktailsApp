@@ -45,23 +45,17 @@ namespace CocktailsApp.Architecture.Tests.Conventions
                 if (relativePath.Contains("AssemblyInfo") ||
                     relativePath.Contains("AssemblyAttributes") ||
                     relativePath.Contains("obj/") ||
-                    relativePath.Contains("Migrations"))
+                    relativePath.Contains("Migrations") ||
+                    relativePath.Contains("DependencyInjection.cs"))
                     continue;
 
-                var firstFolder = relativePath.Split('/').FirstOrDefault();
+                var firstFolder = relativePath.Split('/').Select(f => Regex.Replace(f, "^_", "")).FirstOrDefault();
                 if (string.IsNullOrWhiteSpace(firstFolder)) continue;
 
                 var expectedNamespace = $"{baseNamespace}.{firstFolder}";
 
                 var typeName = Path.GetFileNameWithoutExtension(file);
-                //if (typeName == "ICommandHandler")
-                //{
-                //    Console.Write("ici");
-                //    var test = Assembly.Load($"CocktailsApp.{layerName}")
-                //        .GetTypes()
-                //        .FirstOrDefault(t => t.Name.StartsWith(typeName));
-                //    Console.Write(test);
-                //}
+
                 var matchingType = Assembly.Load($"CocktailsApp.{layerName}")
                     .GetTypes()
                     .FirstOrDefault(t => Regex.Replace(t.Name, "`.*", "") == typeName);

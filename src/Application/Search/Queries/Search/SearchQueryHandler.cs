@@ -1,16 +1,17 @@
 ﻿using CocktailsApp.Application.Common;
+
 using Microsoft.Extensions.Options;
 
 
 namespace CocktailsApp.Application.Search
 {
     public class SearchQueryHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IOptions<SearchOptions> options,
         ISearchService searchService
     ) : IQueryHandler<SearchQuery, PagedResult<SearchResultItem>>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IOptions<SearchOptions> _options = options;
         private readonly ISearchService _searchService = searchService;
 
@@ -23,11 +24,11 @@ namespace CocktailsApp.Application.Search
             var scope = _user.IsAuthenticated ? AccessScope.PublicOrMember : AccessScope.PublicOnly;
 
             var criteria = new SearchCriteria(
-                Term          : request.Term.Trim(),
-                Scope         : scope,
-                UserId        : _user.UserId,
-                Skip          : skip,
-                Take          : take,
+                Term: request.Term.Trim(),
+                Scope: scope,
+                UserId: _user.UserId,
+                Skip: skip,
+                Take: take,
                 WithHighlights: cfg.EnableHighlights
             );
 

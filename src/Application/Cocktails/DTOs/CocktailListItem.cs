@@ -8,9 +8,9 @@ namespace CocktailsApp.Application.Cocktails
         Guid CocktailId,
         string Name,
         string? Description,
-        string? imageId,
+        string? ImageId,
         bool ContainsAlcohol,
         List<string> Allergens,
         int IngredientCount
-    ) : Entity;
+    ) : IDTO;
 }

@@ -8,5 +8,5 @@ namespace CocktailsApp.Application.Users
         Guid Id,
         string Username,
         string? ImageId
-    ) : Entity, IImage;
+    ) : IDTO;
 }

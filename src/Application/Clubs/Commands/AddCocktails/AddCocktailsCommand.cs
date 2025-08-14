@@ -14,10 +14,6 @@ namespace CocktailsApp.Application.Clubs
     /// </param>
     public sealed record AddCocktailsCommand(
         Guid ClubId,
-        IEnumerable<Guid> CocktailIds,
-        Guid RequestId
-    ) : ClubCommand<IEnumerable<Guid>>(ClubId), IIdempotentCommand
-    {
-        public string IdempotencyKey => $"AddCocktails:{RequestId}";
-    }
+        IEnumerable<Guid> CocktailIds
+    ) : ClubCommand<IEnumerable<Guid>>(ClubId), IIdempotentCommand;
 }

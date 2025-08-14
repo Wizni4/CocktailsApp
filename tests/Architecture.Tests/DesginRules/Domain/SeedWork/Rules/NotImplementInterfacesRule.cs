@@ -8,8 +8,8 @@ namespace CocktailsApp.Architecture.Tests.DesignRules.Domain
     {
         private static readonly string[] s_allowedInterfaces = new[]
         {
-            "CocktailsApp.Domain.SeedWork.IAggregateRoot",
-            "CocktailsApp.Domain.SeedWork.IEntity"
+            "CocktailsApp.Domain.Common.IAggregateRoot",
+            "CocktailsApp.Domain.Common.IEntity"
         };
 
         public NotImplementInterfacesRule()

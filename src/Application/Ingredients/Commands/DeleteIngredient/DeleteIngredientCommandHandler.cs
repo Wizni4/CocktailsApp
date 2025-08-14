@@ -6,11 +6,11 @@ using MediatR;
 namespace CocktailsApp.Application.Ingredients
 {
     public sealed class DeleteIngredientCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IIngredientRepository ingredientRepository
     ) : ICommandHandler<DeleteIngredientCommand, Unit>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
         public async Task<Unit> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)

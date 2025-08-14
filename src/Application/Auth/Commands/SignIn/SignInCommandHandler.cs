@@ -4,10 +4,10 @@ namespace CocktailsApp.Application.Auth
 {
     public sealed class SignInCommandHandler(
         IAuthService authService
-    ) : ICommandHandler<SignInCommand, AuthDTO>
+    ) : ICommandHandler<SignInCommand, AuthTokens>
     {
         private readonly IAuthService _authService = authService;
-        public async Task<AuthDTO> Handle(SignInCommand request, CancellationToken cancellationToken)
+        public async Task<AuthTokens> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
             return await _authService.SignInAsync(request, cancellationToken);
         }

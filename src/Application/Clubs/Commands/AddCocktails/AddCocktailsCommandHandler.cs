@@ -10,11 +10,11 @@ namespace CocktailsApp.Application.Clubs
     /// <param name="unitOfWork">The unit of work used to manage database operations.</param>
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public sealed class AddCocktailsCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IClubRepository clubRepository
     ) : ICommandHandler<AddCocktailsCommand, IEnumerable<Guid>>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>

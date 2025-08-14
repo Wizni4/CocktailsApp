@@ -9,7 +9,7 @@ namespace CocktailsApp.Application.Clubs
     ) : IAuthorize<DeleteClubCommand>
     {
         private readonly IClubAccess _access = access;
-        public async Task AuthorizeAsync(DeleteClubCommand request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(DeleteClubCommand request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
             var caller = user.UserId;

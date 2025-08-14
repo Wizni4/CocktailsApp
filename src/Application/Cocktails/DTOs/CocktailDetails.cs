@@ -10,8 +10,8 @@ namespace CocktailsApp.Application.Cocktails
         string? Description,
         string? ImageId,
         IReadOnlyCollection<CocktailIngredientView> Ingredients
-    ) : Entity;
-    
+    ) : IDTO;
+
     public sealed record CocktailIngredientView(
         Guid IngredientId,
         string IngredientName,
@@ -19,7 +19,8 @@ namespace CocktailsApp.Application.Cocktails
         string IngredientType,
         decimal Quantity,
         string Unit,
+        string? ImageId,
         IReadOnlyCollection<string> Allergens
-    ) : Entity;
+    ) : IDTO;
 
 }

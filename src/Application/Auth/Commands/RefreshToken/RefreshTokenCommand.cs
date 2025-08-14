@@ -2,5 +2,5 @@
 
 namespace CocktailsApp.Application.Auth
 {
-    public sealed record RefreshTokenCommand: ICommand<AuthDTO>;
+    public sealed record RefreshTokenCommand : ICommand<AuthTokens>;
 }

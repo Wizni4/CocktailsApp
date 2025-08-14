@@ -6,12 +6,12 @@ using CocktailsApp.Domain.Clubs;
 namespace CocktailsApp.Application.Clubs
 {
     public sealed class UpdateClubAuthorization(
-        IClubAccess access    
+        IClubAccess access
     ) : IAuthorize<UpdateClubCommand>
     {
         private readonly IClubAccess _access = access;
 
-        public async Task AuthorizeAsync(UpdateClubCommand request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(UpdateClubCommand request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
             var caller = user.UserId;

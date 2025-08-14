@@ -9,7 +9,7 @@ namespace CocktailsApp.Application.Clubs
     ) : IAuthorize<AddRolesToMembersCommand>
     {
         private readonly IClubAccess _access = access;
-        public async Task AuthorizeAsync(AddRolesToMembersCommand request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(AddRolesToMembersCommand request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
             var caller = user.UserId;

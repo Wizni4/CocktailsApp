@@ -5,12 +5,12 @@ using CocktailsApp.Domain.Cocktails;
 namespace CocktailsApp.Application.Cocktails
 {
     public class CreateCocktailCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         ICocktailRepository cocktailRepository
     ) : ICommandHandler<CreateCocktailCommand, Guid>
     {
         private readonly ICocktailRepository _cocktailRepository = cocktailRepository;
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
 
         public async Task<Guid> Handle(CreateCocktailCommand request, CancellationToken cancellationToken)
         {

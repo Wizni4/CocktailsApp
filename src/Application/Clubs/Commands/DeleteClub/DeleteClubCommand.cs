@@ -16,10 +16,6 @@ namespace CocktailsApp.Application.Clubs
     /// The domain logic is responsible for resolving and authorizing the actor.
     /// </param>
     public sealed record DeleteClubCommand(
-        Guid ClubId,
-        Guid RequestId
-    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand
-    {
-        public string IdempotencyKey => $"DeleteClub:{RequestId}";
-    }
+        Guid ClubId
+    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand;
 }

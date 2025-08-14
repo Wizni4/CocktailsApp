@@ -2,7 +2,7 @@
 using CocktailsApp.Domain.Clubs;
 
 
-namespace CocktailsApp.Application.Clubs.Commands.AddCocktails
+namespace CocktailsApp.Application.Clubs
 {
     public sealed class AddCocktailsAuthorization(
         IClubAccess access
@@ -10,7 +10,7 @@ namespace CocktailsApp.Application.Clubs.Commands.AddCocktails
     {
         private readonly IClubAccess _access = access;
 
-        public async Task AuthorizeAsync(AddCocktailsCommand request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(AddCocktailsCommand request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
             var caller = user.UserId;

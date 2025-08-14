@@ -5,4 +5,6 @@
         string CacheKey { get; }
         TimeSpan Ttl { get; }
     }
+
+    public interface IActorScopedCache : ICacheableQuery;
 }

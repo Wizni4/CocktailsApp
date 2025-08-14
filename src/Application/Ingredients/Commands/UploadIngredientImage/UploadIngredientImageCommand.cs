@@ -7,10 +7,6 @@ namespace CocktailsApp.Application.Ingredients
     public sealed record UploadIngredientImageCommand(
         Guid IngredientId,
         Stream Image,
-        string ImageName,
-        Guid RequestId
-    ) : ICommand<string>, IIdempotentCommand
-    {
-        public string IdempotencyKey => $"UploadIngredientImage:{RequestId}";
-    }
+        string ImageName
+    ) : ICommand<string>, IIdempotentCommand;
 }

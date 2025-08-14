@@ -14,30 +14,32 @@ namespace CocktailsApp.Application.Clubs
         string? PostalCode,
         string? State,
         string? Country,
+        string? ImageId,
         IReadOnlyCollection<ClubRoleView> Roles,
         IReadOnlyCollection<ClubMemberView> Members,
         IReadOnlyCollection<ClubCocktailView> Cocktails
-    ) : Entity;
+    ) : IDTO;
 
     public sealed record ClubRoleView(
         Guid RoleId,
         string Name,
         bool IsOwnerRole,
-        IReadOnlyCollection<string> Permissions 
-    ) : Entity;
+        IReadOnlyCollection<string> Permissions
+    ) : IDTO;
 
     public sealed record ClubMemberView(
         Guid ClubMemberId,
         Guid UserId,
         string Username,
         List<string> Roles,
-        bool IsOwner
-    ) : Entity;
+        bool IsOwner,
+        string? ImageId
+    ) : IDTO;
 
     public sealed record ClubCocktailView(
         Guid ClubCocktailId,
         Guid CocktailId,
         string CocktailName,
         string? ImageId
-    ) : Entity;
+    ) : IDTO;
 }

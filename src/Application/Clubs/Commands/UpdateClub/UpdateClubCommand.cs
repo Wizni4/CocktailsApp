@@ -12,10 +12,6 @@ namespace CocktailsApp.Application.Clubs
         Common.Address? Address,
         string? Name,
         string? Description,
-        Visibility? Visibility,
-        Guid RequestId
-    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand
-    {
-        public string IdempotencyKey => $"UpdateClub:{RequestId}";
-    }
+        Visibility? Visibility
+    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand;
 }

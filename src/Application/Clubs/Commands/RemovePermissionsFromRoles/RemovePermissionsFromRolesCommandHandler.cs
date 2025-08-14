@@ -10,11 +10,11 @@ namespace CocktailsApp.Application.Clubs
     /// <param name="unitOfWork">The unit of work used for data access and persistence.</param>
     /// <param name="autoMapper">The AutoMapper instance used to map domain entities to DTOs.</param>
     public sealed class RemovePermissionsFromRolesCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IClubRepository clubRepository
     ) : ICommandHandler<RemovePermissionsFromRolesCommand, Unit>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         /// <summary>

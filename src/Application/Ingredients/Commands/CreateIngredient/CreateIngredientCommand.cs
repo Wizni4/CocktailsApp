@@ -8,10 +8,6 @@ namespace CocktailsApp.Application.Ingredients
         List<string>? Allergens,
         string Name,
         IngredientType Type,
-        bool? IsAlcoholic,
-        Guid RequestId
-    ) : ICommand<Guid>, IIdempotentCommand
-    {
-        public string IdempotencyKey => $"CreateIngredient:{RequestId}";
-    }
+        bool? IsAlcoholic
+    ) : ICommand<Guid>, IIdempotentCommand;
 }

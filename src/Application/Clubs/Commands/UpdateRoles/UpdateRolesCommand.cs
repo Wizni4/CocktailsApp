@@ -7,12 +7,8 @@ namespace CocktailsApp.Application.Clubs
 {
     public sealed record UpdateRolesCommand(
         Guid ClubId,
-        IEnumerable<UpdateRoleModel> Roles,
-        Guid RequestId
-    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand
-    {
-        public string IdempotencyKey => $"UpdateRoles:{RequestId}";
-    }
+        IEnumerable<UpdateRoleModel> Roles
+    ) : ClubCommand<Unit>(ClubId), IIdempotentCommand;
 
     public sealed record UpdateRoleModel(
         Guid Id,

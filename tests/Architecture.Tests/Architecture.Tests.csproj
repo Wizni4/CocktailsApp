@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="DesginRules\Domain\Entities\SeedWork\Rules\" />
-    <Folder Include="DesginRules\Domain\Builders\" />
     <Folder Include="DesginRules\Domain\Events\" />
     <Folder Include="DesginRules\Domain\Specifications\" />
     <Folder Include="DesginRules\Domain\Services\" />

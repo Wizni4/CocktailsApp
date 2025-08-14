@@ -3,11 +3,11 @@
 namespace CocktailsApp.Application.Clubs
 {
     public sealed class CreateRolesCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IClubRepository clubRepository
     ) : ICommandHandler<CreateRolesCommand, IEnumerable<Guid>>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         public async Task<IEnumerable<Guid>> Handle(CreateRolesCommand request, CancellationToken cancellationToken)

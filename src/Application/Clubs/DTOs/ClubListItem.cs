@@ -14,5 +14,5 @@ namespace CocktailsApp.Application.Clubs
         int CocktailCount,
         int MemberCount,
         Guid OwnerUserId
-     ) : Entity;
+     ) : IDTO;
 }

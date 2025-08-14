@@ -7,9 +7,9 @@ namespace CocktailsApp.Application.Ingredients
     public sealed class DeleteIngredientAuthorization
         : IAuthorize<DeleteIngredientCommand>
     {
-        public Task AuthorizeAsync(DeleteIngredientCommand request, ICurrentUser user, CancellationToken cancellationToken)
+        public Task AuthorizeAsync(DeleteIngredientCommand request, ICurrentUserService user, CancellationToken cancellationToken)
         {
-            if(!user.IsAuthenticated) throw new UnauthorizedAccessException();
+            if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
             return Task.CompletedTask;
         }
     }

@@ -5,13 +5,13 @@ namespace CocktailsApp.Application.Common
 {
     public sealed class AuthorizationBehavior<TRequest, TResponse>(
         IEnumerable<IAuthorize<TRequest>> policies,
-        ICurrentUser currentUser
+        ICurrentUserService currentUser
     )
         : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IBaseRequest
     {
         private readonly IEnumerable<IAuthorize<TRequest>> _policies = policies;
-        private readonly ICurrentUser _currentUser = currentUser;
+        private readonly ICurrentUserService _currentUser = currentUser;
 
         public async Task<TResponse> Handle(
             TRequest request,

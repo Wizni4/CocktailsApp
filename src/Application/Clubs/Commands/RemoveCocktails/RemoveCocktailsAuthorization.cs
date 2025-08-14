@@ -6,12 +6,12 @@ using CocktailsApp.Domain.Clubs;
 namespace CocktailsApp.Application.Clubs
 {
     public sealed class RemoveCocktailsAuthorization(
-        IClubAccess access    
+        IClubAccess access
     ) : IAuthorize<RemoveCocktailsCommand>
     {
         private readonly IClubAccess _access = access;
 
-        public async Task AuthorizeAsync(RemoveCocktailsCommand request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(RemoveCocktailsCommand request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
             var caller = user.UserId;

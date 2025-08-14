@@ -5,11 +5,11 @@ using CocktailsApp.Domain.Ingredients;
 namespace CocktailsApp.Application.Ingredients
 {
     public sealed class CreateIngredientCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IIngredientRepository ingredientRepository
     ) : ICommandHandler<CreateIngredientCommand, Guid>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
         public async Task<Guid> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {

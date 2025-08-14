@@ -11,5 +11,5 @@ namespace CocktailsApp.Application.Ingredients
         bool IsAlcoholic,
         string? ImageId,
         List<string> Allergens
-    ) : Entity;
+    ) : IDTO;
 }

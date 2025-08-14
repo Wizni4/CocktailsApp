@@ -653,7 +653,7 @@ namespace CocktailsApp.Domain.Clubs
                 postalCode,
                 state,
                 country
-            )); 
+            ));
 
             // State that the club changed
             Touch(actorId);

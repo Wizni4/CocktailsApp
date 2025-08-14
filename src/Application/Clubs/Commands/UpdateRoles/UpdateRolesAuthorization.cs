@@ -5,12 +5,12 @@ using CocktailsApp.Domain.Clubs;
 namespace CocktailsApp.Application.Clubs
 {
     public sealed class UpdateRolesAuthorization(
-        IClubAccess access    
+        IClubAccess access
     ) : IAuthorize<UpdateRolesCommand>
     {
         private readonly IClubAccess _access = access;
 
-        public async Task AuthorizeAsync(UpdateRolesCommand request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(UpdateRolesCommand request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
             var caller = user.UserId;

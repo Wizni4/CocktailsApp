@@ -9,7 +9,7 @@ namespace CocktailsApp.Application.Clubs
     ) : IAuthorize<GetClubDetailsQuery>
     {
         private readonly IClubAccess _access = access;
-        public async Task AuthorizeAsync(GetClubDetailsQuery request, ICurrentUser user, CancellationToken cancellationToken)
+        public async Task AuthorizeAsync(GetClubDetailsQuery request, ICurrentUserService user, CancellationToken cancellationToken)
         {
             if (!user.IsAuthenticated) throw new UnauthorizedAccessException();
 

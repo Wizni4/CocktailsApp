@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="13.0.0" />
   </ItemGroup>
 
@@ -22,17 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cocktails\Queries\" />
-    <Folder Include="Ingredients\Queries\" />
-    <Folder Include="Order\Commands\" />
-    <Folder Include="Order\DTOs\" />
-    <Folder Include="Order\Queries\" />
+    <Folder Include="Orders\Commands\" />
+    <Folder Include="Orders\DTOs\" />
+    <Folder Include="Orders\Queries\" />
     <Folder Include="Prices\DTOs\" />
     <Folder Include="Prices\Commands\" />
     <Folder Include="Prices\Queries\" />
-    <Folder Include="Stock\Commands\" />
-    <Folder Include="Stock\DTOs\" />
-    <Folder Include="Stock\Queries\" />
+    <Folder Include="Stocks\Commands\" />
+    <Folder Include="Stocks\DTOs\" />
+    <Folder Include="Stocks\Queries\" />
     <Folder Include="Users\Commands\" />
   </ItemGroup>
 

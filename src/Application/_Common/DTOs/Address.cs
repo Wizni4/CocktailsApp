@@ -10,6 +10,6 @@
         string City,
         string PostalCode,
         string State,
-        string Country 
-    ) : Entity;
+        string Country
+    ) : IDTO;
 }

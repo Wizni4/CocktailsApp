@@ -4,12 +4,12 @@ using CocktailsApp.Application.Common;
 namespace CocktailsApp.Application.Ingredients
 {
     public class UploadIngredientImageCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IImageService imageService,
         IIngredientRepository ingredientRepository
     ) : ICommandHandler<UploadIngredientImageCommand, string>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IImageService _imageService = imageService;
         private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
@@ -21,6 +21,7 @@ namespace CocktailsApp.Application.Ingredients
 
             var imageIdResult = _imageService.UploadImageAsync(
                 request.Image,
+                ImageSubject.Ingredient,
                 request.ImageName);
 
             await Task.WhenAll(ingredientResult, imageIdResult);

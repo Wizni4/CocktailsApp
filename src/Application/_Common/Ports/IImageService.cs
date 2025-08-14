@@ -2,7 +2,7 @@
 {
     public interface IImageService
     {
-        Task<string> UploadImageAsync(Stream imageStream, string fileName);
-        Task DeleteImageAsync(string imageId);
+        Task<string> UploadImageAsync(Stream imageStream, ImageSubject variant, string fileName);
+        Task DeleteImageAsync(ImageSubject variant, string imageId);
     }
 }

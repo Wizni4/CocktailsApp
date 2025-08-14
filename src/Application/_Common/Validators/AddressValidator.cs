@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using CocktailsApp.Application.Clubs;
+
+using FluentValidation;
 
 namespace CocktailsApp.Application.Common
 {

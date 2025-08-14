@@ -4,11 +4,11 @@
 namespace CocktailsApp.Application.Clubs
 {
     public sealed class AddMembersCommandHandler(
-        ICurrentUser user,
+        ICurrentUserService user,
         IClubRepository clubRepository
     ) : ICommandHandler<AddMembersCommand, IEnumerable<Guid>>
     {
-        private readonly ICurrentUser _user = user;
+        private readonly ICurrentUserService _user = user;
         private readonly IClubRepository _clubRepository = clubRepository;
 
         public async Task<IEnumerable<Guid>> Handle(AddMembersCommand request, CancellationToken cancellationToken)

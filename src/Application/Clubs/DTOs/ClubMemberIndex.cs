@@ -7,5 +7,5 @@ namespace CocktailsApp.Application.Clubs
         Guid ClubId,
         Guid MemberId,
         Guid UserId
-    ) : Entity;
+    ) : IDTO;
 }

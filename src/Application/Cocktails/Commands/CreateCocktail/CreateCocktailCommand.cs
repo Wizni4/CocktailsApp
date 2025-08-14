@@ -5,16 +5,12 @@ using CocktailsApp.Domain.Common;
 namespace CocktailsApp.Application.Cocktails
 {
     public sealed record CreateCocktailCommand(
-        string? Description,
-        List<IngredientModel> Ingredients,
         string Name,
-        Guid RequestId
-   ) : ICommand<Guid>, IIdempotentCommand
-    {
-        public string IdempotencyKey => $"CreateCocktail:{RequestId}";
-    }
+        string? Description,
+        List<CocktailIngredientModel> Ingredients
+   ) : ICommand<Guid>, IIdempotentCommand;
 
-    public sealed record IngredientModel(
+    public sealed record CocktailIngredientModel(
         Guid Id,
         decimal Quantity,
         UnitOfMeasure Unit
