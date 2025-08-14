@@ -4,7 +4,7 @@
 
 using AutoMapper;
 
-using CocktailsApp.Application.Ingredient;
+using CocktailsApp.Application.Ingredients;
 
 
 namespace CocktailsApp.Application.Stock

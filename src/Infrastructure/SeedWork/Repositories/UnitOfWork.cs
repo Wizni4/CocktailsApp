@@ -2,7 +2,7 @@
  * Domain namespaces
  */
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Domain.Common;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

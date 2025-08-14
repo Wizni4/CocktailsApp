@@ -1,9 +1,9 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Application.Club;
+using CocktailsApp.Application.Clubs;
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.Clubs;
 using CocktailsApp.Infrastructure.SeedWork;
 /*
 * Framework namespaces

@@ -4,8 +4,8 @@
 
 using AutoMapper;
 
-using CocktailsApp.Application.User;
-using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Application.Users;
+using CocktailsApp.Domain.Users;
 
 
 namespace CocktailsApp.Infrastructure.UserAggregate

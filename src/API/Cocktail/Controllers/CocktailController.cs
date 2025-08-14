@@ -6,8 +6,8 @@ using AutoMapper;
 
 using CocktailsApp.API.Ingredient;
 using CocktailsApp.API.SeedWork;
-using CocktailsApp.Application.Cocktail;
-using CocktailsApp.Application.Ingredient;
+using CocktailsApp.Application.Cocktails;
+using CocktailsApp.Application.Ingredients;
 
 using MediatR;
 
@@ -41,7 +41,7 @@ namespace CocktailsApp.API.Cocktail
             // Create a new cocktail
             var command = new CreateCocktailCommand(
                 request.Description,
-                [.. _autoMapper.Map<IEnumerable<Application.Cocktail.IngredientModel>>(request.Ingredients)],
+                [.. _autoMapper.Map<IEnumerable<Application.Cocktails.IngredientModel>>(request.Ingredients)],
                 request.Name,
                 userId
             );

@@ -5,8 +5,8 @@
 
 using AutoMapper;
 
-using CocktailsApp.Application.Club;
-using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Application.Clubs;
+using CocktailsApp.Domain.Clubs;
 using CocktailsApp.Domain.Shared;
 
 namespace CocktailsApp.Infrastructure.ClubAggregate

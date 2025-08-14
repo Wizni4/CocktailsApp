@@ -26,6 +26,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "client", "client\client.esp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture.Tests", "tests\Architecture.Tests\Architecture.Tests.csproj", "{016ED9BB-A50F-4356-BF56-48405542E1AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadStore", "src\ReadStore\ReadStore.csproj", "{1905F623-4A74-4EE8-BF3D-71A7107457BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{016ED9BB-A50F-4356-BF56-48405542E1AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{016ED9BB-A50F-4356-BF56-48405542E1AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{016ED9BB-A50F-4356-BF56-48405542E1AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1905F623-4A74-4EE8-BF3D-71A7107457BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1905F623-4A74-4EE8-BF3D-71A7107457BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1905F623-4A74-4EE8-BF3D-71A7107457BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1905F623-4A74-4EE8-BF3D-71A7107457BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{BC8C2B84-2822-4D96-824C-135B53BA482A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4260E62F-080A-4F61-A665-A20D52A74B04} = {28433625-82BC-41C4-A547-180D1EFCAEC2}
 		{016ED9BB-A50F-4356-BF56-48405542E1AC} = {28433625-82BC-41C4-A547-180D1EFCAEC2}
+		{1905F623-4A74-4EE8-BF3D-71A7107457BF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4078D67B-1DB7-4000-8597-6ED5F604C1EE}

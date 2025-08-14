@@ -5,13 +5,13 @@
 /*
 * Framework namespaces
 */
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.CocktailAggregate;
-using CocktailsApp.Domain.IngredientAggregate;
-using CocktailsApp.Domain.IngredientPricingAggregate;
+using CocktailsApp.Domain.Clubs;
+using CocktailsApp.Domain.Cocktails;
+using CocktailsApp.Domain.Ingredients;
+using CocktailsApp.Domain.Prices;
 using CocktailsApp.Domain.OrderAggregate;
 using CocktailsApp.Domain.StockAggregate;
-using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Domain.Users;
 using CocktailsApp.Infrastructure.ClubAggregate;
 using CocktailsApp.Infrastructure.CocktailAggregate;
 using CocktailsApp.Infrastructure.IngredientAggregate;
@@ -88,7 +88,7 @@ namespace CocktailsApp.Infrastructure.SeedWork
 
         public static ModelBuilder MapIngredientPricingAggregate(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IngredientPricing>(new IngredientPricingMap().Configure);
+            modelBuilder.Entity<Pricing>(new IngredientPricingMap().Configure);
 
             return modelBuilder;
         }

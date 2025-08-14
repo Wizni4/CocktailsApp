@@ -1,7 +1,7 @@
 ﻿using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 
-using CocktailsApp.Application.Authentication;
+using CocktailsApp.Application.Auth;
 
 using Microsoft.Extensions.Options;
 
@@ -53,12 +53,12 @@ namespace CocktailsApp.Infrastructure.Authentication
             if (response.AuthenticationResult == null)
                 throw new UnauthorizedAccessException("Invalid credentials");
 
-            return new AuthDTO()
-            {
-                AccessToken = response.AuthenticationResult.AccessToken,
-                IdToken = response.AuthenticationResult.IdToken,
-                RefreshToken = response.AuthenticationResult.RefreshToken,
-            };
+            return new AuthDTO
+            (
+                response.AuthenticationResult.AccessToken,
+                response.AuthenticationResult.IdToken,
+                response.AuthenticationResult.RefreshToken
+            );
         }
 
         public async Task<AuthDTO> RefreshTokenAsync(string refreshToken)
@@ -78,12 +78,12 @@ namespace CocktailsApp.Infrastructure.Authentication
             if (response.AuthenticationResult == null)
                 throw new UnauthorizedAccessException("Refresh failed");
 
-            return new AuthDTO()
-            {
-                AccessToken = response.AuthenticationResult.AccessToken,
-                IdToken = response.AuthenticationResult.IdToken,
-                RefreshToken = response.AuthenticationResult.RefreshToken,
-            };
+            return new AuthDTO
+            (
+                response.AuthenticationResult.AccessToken,
+                response.AuthenticationResult.IdToken,
+                response.AuthenticationResult.RefreshToken
+            );
         }
 
         public async Task SignOutAsync(SignOutCommand command)
@@ -91,7 +91,7 @@ namespace CocktailsApp.Infrastructure.Authentication
             await _cognitoClient.AdminUserGlobalSignOutAsync(new AdminUserGlobalSignOutRequest
             {
                 UserPoolId = _userPoolId,
-                Username = command.Username
+                Username = command.Username,
             });
         }
     }

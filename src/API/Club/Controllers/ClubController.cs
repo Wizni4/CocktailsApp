@@ -6,9 +6,9 @@
 using AutoMapper;
 
 using CocktailsApp.API.SeedWork;
-using CocktailsApp.Application.Club;
+using CocktailsApp.Application.Clubs;
 using CocktailsApp.Application.Shared;
-using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.Clubs;
 
 using MediatR;
 
@@ -49,7 +49,7 @@ namespace CocktailsApp.API.Club
                 request.Description,
                 request.Name,
                 userId,
-                (ClubVisibility)request.Visibility
+                (Visibility)request.Visibility
             );
             var clubId = await _mediator.Send(command);
 
@@ -109,8 +109,8 @@ namespace CocktailsApp.API.Club
             // Prepare the update club command
             var addressDTO = _autoMapper.Map<AddressDTO>(request.Address);
             var visibility = request.Visibility is null
-                ? (ClubVisibility?)null
-                : request.Visibility.ToEnum<ClubVisibility>();
+                ? (Visibility?)null
+                : request.Visibility.ToEnum<Visibility>();
 
             var command = new UpdateClubCommand(
                 clubId,

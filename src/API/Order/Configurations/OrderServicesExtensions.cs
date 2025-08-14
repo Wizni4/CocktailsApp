@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using CocktailsApp.Application.Order;
+using CocktailsApp.Application.Orders;
 using CocktailsApp.Infrastructure.OrderAggregate;
 using CocktailsApp.Infrastructure.SeedWork;
 

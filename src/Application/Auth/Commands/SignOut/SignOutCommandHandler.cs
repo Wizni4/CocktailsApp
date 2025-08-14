@@ -1,0 +1,31 @@
+﻿using CocktailsApp.Application.Common;
+using MediatR;
+
+
+namespace CocktailsApp.Application.Auth
+{
+    public sealed class SignOutCommandHandler(
+        ITokenAccessor tokens,
+        ICurrentUser user,
+        IAuthService authService
+    ) : ICommandHandler<SignOutCommand, Unit>
+    {
+        private readonly ITokenAccessor _tokens = tokens;
+        private readonly ICurrentUser _user = user;
+        private readonly IAuthService _authService = authService;
+
+        public async Task<Unit> Handle(SignOutCommand request, CancellationToken cancellationToken)
+        {
+            var session = new AuthSession(
+                AccessToken: _tokens.AccessToken,
+                RefreshToken: _tokens.RefreshToken,
+                UserId: _user.UserId,
+                Username: _user.Username,
+                SessionId: _user.SessionId
+            );
+
+            await _authService.SignOutAsync(session, cancellationToken);
+            return Unit.Value;
+        }
+    }
+}

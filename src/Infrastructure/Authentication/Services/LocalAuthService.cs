@@ -1,4 +1,4 @@
-﻿using CocktailsApp.Application.Authentication;
+﻿using CocktailsApp.Application.Auth;
 using CocktailsApp.Infrastructure.SeedWork;
 
 

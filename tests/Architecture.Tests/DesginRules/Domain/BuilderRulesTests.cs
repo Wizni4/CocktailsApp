@@ -1,4 +1,4 @@
-﻿using CocktailsApp.Domain.SeedWork;
+﻿using CocktailsApp.Domain.Common;
 
 using Mono.Cecil;
 

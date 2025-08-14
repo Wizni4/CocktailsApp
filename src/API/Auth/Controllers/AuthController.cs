@@ -1,0 +1,73 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using AutoMapper;
+
+using CocktailsApp.API.SeedWork;
+using CocktailsApp.Application.Auth;
+
+using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+
+using System.IdentityModel.Tokens.Jwt;
+
+namespace CocktailsApp.API.Authentication
+{
+    [Route("api/auth")]
+    [ApiController]
+    public class AuthController(
+        ICookieService cookieService,
+        IMediator mediator,
+        IMapper autoMapper
+    ) : ControllerBase
+    {
+        private readonly ICookieService _cookieService = cookieService;
+        private readonly IMediator _mediator = mediator;
+        private readonly IMapper _autoMapper = autoMapper;
+
+
+        [HttpPost("signup")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<IActionResult> SignUp([FromBody] SignUpRequest request)
+        {
+            var command = new SignUpCommand(request.Username, request.Email, request.Password);
+            await _mediator.Send(command);
+            return Created();
+        }
+
+        [HttpPost("signin")]
+        public async Task<ActionResult<SignInResponse>> SignIn([FromBody] SignInRequest request)
+        {
+            var command = new SignInCommand(request.Username, request.Password);
+            var response = await _mediator.Send(command);
+            _cookieService.SetRefreshTokenCookie(response.RefreshToken);
+            return Ok(_autoMapper.Map<SignInResponse>(response));
+        }
+
+        [HttpPost("signout")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize]
+        public new async Task<IActionResult> SignOut()
+        {
+            var userId = this.GetUserId();
+            var username = this.GetUsername();
+            var command = new SignOutCommand(userId, username);
+            await _mediator.Send(command);
+            _cookieService.DeleteRefreshTokenCookie();
+            return NoContent();
+        }
+
+        [HttpPost("refresh-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<SignInResponse>> RefreshToken()
+        {
+            var response = await _mediator.Send(new RefreshTokenCommand(
+                _cookieService.GetRefreshTokenFromCookie()));
+            return Ok(_autoMapper.Map<SignInResponse>(response));
+        }
+    }
+}

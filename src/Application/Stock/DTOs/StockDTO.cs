@@ -4,7 +4,7 @@
 /*
  * Application namespaces
  */
-using CocktailsApp.Application.Ingredient;
+using CocktailsApp.Application.Ingredients;
 using CocktailsApp.Application.SeedWork;
 
 using System.Collections.ObjectModel;

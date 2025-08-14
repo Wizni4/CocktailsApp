@@ -1,10 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
-using CocktailsApp.Application.Club;
+using CocktailsApp.Application.Clubs;
 using CocktailsApp.Infrastructure.ClubAggregate;
 using CocktailsApp.Infrastructure.SeedWork;
-using CocktailsApp.Infrastructure.Shared;
 
 
 namespace CocktailsApp.API.Club
@@ -21,6 +20,13 @@ namespace CocktailsApp.API.Club
         {
             ;
             services.AddScoped<IClubRepository, ClubRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddClubProjectors(this IServiceCollection services)
+        {
+            services.AddScoped<IProjection, ClubProjection>();
+            services.AddScoped<IProjection, ClubCrossAggregateProjection>();
             return services;
         }
 

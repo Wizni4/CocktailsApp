@@ -15,22 +15,20 @@ using CocktailsApp.API.Search;
 using CocktailsApp.API.Shared;
 using CocktailsApp.API.Stock;
 using CocktailsApp.API.User;
-using CocktailsApp.Application.Authentication;
-using CocktailsApp.Application.Club;
-using CocktailsApp.Application.Cocktail;
-using CocktailsApp.Application.Ingredient;
-using CocktailsApp.Application.IngredientPricing;
-using CocktailsApp.Application.Order;
+using CocktailsApp.Application.Auth;
+using CocktailsApp.Application.Clubs;
+using CocktailsApp.Application.Cocktails;
+using CocktailsApp.Application.Common;
+using CocktailsApp.Application.Ingredients;
+using CocktailsApp.Application.Orders;
+using CocktailsApp.Application.Prices;
 using CocktailsApp.Application.Search;
 using CocktailsApp.Application.SeedWork;
 using CocktailsApp.Application.Shared;
 using CocktailsApp.Application.Stock;
-using CocktailsApp.Application.User;
-using CocktailsApp.Domain.SeedWork;
+using CocktailsApp.Application.Users;
+using CocktailsApp.Domain.Common;
 using CocktailsApp.Infrastructure.ClubAggregate;
-
-
-
 /*
  * Infrastructure namespaces
  */
@@ -38,12 +36,14 @@ using CocktailsApp.Infrastructure.SeedWork;
 using CocktailsApp.Infrastructure.UserAggregate;
 
 using FluentValidation;
-
-
 /*
  * Framework namespaces
  */
 using MediatR;
+
+using System.Net;
+
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 
 namespace CocktailsApp.API.SeedWork
@@ -135,31 +135,6 @@ namespace CocktailsApp.API.SeedWork
 
         public static IServiceCollection AddAutoMapper(this IServiceCollection services)
         {
-            // Application mapper
-            services.AddAutoMapper(
-                typeof(ClubDTOProfile),
-                typeof(CocktailDTOProfile),
-                typeof(IngredientDTOProfile),
-                typeof(IngredientPricingDTOProfile),
-                typeof(OrderDTOProfile),
-                typeof(SearchDTOProfile),
-                typeof(SharedDTOProfile),
-                typeof(StockDTOProfile),
-                typeof(UserDTOProfile));
-
-            // API mapper
-            services.AddAutoMapper(
-                typeof(AuthResponseProfile),
-                typeof(ClubResponseProfile),
-                typeof(CocktailResponseProfile),
-                typeof(IngredientResponseProfile),
-                typeof(IngredientPricingResponseProfile),
-                typeof(OrderResponseProfile),
-                typeof(SearchResponseProfile),
-                typeof(SharedResponseProfile),
-                typeof(StockResponseProfile),
-                typeof(UserResponseProfile));
-
             // Infra mapper
             services.AddAutoMapper(
                 typeof(ClubInfraProfile),
@@ -197,7 +172,7 @@ namespace CocktailsApp.API.SeedWork
                 cfg.RegisterServicesFromAssembly(typeof(StockDTO).Assembly);
 
                 // -- Search
-                cfg.RegisterServicesFromAssembly(typeof(GlobalSearchResultDTO).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(SearchResultItem).Assembly);
 
                 // -- User
                 cfg.RegisterServicesFromAssembly(typeof(UserDTO).Assembly);
@@ -234,13 +209,16 @@ namespace CocktailsApp.API.SeedWork
             services.AddValidatorsFromAssembly(typeof(StockDTO).Assembly);
 
             // -- Search
-            services.AddValidatorsFromAssembly(typeof(GlobalSearchResultDTO).Assembly);
+            services.AddValidatorsFromAssembly(typeof(SearchResultItem).Assembly);
 
             // -- User
             services.AddValidatorsFromAssembly(typeof(UserDTO).Assembly);
 
             // -- SeedWork
             // Pipeline behaviour
+            // Execution:
+            // Idempotency → Validation → Authorization → Caching → Transaction → Handler
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             return services;
         }

@@ -1,4 +1,4 @@
-﻿using CocktailsApp.Domain.IngredientAggregate;
+﻿using CocktailsApp.Domain.Ingredients;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

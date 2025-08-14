@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 using CocktailsApp.Application.SeedWork;
-using CocktailsApp.Application.User;
+using CocktailsApp.Application.Users;
 using CocktailsApp.Infrastructure.SeedWork;
 using CocktailsApp.Infrastructure.UserAggregate;
 
-using DomainUser = CocktailsApp.Domain.UserAggregate.User;
+using DomainUser = CocktailsApp.Domain.Users.User;
 
 namespace CocktailsApp.API.User
 {

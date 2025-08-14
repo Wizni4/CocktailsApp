@@ -6,13 +6,13 @@
 * Framework namespaces
 */
 
-using CocktailsApp.Application.Club;
-using CocktailsApp.Application.Cocktail;
-using CocktailsApp.Application.Ingredient;
-using CocktailsApp.Application.IngredientPricing;
-using CocktailsApp.Application.Order;
+using CocktailsApp.Application.Clubs;
+using CocktailsApp.Application.Cocktails;
+using CocktailsApp.Application.Ingredients;
+using CocktailsApp.Application.Prices;
+using CocktailsApp.Application.Orders;
 using CocktailsApp.Application.Stock;
-using CocktailsApp.Application.User;
+using CocktailsApp.Application.Users;
 using CocktailsApp.Infrastructure.ClubAggregate;
 using CocktailsApp.Infrastructure.CocktailAggregate;
 using CocktailsApp.Infrastructure.IngredientAggregate;

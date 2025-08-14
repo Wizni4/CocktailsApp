@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using CocktailsApp.Domain.IngredientAggregate;
+using CocktailsApp.Domain.Ingredients;
 using CocktailsApp.Domain.Shared;
 
 using Microsoft.AspNetCore.Authorization;

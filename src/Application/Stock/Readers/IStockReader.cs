@@ -7,5 +7,5 @@ using CocktailsApp.Application.SeedWork;
 
 namespace CocktailsApp.Application.Stock
 {
-    public interface IStockReader : IQueryReader<StockRead, StockDTO>;
+    public interface IStockReader : IQueries<StockRead, StockDTO>;
 }

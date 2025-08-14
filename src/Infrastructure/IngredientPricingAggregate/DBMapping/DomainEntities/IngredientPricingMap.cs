@@ -1,8 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.IngredientAggregate;
-using CocktailsApp.Domain.IngredientPricingAggregate;
+using CocktailsApp.Domain.Ingredients;
+using CocktailsApp.Domain.Prices;
 using CocktailsApp.Infrastructure.SeedWork;
 
 
@@ -16,15 +16,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace CocktailsApp.Infrastructure.IngredientPricingAggregate
 {
     /// <summary>
-    /// Represents the configuration for the <see cref="IngredientPricing"/> entity to define its mapping and behavior in the database
+    /// Represents the configuration for the <see cref="Pricing"/> entity to define its mapping and behavior in the database
     /// </summary>
-    public class IngredientPricingMap : EntityMap<IngredientPricing>
+    public class IngredientPricingMap : EntityMap<Pricing>
     {
         /// <summary>
-        /// Configures the entity of type <see cref="IngredientPricing"/>
+        /// Configures the entity of type <see cref="Pricing"/>
         /// </summary>
-        /// <param name="builder">The entity type builder used to configure the <see cref="IngredientPricing"/> entity</param>
-        public override void Configure(EntityTypeBuilder<IngredientPricing> builder)
+        /// <param name="builder">The entity type builder used to configure the <see cref="Pricing"/> entity</param>
+        public override void Configure(EntityTypeBuilder<Pricing> builder)
         {
             base.Configure(builder);
 

@@ -1,7 +1,7 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Domain.ClubAggregate;
+using CocktailsApp.Domain.Clubs;
 
 /*
 * Framework namespaces

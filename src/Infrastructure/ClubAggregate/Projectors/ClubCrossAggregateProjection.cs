@@ -1,7 +1,7 @@
 ﻿// Infrastructure/Read/Projections/CrossAggregateProjection.cs
 using AutoMapper;
 
-using CocktailsApp.Application.Club;
+using CocktailsApp.Application.Clubs;
 using CocktailsApp.Infrastructure.SeedWork;
 
 

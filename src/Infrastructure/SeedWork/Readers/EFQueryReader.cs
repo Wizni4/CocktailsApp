@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace CocktailsApp.Infrastructure.SeedWork
 {
-    public class EFQueryReader<TRead, TDTO> : IQueryReader<TRead, TDTO>
+    public class EFQueryReader<TRead, TDTO> : IQueries<TRead, TDTO>
         where TRead : ReadEntity
         where TDTO : EntityDTO
     {

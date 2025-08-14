@@ -1,8 +1,8 @@
 ﻿/*
  * Domain namespaces
  */
-using CocktailsApp.Application.User;
-using CocktailsApp.Domain.UserAggregate;
+using CocktailsApp.Application.Users;
+using CocktailsApp.Domain.Users;
 using CocktailsApp.Infrastructure.SeedWork;
 
 /*

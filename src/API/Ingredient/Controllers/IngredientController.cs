@@ -5,8 +5,8 @@
 using AutoMapper;
 
 using CocktailsApp.API.SeedWork;
-using CocktailsApp.Application.Ingredient;
-using CocktailsApp.Domain.IngredientAggregate;
+using CocktailsApp.Application.Ingredients;
+using CocktailsApp.Domain.Ingredients;
 using CocktailsApp.Infrastructure.Shared;
 
 using MediatR;

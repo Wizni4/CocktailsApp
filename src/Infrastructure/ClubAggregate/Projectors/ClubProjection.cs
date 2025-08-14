@@ -3,11 +3,11 @@
 
 using AutoMapper;
 
-using CocktailsApp.Application.Club;
-using CocktailsApp.Application.Cocktail;
-using CocktailsApp.Application.User;
-using CocktailsApp.Domain.ClubAggregate;
-using CocktailsApp.Domain.CocktailAggregate;
+using CocktailsApp.Application.Clubs;
+using CocktailsApp.Application.Cocktails;
+using CocktailsApp.Application.Users;
+using CocktailsApp.Domain.Clubs;
+using CocktailsApp.Domain.Cocktails;
 using CocktailsApp.Infrastructure.SeedWork;
 
 using Microsoft.EntityFrameworkCore;

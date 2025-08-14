@@ -22,10 +22,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cocktail\Specifications\" />
-    <Folder Include="Ingredient\Specifications\" />
-    <Folder Include="User\Commands\" />
-    <Folder Include="User\Specifications\" />
+    <Folder Include="Cocktails\Queries\" />
+    <Folder Include="Ingredients\Queries\" />
+    <Folder Include="Order\Commands\" />
+    <Folder Include="Order\DTOs\" />
+    <Folder Include="Order\Queries\" />
+    <Folder Include="Prices\DTOs\" />
+    <Folder Include="Prices\Commands\" />
+    <Folder Include="Prices\Queries\" />
+    <Folder Include="SeedWork\Handlers\" />
+    <Folder Include="Users\Commands\" />
   </ItemGroup>
 
 </Project>

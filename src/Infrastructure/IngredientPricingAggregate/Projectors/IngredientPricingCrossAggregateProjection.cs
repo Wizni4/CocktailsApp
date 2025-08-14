@@ -4,7 +4,7 @@
 
 using AutoMapper;
 
-using CocktailsApp.Application.IngredientPricing;
+using CocktailsApp.Application.Prices;
 using CocktailsApp.Infrastructure.SeedWork;
 
 
