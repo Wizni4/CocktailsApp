@@ -19,7 +19,9 @@ namespace CocktailsApp.API.Auth
             _configuration = configuration;
         }
 
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public void Configure(string name, JwtBearerOptions options)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             Configure(options);
         }
