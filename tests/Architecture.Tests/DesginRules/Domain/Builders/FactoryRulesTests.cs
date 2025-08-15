@@ -1,6 +1,4 @@
-﻿using CocktailsApp.Domain.Common;
-
-using Mono.Cecil;
+﻿using Mono.Cecil;
 
 using NetArchTest.Rules;
 

@@ -1,7 +1,9 @@
 ﻿
 namespace CocktailsApp.API.Auth
 {
-    public class CookieService(IHttpContextAccessor httpContextAccessor) : ICookieService
+    public class CookieService(
+        IHttpContextAccessor httpContextAccessor
+    ) : ICookieService
     {
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
         private const string RefreshCookieName = "refreshToken";

@@ -20,10 +20,10 @@ namespace CocktailsApp.Application.Common
         {
             var key = _idempotencyKey.Value ?? throw new ArgumentException("Idempotency key is missing");
 
-            var (found, value) = await _store.TryGetAsync<TResponse>(key, cancellationToken);
+            var cached = await _store.TryGetAsync<TResponse>(key, cancellationToken);
 
-            if (found && value is not null)
-                return value;
+            if (cached.HasValue)
+                return cached.Value!;
 
             var response = await next();
             await _store.SaveAsync(

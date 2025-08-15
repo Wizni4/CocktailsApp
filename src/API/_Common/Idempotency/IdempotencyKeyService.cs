@@ -9,10 +9,10 @@ namespace CocktailsApp.API.Common
     }
 
     public sealed class IdempotencyKeyService(
-        HttpContextAccessor httpContext
+        IHttpContextAccessor httpContext
     ) : IIdempotencyKeyService
     {
-        private readonly HttpContextAccessor _httpContext = httpContext;
+        private readonly IHttpContextAccessor _httpContext = httpContext;
         public string? Value => _httpContext.HttpContext?.Request?.Headers[IdempotencyKey.HeaderName];
     }
 }

@@ -6,10 +6,10 @@ using System.Security.Claims;
 namespace CocktailsApp.API.Auth
 {
     public sealed class CurrentUserService(
-        HttpContextAccessor httpContext
+        IHttpContextAccessor httpContext
     ) : ICurrentUserService
     {
-        private readonly HttpContextAccessor _httpContext = httpContext;
+        private readonly IHttpContextAccessor _httpContext = httpContext;
         public bool IsAuthenticated => _httpContext.HttpContext?.User?.Identity?.IsAuthenticated == true;
 
         public string? Username => GetUsername();
