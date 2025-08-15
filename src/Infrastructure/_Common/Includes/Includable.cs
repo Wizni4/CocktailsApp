@@ -52,7 +52,7 @@ namespace CocktailsApp.Infrastructure.Common
 
         public IIncludable<TEntity, TOtherProperty> ThenInclude<TOtherProperty>(Expression<Func<TProperty, TOtherProperty>> propertySelector)
         {
-            IIncludableQueryable<TEntity, TOtherProperty> result = null;
+            IIncludableQueryable<TEntity, TOtherProperty>? result = null;
 
             if (_includableInput != null)
                 result = _includableInput.ThenInclude(propertySelector);
@@ -64,7 +64,7 @@ namespace CocktailsApp.Infrastructure.Common
 
         public IIncludable<TEntity, TOtherProperty> ThenInclude<TOtherProperty>(Expression<Func<TProperty, IEnumerable<TOtherProperty>>> propertySelector)
         {
-            IIncludableQueryable<TEntity, IEnumerable<TOtherProperty>> result = null;
+            IIncludableQueryable<TEntity, IEnumerable<TOtherProperty>>? result = null;
 
             if (_includableInput != null)
                 result = _includableInput.ThenInclude(propertySelector);
@@ -76,7 +76,7 @@ namespace CocktailsApp.Infrastructure.Common
 
         public IIncludable<TEntity, TOtherProperty> ThenInclude<TOtherProperty>(Expression<Func<TProperty, IReadOnlyCollection<TOtherProperty>>> propertySelector)
         {
-            IIncludableQueryable<TEntity, IReadOnlyCollection<TOtherProperty>> result = null;
+            IIncludableQueryable<TEntity, IReadOnlyCollection<TOtherProperty>>? result = null;
 
             if (_includableInput != null)
                 result = _includableInput.ThenInclude(propertySelector);

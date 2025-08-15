@@ -9,8 +9,8 @@ using CocktailsApp.Application.Search;
 using CocktailsApp.ReadStore.Clubs;
 using CocktailsApp.ReadStore.Cocktails;
 using CocktailsApp.ReadStore.Configuration;
-using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Ingredients;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 using CocktailsApp.ReadStore.Search;
 
