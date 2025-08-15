@@ -6,7 +6,7 @@ namespace CocktailsApp.ReadStore.Clubs
     {
         public Guid ClubId { get; set; }
         public string Name { get; set; } = default!;
-        public string Description { get; set; }
+        public string Description { get; set; } = default!;
         public string Visibility { get; set; } = default!;
         public string? Street { get; set; }
         public string? StreetNumber { get; set; }

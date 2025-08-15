@@ -16,8 +16,8 @@ namespace CocktailsApp.API.Auth
             {
                 var h = _httpContext.HttpContext?.Request?.Headers["Authorization"].ToString();
                 if (string.IsNullOrWhiteSpace(h)) return null;
-                const string bearer = "Bearer ";
-                return h.StartsWith(bearer, StringComparison.OrdinalIgnoreCase) ? h[bearer.Length..] : null;
+                const string Bearer = "Bearer ";
+                return h.StartsWith(Bearer, StringComparison.OrdinalIgnoreCase) ? h[Bearer.Length..] : null;
             }
         }
 
