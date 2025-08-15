@@ -2,12 +2,13 @@
 
 namespace CocktailsApp.Application.Search
 {
-    public sealed record SearchOptions(
-        int DefaultLimit = 20,
-        int MaxLimit = 100,
-        bool UseFuzziness = true,
-        string Fuzziness = "AUTO",
-        bool EnableHighlights = true,
-        int SuggestLimit = 5
-    );
+    public sealed class SearchOptions
+    {
+        public int DefaultLimit { get; } = 20;
+        public int MaxLimit { get; } = 100;
+        public bool UseFuzziness { get; } = true;
+        public string Fuzziness { get; } = "AUTO";
+        public bool EnableHighlights { get; } = true;
+        public int SuggestLimit { get; } = 5;
+    }
 }

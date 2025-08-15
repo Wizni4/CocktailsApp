@@ -6,7 +6,7 @@ namespace CocktailsApp.API.Clubs
         AddressRequest Address,
         string Description,
         string Name,
-        string Visibility
+        string? Visibility
     ) : IRequest;
 
 

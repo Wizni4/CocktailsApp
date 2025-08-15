@@ -8,10 +8,5 @@
         Task BeginTransactionAsync(CancellationToken cancellationToken);
         Task CommitTransactionAsync(CancellationToken cancellationToken);
         Task RollbackTransactionAsync(CancellationToken cancellationToken);
-        /// <summary>
-        /// Asynchronously saves all changes made within the unit of work to the data store.
-        /// </summary>
-        /// <returns>A task representing the asynchronous save operation.</returns>
-        Task SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

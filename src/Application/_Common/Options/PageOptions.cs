@@ -1,8 +1,9 @@
 ﻿
 namespace CocktailsApp.Application.Common
 {
-    public sealed record PageOptions(
-        int DefaultLimit = 20,
-        int MaxLimit = 100
-    );
+    public sealed class PageOptions
+    {
+        public int DefaultLimit { get; } = 20;
+        public int MaxLimit { get; } = 100;
+    }
 }

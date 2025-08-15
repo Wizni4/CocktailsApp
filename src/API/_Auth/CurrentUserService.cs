@@ -16,8 +16,6 @@ namespace CocktailsApp.API.Auth
 
         public Guid UserId => GetUserId();
 
-        public Guid? SessionId => GetSessionId();
-
         private Guid GetUserId()
         {
             var userIdClaim = _httpContext.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
@@ -38,16 +36,6 @@ namespace CocktailsApp.API.Auth
                 throw new UnauthorizedAccessException("User not authorized");
 
             return userName;
-        }
-
-        private Guid GetSessionId()
-        {
-            var sessionIdClaim = _httpContext.HttpContext?.User.FindFirst("sid")?.Value;
-
-            if (sessionIdClaim is null || !Guid.TryParse(sessionIdClaim, out var sessionId))
-                throw new UnauthorizedAccessException("User not authorized");
-
-            return sessionId;
         }
     }
 }

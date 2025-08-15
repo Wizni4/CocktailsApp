@@ -11,7 +11,7 @@ namespace CocktailsApp.API.Configuration
         {
             services.AddOptions<SearchOptions>().Bind(cfg.GetSection("Search")).ValidateOnStart();
             services.AddOptions<PageOptions>().Bind(cfg.GetSection("PageOptions")).ValidateOnStart();
-            services.AddOptions<ImageOptions>().Bind(cfg.GetSection("Image:Url")).ValidateOnStart();
+            services.AddOptions<ImageOptions>().Bind(cfg.GetSection("Images:Url")).ValidateOnStart();
             return services;
         }
     }

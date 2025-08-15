@@ -11,12 +11,11 @@ namespace CocktailsApp.API.Users
 {
     public class UserApiProfile : Profile
     {
-        public UserApiProfile(IImageUrlProvider images)
+        public UserApiProfile()
         {
             // Response
             CreateMap<UserClubs, UserClubsResponse>();
-            CreateMap<UserClubItem, UserClubItemResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.User, src.ImageId, ImageVariant.Small)));
+            CreateMap<UserClubItem, UserClubItemResponse>();
         }
     }
 }

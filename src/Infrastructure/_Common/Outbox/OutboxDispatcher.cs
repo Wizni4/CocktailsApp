@@ -2,31 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 using CocktailsApp.Infrastructure.Persistence;
-
 using MediatR;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace CocktailsApp.Infrastructure.Common
 {
     public sealed class OutboxDispatcher(
+        IKafkaProducer producer,
         IServiceScopeFactory scopeFactory
     ) : BackgroundService
     {
         private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
-        private static readonly JsonSerializerSettings s_json = new()
-        {
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            ContractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy() // match whatever you use elsewhere
-            }
-        };
+        private readonly IKafkaProducer _producer = producer;
         private const int BatchSize = 200;
         private static readonly TimeSpan s_idleDelay = TimeSpan.FromMilliseconds(250);
 
@@ -50,25 +40,24 @@ namespace CocktailsApp.Infrastructure.Common
                 {
                     try
                     {
-                        // Resolve the event type directly from the saved string
-                        var type = Type.GetType(msg.Type, throwOnError: false);
-                        if (type is null) { msg.ProcessedOn = DateTimeOffset.UtcNow; continue; }
+                        var headers = new[]
+                        {
+                            new KeyValuePair<string,string>("type", msg.Type),
+                            new KeyValuePair<string,string>("eventId", msg.Id.ToString()),
+                        };
 
-                        var evt = (INotification?)JsonConvert.DeserializeObject(msg.Payload, type, s_json);
-                        if (evt is null) { msg.ProcessedOn = DateTimeOffset.UtcNow; continue; }
-
-                        await mediator.Publish(evt, cancellationToken);
+                        await _producer.ProduceAsync(msg.AggregateId.ToString(), msg.Payload, headers, cancellationToken);
 
                         msg.ProcessedOn = DateTimeOffset.UtcNow;
                         msg.AttemptCount++;
                     }
                     catch
                     {
-                        msg.AttemptCount++; // will retry later
+                        msg.AttemptCount++;
                     }
-                }
 
-                await dbContext.SaveChangesAsync(cancellationToken);
+                    await dbContext.SaveChangesAsync(cancellationToken);
+                }
             }
         }
     }

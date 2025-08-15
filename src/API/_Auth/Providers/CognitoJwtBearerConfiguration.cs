@@ -11,7 +11,7 @@ namespace CocktailsApp.API.Auth
     public class CognitoJwtBearerConfiguration(IConfiguration configuration)
     : IConfigureNamedOptions<JwtBearerOptions>
     {
-        private const string ConfigurationSectionName = "JwtBearer";
+        private const string ConfigurationSectionName = "Auth:JwtBearer";
 
         public void Configure(JwtBearerOptions options)
         {

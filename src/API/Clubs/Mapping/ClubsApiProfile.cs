@@ -9,7 +9,7 @@ namespace CocktailsApp.API.Clubs
 {
     public class ClubsApiProfile : Profile
     {
-        public ClubsApiProfile(IImageUrlProvider images)
+        public ClubsApiProfile()
         {
             // Requests
             // -- Address
@@ -29,22 +29,17 @@ namespace CocktailsApp.API.Clubs
 
             // Responses
             // -- Details
-            CreateMap<ClubDetails, ClubDetailsResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.Club, src.ImageId, ImageVariant.Small)));
+            CreateMap<ClubDetails, ClubDetailsResponse>();
             CreateMap<ClubRoleView, ClubRoleResponse>();
-            CreateMap<ClubMemberView, ClubMemberResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.User, src.ImageId, ImageVariant.Small)));
-            CreateMap<ClubCocktailView, ClubCocktailResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.Cocktail, src.ImageId, ImageVariant.Small)));
+            CreateMap<ClubMemberView, ClubMemberResponse>();
+            CreateMap<ClubCocktailView, ClubCocktailResponse>();
 
             // -- List item
-            CreateMap<ClubListItem, ClubListItemResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.Club, src.ImageId, ImageVariant.Small)));
+            CreateMap<ClubListItem, ClubListItemResponse>();
 
             // -- Club Menu
             CreateMap<ClubMenu, ClubMenuResponse>();
-            CreateMap<MenuCocktailItem, MenuCocktailItemResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.Club, src.ImageId, ImageVariant.Small)));
+            CreateMap<MenuCocktailItem, MenuCocktailItemResponse>();
         }
 
     }

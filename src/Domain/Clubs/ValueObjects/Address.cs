@@ -1,10 +1,9 @@
-﻿/*
- * Domain namespaces
- */
+﻿
 using CocktailsApp.Domain.Common;
-/*
- * Framework namespaces
- */
+
+using Newtonsoft.Json;
+
+
 
 namespace CocktailsApp.Domain.Clubs
 {
@@ -61,6 +60,7 @@ namespace CocktailsApp.Domain.Clubs
         /// <param name="postalCode">The postal code.</param>
         /// <param name="state">The state or province.</param>
         /// <param name="country">The country name.</param>
+        [JsonConstructor]
         internal Address(string street, string streetNumber, string city, string postalCode, string state, string country)
         {
             _street = street;

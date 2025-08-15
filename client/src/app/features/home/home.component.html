@@ -1,5 +1,5 @@
 <main class="home-main">
-  <ng-container *ngIf="(clubs$ | async) as clubs">
+  <ng-container *ngIf="(userClubs$ | async) as userClubs">
     <h2 class="home-title">
       Welcome to Cocktails App
       <img src="assets/logo.png"
@@ -8,16 +8,16 @@
     </h2>
 
     <!-- Hero / Not in a club -->
-    <app-empty-state [clubs]="clubs"></app-empty-state>
+    <app-empty-state [clubs]="userClubs.clubs"></app-empty-state>
 
     <!-- Main Section -->
-    <div *ngIf="clubs.length >= 0" class="home">
+    <div *ngIf="userClubs.clubs.length >= 0" class="home">
 
       <!-- Search bar -->
       <search-bar placeholder="Search public clubs or cocktails…"/>
 
       <!-- Clubs Cards -->
-      <app-clubs-cards [clubs]="clubs"></app-clubs-cards>
+      <app-clubs-cards [clubs]="userClubs.clubs"></app-clubs-cards>
 
     </div>
   </ng-container>

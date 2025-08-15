@@ -5,6 +5,8 @@ using CocktailsApp.API.Swagger;
 using CocktailsApp.Application.Auth;
 using CocktailsApp.Application.Common;
 
+using Hellang.Middleware.ProblemDetails;
+
 using Microsoft.Extensions.FileProviders;
 
 
@@ -14,6 +16,14 @@ namespace CocktailsApp.API.Configuration
     {
         public static IServiceCollection AddWebApi(this IServiceCollection services, IConfiguration cfg)
         {
+            // Options binding (host-only)
+            services.AddOptionsBinding(cfg); // see OptionsBinding.cs below
+
+            // AuthN/Z
+            services.AddAuth(cfg);
+            services.AddAuthorization();
+
+            services.AddControllers();
             services.AddControllers(options =>
             {
                 options.Filters.Add<IdempotencyKeyFilter>();
@@ -22,13 +32,6 @@ namespace CocktailsApp.API.Configuration
             services.AddCustomCors();
             services.AddCustomErrors();
             services.AddCustomLocalization();
-
-            // Options binding (host-only)
-            services.AddOptionsBinding(cfg); // see OptionsBinding.cs below
-
-            // AuthN/Z
-            services.AddAuth(cfg);
-            services.AddAuthorization();
 
             // Services
             services.AddHttpContextAccessor();
@@ -39,7 +42,8 @@ namespace CocktailsApp.API.Configuration
             services.AddScoped<IIdempotencyKeyService, IdempotencyKeyService>();
 
             // AutoMapper (API profiles only)
-            services.AddAutoMapper(a => { }, typeof(ServicesExtensions).Assembly);
+            var licenceKey = cfg["LuckyPenny:LicenseKey"];
+            services.AddAutoMapper(a => a.LicenseKey = licenceKey, typeof(ServicesExtensions).Assembly);
 
             // Static files for local images
             services.AddSingleton<IFileProvider>(sp =>
@@ -55,28 +59,28 @@ namespace CocktailsApp.API.Configuration
             return services;
         }
 
-        public static IApplicationBuilder UseWebApi(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static WebApplication UseWebApi(this WebApplication app)
         {
-            if (env.IsDevelopment())
+            if (app.Environment.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
+
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
+            app.UseProblemDetails();
+
             app.UseHttpsRedirection();
-            app.UseRouting();
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Serve wwwroot (images)
             app.UseStaticFiles();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health");
-            });
+            app.MapControllers();
+            app.MapHealthChecks("/health");
 
             return app;
         }

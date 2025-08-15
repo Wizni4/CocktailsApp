@@ -31,7 +31,7 @@ namespace CocktailsApp.Application.Clubs
         Guid ClubMemberId,
         Guid UserId,
         string Username,
-        List<string> Roles,
+        IReadOnlyCollection<string> Roles,
         bool IsOwner,
         string? ImageId
     ) : IDTO;

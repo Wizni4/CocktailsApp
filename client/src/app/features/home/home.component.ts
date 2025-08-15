@@ -7,6 +7,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { EmptyStateComponent} from './components/empty-state/empty-state.component';
 import { ClubsCardsComponent } from './components/clubs-cards/clubs-cards.component';
 import { SearchResult } from '../../shared/models/search-result.model';
+import { UserClubs } from '../user/models/user-clubs';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { SearchResult } from '../../shared/models/search-result.model';
  ]
 })
 export class HomeComponent {
-  clubs$!: Observable<Club[]>;
+  userClubs$!: Observable<UserClubs>;
   searchResults: SearchResult[] = [];
   lowStock: any[] = [];
   searchLoading = false;
@@ -31,8 +32,8 @@ export class HomeComponent {
     private userService: UserService) {
   }
   ngOnInit(): void {
-    this.clubs$ = this.userService.getUserClubs();
-      this.clubs$.subscribe(
+    this.userClubs$ = this.userService.getUserClubs();
+    this.userClubs$.subscribe(
     )
   }
 }

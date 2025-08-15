@@ -1,22 +1,25 @@
 
-<main class="club-card__main shadow-2" [routerLink]="['/clubs', club.id]">
+<main class="club-card__main shadow-2" [routerLink]="['/clubs', club.clubId]">
   <p-card class="club-card__card">
     <ng-template #header>
-      <div class="club-card__badge-container">
-        <p-badge class="club-card__badge" badgeSize="xlarge" [value]="club.members.length" severity="info" title="Members"></p-badge>
+      <div class="flex items-center gap-2">
+        <img [src]="club.imageUrl" style="vertical-align: middle; height:1.5rem;" />
       </div>
-      <div class="club-card__visibility">
-        <span class="pi pi-eye" *ngIf="club.visibility === 'Public'"></span>
-        <span class="pi pi-eye-slash" *ngIf="club.visibility === 'Private'"></span>
-      </div>
+      <!--<div class="club-card__badge-container">
+    <p-badge class="club-card__badge" badgeSize="xlarge" [value]="club.members.length" severity="info" title="Members"></p-badge>
+  </div>-->
+      <!--<div class="club-card__visibility">
+    <span class="pi pi-eye" *ngIf="club.visibility === 'Public'"></span>
+    <span class="pi pi-eye-slash" *ngIf="club.visibility === 'Private'"></span>
+  </div>-->
       <div class="club-card__card-header">
-        <h2 class="font-medium">{{ club.name }}</h2>
+        <h2 class="font-medium">{{ club.clubName }}</h2>
       </div>
     </ng-template>
     <ng-template #subtitle> Club description </ng-template>
-    <p class="club-card__club-description">{{ club.description }}</p>
-    <p-fieldset legend="Club address">
+    <p class="club-card__club-description">{{ club.clubDescription }}</p>
+    <!--<p-fieldset legend="Club address">
       <p  class="club-card__club-address" [innerText]="clubAddress"></p>
-    </p-fieldset>
+    </p-fieldset>-->
   </p-card>
 </main>

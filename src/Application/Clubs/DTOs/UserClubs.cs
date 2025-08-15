@@ -11,6 +11,7 @@ namespace CocktailsApp.Application.Clubs
     public sealed record UserClubItem(
         Guid ClubId,
         string ClubName,
+        string ClubDescription,
         bool IsOwner,
         string? ImageId,
         IReadOnlyCollection<string> RoleNames,

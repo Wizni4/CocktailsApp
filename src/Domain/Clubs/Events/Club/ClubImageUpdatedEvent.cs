@@ -9,7 +9,7 @@ namespace CocktailsApp.Domain.Clubs
 {
     public sealed record ClubImageUpdatedEvent(
         Guid ClubId,
-        Visibility Visibility,
+        string ImageId,
         Guid ActorId
     ) : DomainEvent(ClubId, typeof(Club), ActorId);
 }

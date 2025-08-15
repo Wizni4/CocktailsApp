@@ -35,6 +35,9 @@ namespace CocktailsApp.API.Configuration
                 options.IncludeExceptionDetails = (ctx, ex) =>
                     ctx.RequestServices.GetRequiredService<IHostEnvironment>().IsDevelopment();  // 🔒 Never include stack traces
 
+                // 1) Make Hellang log any unhandled exception (500+) with the exception object
+                options.ShouldLogUnhandledException = (http, ex, details) => true;
+
                 options.Map<ValidationException>(ex =>
                     new ProblemDetails
                     {

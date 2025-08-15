@@ -4,16 +4,22 @@ using FluentValidation;
 
 using MediatR;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CocktailsApp.Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration cfg)
         {
             // MediatR + Validators
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+            var licenceKey = cfg["LuckyPenny:LicenseKey"];
+            services.AddMediatR(cfg =>
+            {
+                cfg.LicenseKey = licenceKey;
+                cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+            });
             services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
             // Idempotency → Validation → Authorization → Caching → Transaction → Handler

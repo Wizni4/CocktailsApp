@@ -16,6 +16,6 @@ namespace CocktailsApp.Application.Clubs
         Common.Address Address,
         string Description,
         string Name,
-        Visibility Visibility
+        Visibility? Visibility
     ) : ICommand<Guid>, IIdempotentCommand;
 }

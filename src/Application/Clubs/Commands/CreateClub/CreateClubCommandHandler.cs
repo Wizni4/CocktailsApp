@@ -33,7 +33,7 @@ namespace CocktailsApp.Application.Clubs
         /// </exception>
         public async Task<Guid> Handle(CreateClubCommand request, CancellationToken cancellationToken)
         {
-            var club = new ClubFactory()
+            var clubBuilder = new ClubFactory()
                 .WithAddress(
                     request.Address.Street,
                     request.Address.StreetNumber,
@@ -44,10 +44,13 @@ namespace CocktailsApp.Application.Clubs
                 )
                 .WithDescription(request.Description)
                 .WithName(request.Name)
-                .WithOwner(_user.UserId)
-                .WithVisibility(request.Visibility)
-                .Build();
+                .WithOwner(_user.UserId);
 
+            if (request.Visibility != null)
+                clubBuilder.WithVisibility((Visibility)request.Visibility);
+
+
+            var club = clubBuilder.Build();
             await _clubRepository.CreateAsync(club, cancellationToken);
             return club.Id;
         }

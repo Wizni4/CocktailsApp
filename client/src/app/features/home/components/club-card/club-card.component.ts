@@ -9,6 +9,7 @@ import { Club } from '../../../club/models/club.model';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { UserClubItem } from '../../../user/models/user-clubs';
 
 @Component({
   selector: 'app-club-card',
@@ -28,14 +29,8 @@ import { ButtonModule } from 'primeng/button';
   ]
 })
 export class ClubCardComponent {
-  @Input() club!: Club;
+  @Input() club!: UserClubItem;
   @Input() discover = false;
   @Output() delete = new EventEmitter<string>();
 
-  get clubAddress(): string {
-    const { streetNumber, street, postalCode, city, country } = this.club.address;
-    return `${streetNumber} ${street}
-${postalCode} ${city}, ${country}`;
-
-  }
 }

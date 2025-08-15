@@ -5,6 +5,7 @@ using CocktailsApp.Domain.Orders;
 using CocktailsApp.Domain.Prices;
 using CocktailsApp.Domain.Stocks;
 using CocktailsApp.Domain.Users;
+using CocktailsApp.Infrastructure.Common;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,7 @@ namespace CocktailsApp.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<OutboxMessage>(new OutboxMessageConfiguration().Configure);
             modelBuilder.MapClubAggregate()
                 .MapCocktailAggregate()
                 .MapIngredient()

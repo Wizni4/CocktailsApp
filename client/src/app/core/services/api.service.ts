@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +44,7 @@ export class ApiService {
     const headers = new HttpHeaders({
       ...this.headers,
       Accept: 'application/json',
+      'Idempotency-Key': uuidv4()
     });
     const params = new HttpParams({ fromObject: this.queryParams });
     return { headers, params };

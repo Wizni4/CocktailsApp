@@ -11,7 +11,7 @@ namespace CocktailsApp.API.Identity
         {
             // Response
             CreateMap<AuthTokens, SignInResponse>();
-            CreateMap<AuthTokens, SignInResponse>();
+            CreateMap<AuthTokens, RefreshTokenResponse>();
         }
     }
 }

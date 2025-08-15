@@ -26,7 +26,7 @@ namespace CocktailsApp.API.Clubs
         [HttpPost(Name = "CreateClub")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [SwaggerOperation(Summary = "Create a new club.")]
-        public async Task<ActionResult<ClubListItem>> Create([FromBody] CreateClubRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateClubRequest request)
         {
             // Create the club using a command
             var command = new CreateClubCommand(
@@ -40,20 +40,13 @@ namespace CocktailsApp.API.Clubs
                 ),
                 request.Description,
                 request.Name,
-                request.Visibility.ToEnum<Visibility>()
-            );
+                request.Visibility == null ? null : request.Visibility.ToEnum<Visibility>()
+            ); 
             var clubId = await _mediator.Send(command);
 
-            // Query the newly created club
-            var query = new GetClubListItemQuery(clubId);
-            var clubListItem = await _mediator.Send(query);
-
-            // Convert the DTO to response model
-            var response = _autoMapper.Map<ClubListItemResponse>(clubListItem);
-
             return Created(
-                uri: $"/api/clubs/{response.ClubId}",
-                value: response
+                uri: $"/api/clubs/{clubId}",
+                value: clubId
             );
         }
 
@@ -105,7 +98,7 @@ namespace CocktailsApp.API.Clubs
         [HttpPatch("{clubId}", Name = "UpdateClub")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [SwaggerOperation(Summary = "Change the address, name, description & visibility of a club.")]
-        public async Task<ActionResult<ClubListItem>> UpdateClub(Guid clubId, [FromBody] UpdateClubRequest request)
+        public async Task<IActionResult> UpdateClub(Guid clubId, [FromBody] UpdateClubRequest request)
         {
             // Prepare the update club command
             var address = _autoMapper.Map<Application.Common.Address>(request.Address);
@@ -122,14 +115,7 @@ namespace CocktailsApp.API.Clubs
             );
             await _mediator.Send(command);
 
-            // Query the updated club
-            var query = new GetClubListItemQuery(clubId);
-            var clubListItem = _mediator.Send(query);
-
-            // Map DTO to response
-            var response = _autoMapper.Map<ClubListItem>(clubListItem);
-
-            return Ok(response);
+            return Ok();
         }
     }
 }

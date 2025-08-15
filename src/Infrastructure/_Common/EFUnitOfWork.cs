@@ -2,42 +2,60 @@
 using CocktailsApp.Domain.Common;
 using CocktailsApp.Infrastructure.Persistence;
 
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+
 
 namespace CocktailsApp.Infrastructure.Common
 {
     public sealed class EFUnitOfWork(
         EFWriteDbContext dbContext
-    ) : IUnitOfWork
+    ) : IUnitOfWork, IAsyncDisposable
     {
         private readonly EFWriteDbContext _dbContext = dbContext;
+        private IDbContextTransaction? _tx;
 
-        public Task BeginTransactionAsync(CancellationToken cancellationToken)
+        public async Task BeginTransactionAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            // no-op if already in a transaction (supports nested handlers)
+            if (_tx != null) return;
+            _tx = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
         }
 
-        public Task CommitTransactionAsync(CancellationToken cancellationToken)
+        public async Task CommitTransactionAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task RollbackTransactionAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            var domainEvents = _dbContext.ChangeTracker
-                .Entries<AggregateRoot>()
-                .SelectMany(x => x.Entity.DomainEvents)
-                .ToList();
-
-            foreach (var entity in _dbContext.ChangeTracker.Entries<AggregateRoot>())
-                entity.Entity.ClearDomainEvents();
-
-            // Update last update date of all modified entities
+            // Always save first(this is where domain events / outbox rows get persisted)
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            if (_tx != null)
+            {
+                await _tx.CommitAsync(cancellationToken);
+                await _tx.DisposeAsync();
+                _tx = null;
+            }
         }
+
+        public async Task RollbackTransactionAsync(CancellationToken cancellationToken)
+        {
+            if (_tx != null)
+            {
+                await _tx.RollbackAsync(cancellationToken);
+                await _tx.DisposeAsync();
+                _tx = null;
+            }
+
+            // Throw away any tracked changes so subsequent requests start clean
+            _dbContext.ChangeTracker.Clear(); // EF Core 6+
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (_tx != null)
+            {
+                await _tx.DisposeAsync();
+                _tx = null;
+            }
+        }
+
     }
 }

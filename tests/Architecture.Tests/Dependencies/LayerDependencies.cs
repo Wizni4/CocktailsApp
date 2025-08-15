@@ -23,10 +23,11 @@ namespace CocktailsApp.Architecture.Tests.Dependencies
             {
                 return
                 [
-                //  new TestCaseData(layerName       , forbidenDependencies                    ),
+                //  new TestCaseData(layerName       , forbidenDependencies                                       ),
                     new TestCaseData("Domain"        , new List<string> { "Application", "Infrastructure", "API" }),
                     new TestCaseData("Application"   , new List<string> { "Infrastructure", "API"                }),
-                    new TestCaseData("Infrastructure", new List<string> { "API"                                  }),
+                    new TestCaseData("Infrastructure", new List<string> { "API", "ReadStore"                     }),
+                    new TestCaseData("Infrastructure", new List<string> { "API", "Ingrastructure"                }),
                 ];
             }
         }

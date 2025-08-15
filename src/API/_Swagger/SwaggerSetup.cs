@@ -1,4 +1,6 @@
 ﻿
+using CocktailsApp.API.Common;
+
 using Microsoft.OpenApi.Models;
 
 namespace CocktailsApp.API.Swagger
@@ -22,6 +24,9 @@ namespace CocktailsApp.API.Swagger
                     BearerFormat = "JWT",
                     Scheme = "Bearer"
                 });
+
+                // Apply header to operations
+                c.OperationFilter<IdempotencyHeaderOperationFilter>();
 
                 // Apply the BearerAuth scheme globally to all operations
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement

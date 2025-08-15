@@ -21,8 +21,7 @@ namespace CocktailsApp.Application.Auth
                 AccessToken: _tokens.AccessToken,
                 RefreshToken: _tokens.RefreshToken,
                 UserId: _user.UserId,
-                Username: _user.Username,
-                SessionId: _user.SessionId
+                Username: _user.Username
             );
 
             await _authService.SignOutAsync(session, cancellationToken);

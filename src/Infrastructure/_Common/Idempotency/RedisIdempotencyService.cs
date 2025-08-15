@@ -12,17 +12,15 @@ namespace CocktailsApp.Infrastructure.Common
 {
     public sealed class RedisIdempotencyService(
         IConnectionMultiplexer mux,
-        string @namespace,
-        IOptions<IdempotencyOptions> options,
-        JsonSerializerSettings? json = null
+        IOptions<IdempotencyOptions> options
      ) : IIdempotencyService, IDisposable
     {
+        private readonly IOptions<IdempotencyOptions> _options = options;
         private readonly IConnectionMultiplexer _mux = mux;
         private readonly IDatabase _db = mux.GetDatabase();
-        private readonly string _nsData = @namespace + "data:";
-        private readonly string _nsLock = @namespace + "lock:";
-        private readonly IOptions<IdempotencyOptions> _options = options;
-        private readonly JsonSerializerSettings _json = json ?? new JsonSerializerSettings
+        private readonly string _nsData = options.Value.Namespace + "data:";
+        private readonly string _nsLock = options.Value.Namespace + "lock:";
+        private readonly JsonSerializerSettings _json = new()
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
             NullValueHandling = NullValueHandling.Ignore,
@@ -51,10 +49,9 @@ namespace CocktailsApp.Infrastructure.Common
             // Store result and clear lock in one go (not strictly atomic across both keys,
             // but OK for most cases; use Lua script if you need atomicity)
             var batch = _db.CreateBatch();
-            var setTask = batch.StringSetAsync(KD(key), payload, TimeSpan.FromSeconds(_options.Value.LockTtlSeconds));
+            var setTask = batch.StringSetAsync(KD(key), payload, TimeSpan.FromSeconds((double)_options.Value.LockTtlSeconds!));
             var delTask = batch.KeyDeleteAsync(KL(key));
             batch.Execute();
-
             await Task.WhenAll(setTask, delTask);
         }
 

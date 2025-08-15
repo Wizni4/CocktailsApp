@@ -10,7 +10,7 @@ namespace CocktailsApp.API.Cocktails
 {
     public class CocktailApiProfile : Profile
     {
-        public CocktailApiProfile(IImageUrlProvider images)
+        public CocktailApiProfile()
         {
             // Request
             CreateMap<CreateCocktailRequest, CreateCocktailCommand>();
@@ -19,14 +19,11 @@ namespace CocktailsApp.API.Cocktails
 
             // Response
             // -- List item
-            CreateMap<CocktailListItem, CocktailListItemResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.Club, src.ImageId, ImageVariant.Small)));
+            CreateMap<CocktailListItem, CocktailListItemResponse>();
 
             // -- Details
-            CreateMap<CocktailDetails, CocktailDetailsResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.Club, src.ImageId, ImageVariant.Small)));
-            CreateMap<CocktailIngredientView, CocktailIngredientResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => images.GetUrl(ImageSubject.Club, src.ImageId, ImageVariant.Small)));
+            CreateMap<CocktailDetails, CocktailDetailsResponse>();
+            CreateMap<CocktailIngredientView, CocktailIngredientResponse>();
         }
     }
 }

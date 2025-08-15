@@ -7,6 +7,5 @@ namespace CocktailsApp.Application.Common
         bool IsAuthenticated { get; }
         string? Username { get; }
         Guid UserId { get; }
-        Guid? SessionId { get; }
     }
 }

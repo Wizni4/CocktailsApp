@@ -20,6 +20,7 @@ namespace CocktailsApp.Architecture.Tests.Conventions
                     new TestCaseData("Domain"        ),
                     new TestCaseData("Application"   ),
                     new TestCaseData("Infrastructure"),
+                    new TestCaseData("ReadStore"     ),
                     new TestCaseData("API"           )
                 ];
             }

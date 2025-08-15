@@ -1,6 +1,8 @@
 ﻿
 using CocktailsApp.Application.Common;
 
+using Microsoft.Extensions.Options;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -12,14 +14,13 @@ namespace CocktailsApp.Infrastructure.Common
 {
     public sealed class RedisCacheAdapter(
         IConnectionMultiplexer mux,
-        string @namespace,
-        JsonSerializerSettings? json = null
+        IOptions<CacheOptions> options
     ) : ICacheService, IDisposable
     {
         private readonly IConnectionMultiplexer _mux = mux;
         private readonly IDatabase _db = mux.GetDatabase();
-        private readonly string _namespace = @namespace;
-        private readonly JsonSerializerSettings _json = json ?? new JsonSerializerSettings
+        private readonly string _namespace = options.Value.Namespace!;
+        private readonly JsonSerializerSettings _json = new()
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
             NullValueHandling = NullValueHandling.Ignore,

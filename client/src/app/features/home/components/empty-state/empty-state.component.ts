@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Club } from '../../../club/models/club.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
+import { UserClubItem } from '../../../user/models/user-clubs';
 
 @Component({
   selector: 'app-empty-state',
@@ -16,5 +16,5 @@ import { RouterLink } from '@angular/router';
  ]
 })
 export class EmptyStateComponent {
-  @Input() clubs: Club[] = [];
+  @Input() clubs: UserClubItem[] = [];
 }

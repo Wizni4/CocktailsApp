@@ -12,7 +12,6 @@ namespace CocktailsApp.Application.Clubs
         string? Country,
         string? ImageId,
         int CocktailCount,
-        int MemberCount,
-        Guid OwnerUserId
+        int MemberCount
      ) : IDTO;
 }
