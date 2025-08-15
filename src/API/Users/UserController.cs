@@ -41,11 +41,11 @@ namespace CocktailsApp.API.Users
             var response = new UserClubsResponse(
                 UserId: userClubs!.UserId,
                 Clubs: userClubs.Clubs.Select(c => new UserClubItemResponse(
-                    ClubId              : c.ClubId,
-                    ClubName            : c.ClubName,
-                    IsOwner             : c.IsOwner,
-                    ImageUrl            : _imageUrlProvider.GetUrl(ImageSubject.Club, c.ImageId, ImageVariant.Small),
-                    RoleNames           : c.RoleNames,
+                    ClubId: c.ClubId,
+                    ClubName: c.ClubName,
+                    IsOwner: c.IsOwner,
+                    ImageUrl: _imageUrlProvider.GetUrl(ImageSubject.Club, c.ImageId, ImageVariant.Small),
+                    RoleNames: c.RoleNames,
                     EffectivePermissions: c.EffectivePermissions
                 )).ToList().AsReadOnly()
             );

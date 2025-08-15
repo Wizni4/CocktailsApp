@@ -1,5 +1,5 @@
 ﻿using CocktailsApp.ReadStore.Common;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 
 using Confluent.Kafka;
 

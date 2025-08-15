@@ -1,6 +1,6 @@
 ﻿
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace CocktailsApp.ReadStore.Clubs
         {
             var clubCocktail = await _dbContext.Set<ClubCocktailRead>()
                 .FirstOrDefaultAsync(c => c.ClubId == @event.ClubId && c.ClubCocktailId == @event.ClubCocktailId, cancellationToken);
-            if (clubCocktail != null)  _dbContext.Remove(clubCocktail);
+            if (clubCocktail != null) _dbContext.Remove(clubCocktail);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

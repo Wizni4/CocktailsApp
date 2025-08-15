@@ -41,7 +41,7 @@ namespace CocktailsApp.API.Clubs
                 request.Description,
                 request.Name,
                 request.Visibility == null ? null : request.Visibility.ToEnum<Visibility>()
-            ); 
+            );
             var clubId = await _mediator.Send(command);
 
             return Created(

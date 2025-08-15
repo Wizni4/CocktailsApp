@@ -1,7 +1,7 @@
 ﻿
 
 using CocktailsApp.Domain.Ingredients;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 namespace CocktailsApp.ReadStore.Ingredients

@@ -1,7 +1,7 @@
 ﻿
 namespace CocktailsApp.Infrastructure.Common
 {
-    public  interface IKafkaProducer
+    public interface IKafkaProducer
     {
         Task ProduceAsync(
             string key,

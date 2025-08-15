@@ -1,9 +1,8 @@
 ﻿
 
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
-using CocktailsApp.ReadStore.Users;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +11,7 @@ using System.Data;
 namespace CocktailsApp.ReadStore.Clubs
 {
     public sealed class ClubRoleDeletedProjection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<ClubRoleDeletedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;

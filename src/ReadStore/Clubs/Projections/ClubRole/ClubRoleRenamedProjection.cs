@@ -1,6 +1,6 @@
 ﻿
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CocktailsApp.ReadStore.Clubs
 {
     public sealed class ClubRoleRenamedProjection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<ClubRoleRenamedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;
@@ -16,7 +16,7 @@ namespace CocktailsApp.ReadStore.Clubs
         public async Task HandleAsync(ClubRoleRenamedEvent @event, CancellationToken cancellationToken)
         {
             var clubRole = await _dbContext.Set<ClubRoleRead>()
-                .FirstOrDefaultAsync(crp => 
+                .FirstOrDefaultAsync(crp =>
                     crp.ClubId == @event.ClubId &&
                     crp.RoleId == @event.RoleId,
                     cancellationToken);

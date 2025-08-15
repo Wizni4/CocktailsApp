@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using CocktailsApp.Domain.Ingredients;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CocktailsApp.ReadStore.Ingredients
 {
     public sealed class IngredientDeletedProjection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<IngredientDeletedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;
@@ -21,7 +21,7 @@ namespace CocktailsApp.ReadStore.Ingredients
         {
             var ingredient = await _dbContext.Set<IngredientRead>()
                 .FirstOrDefaultAsync(i => i.IngredientId == @event.IngredientId);
-            if ( ingredient != null ) _dbContext.Remove(ingredient);
+            if (ingredient != null) _dbContext.Remove(ingredient);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

@@ -1,20 +1,14 @@
 ﻿
 
 using CocktailsApp.Application.Clubs;
-using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 
 using Microsoft.EntityFrameworkCore;
-
-using System.Diagnostics.Metrics;
-using System.Linq;
-
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CocktailsApp.ReadStore.Clubs
 {
     public sealed class ClubQueries(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IClubQueries
     {
         private readonly EFReadDbContext _dbContext = dbContext;
@@ -33,15 +27,15 @@ namespace CocktailsApp.ReadStore.Clubs
             var clubCocktailCount = await _dbContext.Set<ClubMemberRead>().Where(c => c.ClubId == clubId).CountAsync(cancellationToken);
 
             return new ClubListItem(
-                ClubId       : clubRead.ClubId,
-                Name         : clubRead.Name,
-                Description  : clubRead.Description,
-                Visibility   : clubRead.Visibility,
-                City         : clubRead.City,
-                Country      : clubRead.Country,
-                ImageId      : clubRead.ImageId,
+                ClubId: clubRead.ClubId,
+                Name: clubRead.Name,
+                Description: clubRead.Description,
+                Visibility: clubRead.Visibility,
+                City: clubRead.City,
+                Country: clubRead.Country,
+                ImageId: clubRead.ImageId,
                 CocktailCount: clubCocktailCount,
-                MemberCount  : clubMemberCount
+                MemberCount: clubMemberCount
             );
         }
 
@@ -59,7 +53,7 @@ namespace CocktailsApp.ReadStore.Clubs
             var clubMemberIds = clubMembers.Select(m => m.ClubMemberId);
 
             var memberRoles = await _dbContext.Set<ClubMemberRoleRead>()
-                .Where(mr => clubMemberIds.Any(mId=> mId == mr.ClubMemberId))
+                .Where(mr => clubMemberIds.Any(mId => mId == mr.ClubMemberId))
                 .ToListAsync(cancellationToken);
             var memberRoleIds = memberRoles.Select(mr => mr.RoleId);
 

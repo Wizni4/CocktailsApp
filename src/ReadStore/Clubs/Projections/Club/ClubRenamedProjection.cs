@@ -1,18 +1,16 @@
 ﻿
 
-using CocktailsApp.Application.Clubs;
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 using Microsoft.EntityFrameworkCore;
 
-using System.Linq.Expressions;
 
 namespace CocktailsApp.ReadStore.Clubs
 {
     public sealed class ClubRenamedProjection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<ClubRenamedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;

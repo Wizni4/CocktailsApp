@@ -1,12 +1,12 @@
 ﻿
 using CocktailsApp.Domain.Cocktails;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 namespace CocktailsApp.ReadStore.Cocktails
 {
     public sealed class CocktailCreatedProjection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<CocktailCreatedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;

@@ -1,4 +1,5 @@
 ﻿using Amazon.CognitoIdentityProvider;
+
 using CocktailsApp.Application.Auth;
 using CocktailsApp.Application.Common;
 using CocktailsApp.Infrastructure.Auth;
@@ -24,9 +25,9 @@ namespace CocktailsApp.Infrastructure
 
             // -- Write DB
             services.AddSingleton<OutboxInterceptor>();
-            string localDbWriteConnectionStr = cfg.GetConnectionString("LocalWrite") 
+            string localDbWriteConnectionStr = cfg.GetConnectionString("LocalWrite")
                 ?? throw new ArgumentNullException("The local write DB configuration is null");
-            services.AddDbContextPool<EFWriteDbContext>((sp,options) => 
+            services.AddDbContextPool<EFWriteDbContext>((sp, options) =>
             {
                 options.UseSqlServer(localDbWriteConnectionStr);
                 options.AddInterceptors(sp.GetRequiredService<OutboxInterceptor>());
@@ -62,7 +63,7 @@ namespace CocktailsApp.Infrastructure
             var idempotencyProvider = cfg.GetSection("Idempotency:Provider").Value?.ToLowerInvariant() ?? "memory";
             if (cacheProvider == "redis" || idempotencyProvider == "redis")
             {
-                var redisConfig = cfg.GetSection("Redis:Configuration").Get<string>() 
+                var redisConfig = cfg.GetSection("Redis:Configuration").Get<string>()
                     ?? throw new ArgumentException("Missing redis configuration");
                 services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(redisConfig));
             }

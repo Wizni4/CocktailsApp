@@ -1,6 +1,6 @@
 ﻿
 using CocktailsApp.Domain.Cocktails;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 using Microsoft.EntityFrameworkCore;

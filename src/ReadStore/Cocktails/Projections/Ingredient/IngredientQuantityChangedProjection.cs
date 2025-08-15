@@ -1,7 +1,7 @@
 ﻿
 
 using CocktailsApp.Domain.Cocktails;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace CocktailsApp.ReadStore.Cocktails
         {
             var ingredient = await _dbContext.Set<CocktailIngredientRead>()
                 .FirstOrDefaultAsync(i => i.CocktailIngredientId == @event.CocktailIngredientId, cancellationToken);
-            if ( ingredient != null ) ingredient.Quantity = @event.Quantity;
+            if (ingredient != null) ingredient.Quantity = @event.Quantity;
 
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

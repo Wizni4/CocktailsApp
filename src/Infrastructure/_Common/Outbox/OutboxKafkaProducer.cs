@@ -1,5 +1,7 @@
 ﻿using Confluent.Kafka;
+
 using Microsoft.Extensions.Options;
+
 using System.Text;
 
 namespace CocktailsApp.Infrastructure.Common

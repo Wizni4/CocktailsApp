@@ -1,13 +1,13 @@
 ﻿
 
 using CocktailsApp.Domain.Ingredients;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 namespace CocktailsApp.ReadStore.Ingredients
 {
     public sealed class AllergenAddedProjection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<AllergenAddedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;

@@ -21,7 +21,7 @@ namespace CocktailsApp.Application.Clubs
             RuleFor(c => c.Address).ValidAddress();
             RuleFor(c => c.Description).ValidString();
             RuleFor(c => c.Name).ValidString();
-            When(c => c.Visibility is not null, () => 
+            When(c => c.Visibility is not null, () =>
             {
                 RuleFor(c => c.Visibility).ValidEnum();
             });

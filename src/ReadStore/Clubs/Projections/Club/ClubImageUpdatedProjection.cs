@@ -1,7 +1,8 @@
 ﻿
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
+
 using Microsoft.EntityFrameworkCore;
 
 

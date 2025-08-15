@@ -9,7 +9,7 @@ using CocktailsApp.Application.Search;
 using CocktailsApp.ReadStore.Clubs;
 using CocktailsApp.ReadStore.Cocktails;
 using CocktailsApp.ReadStore.Configuration;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Ingredients;
 using CocktailsApp.ReadStore.Projections;
 using CocktailsApp.ReadStore.Search;
@@ -38,13 +38,13 @@ namespace CocktailsApp.ReadStore
             services.AddScoped<IIngredientQueries, IngredientQueries>();
 
             // Access
-            services.AddScoped<IClubAccess,  ClubAccess>();
+            services.AddScoped<IClubAccess, ClubAccess>();
 
             // Services
-            services.AddScoped<ISearchIndexer,  SearchIndexer>();
-            services.AddScoped<ISearchService,  SearchService>();
+            services.AddScoped<ISearchIndexer, SearchIndexer>();
+            services.AddScoped<ISearchService, SearchService>();
 
-            
+
 
             // Projections
             services.AddSingleton<IEventNameResolver>(_ =>

@@ -1,13 +1,13 @@
 ﻿
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 
 namespace CocktailsApp.ReadStore.Clubs
 {
     public sealed class ClubRolePermissionAddedprojection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<ClubRolePermissionAddedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;

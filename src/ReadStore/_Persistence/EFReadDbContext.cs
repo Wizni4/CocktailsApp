@@ -12,12 +12,11 @@ using CocktailsApp.ReadStore.Clubs;
 using CocktailsApp.ReadStore.Cocktails;
 using CocktailsApp.ReadStore.Common;
 using CocktailsApp.ReadStore.Ingredients;
-using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Users;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace CocktailsApp.ReadStore.Context
+namespace CocktailsApp.ReadStore.Persistence
 {
     /// <summary>
     /// Represents the database context for interacting with the underlying database using Entity Framework.

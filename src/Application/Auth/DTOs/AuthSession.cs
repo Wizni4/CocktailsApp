@@ -6,6 +6,6 @@ namespace CocktailsApp.Application.Auth
         string? AccessToken,
         string? RefreshToken,
         Guid? UserId,
-        string? Username    
+        string? Username
     );
 }

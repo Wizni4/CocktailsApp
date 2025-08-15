@@ -1,18 +1,18 @@
 ﻿
 using CocktailsApp.Domain.Clubs;
-using CocktailsApp.ReadStore.Context;
+using CocktailsApp.ReadStore.Persistence;
 using CocktailsApp.ReadStore.Projections;
 
 
 namespace CocktailsApp.ReadStore.Clubs
 {
     public sealed class ClubCreatedProjection(
-        EFReadDbContext dbContext    
+        EFReadDbContext dbContext
     ) : IProjectionHandler<ClubCreatedEvent>
     {
         private readonly EFReadDbContext _dbContext = dbContext;
         public async Task HandleAsync(ClubCreatedEvent @event, CancellationToken cancellationToken)
-        {           
+        {
             _dbContext.Add(new ClubRead
             {
                 ClubId = @event.ClubId,
@@ -27,7 +27,7 @@ namespace CocktailsApp.ReadStore.Clubs
                 Country = @event.Address?.Country,
                 ImageId = @event.ImageId,
             });
-            
+
 
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
